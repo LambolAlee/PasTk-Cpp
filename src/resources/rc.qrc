@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>logo/PasTk_logo_128.png</file>
+        <file>icons/about.svg</file>
+        <file>icons/close.svg</file>
+        <file>icons/window-minimize.svg</file>
+        <file>icons/setting.svg</file>
+        <file>icons/box.svg</file>
+        <file>icons/pin.png</file>
+        <file>icons/unpin.png</file>
+    </qresource>
+</RCC>
