@@ -19,6 +19,7 @@ public:
 
 private slots:
     void toggleMenubar();
+    void triggerAboutQtAction();
 
 private:
     Ui::Home *ui;

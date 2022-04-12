@@ -165,7 +165,7 @@
   <action name="actionAbout_PasTk_Cpp">
    <property name="icon">
     <iconset resource="../resources/rc.qrc">
-     <normaloff>:/logo/PasTk_logo_128.png</normaloff>:/logo/PasTk_logo_128.png</iconset>
+     <normaloff>:/icons/about.svg</normaloff>:/icons/about.svg</iconset>
    </property>
    <property name="text">
     <string>About PasTk-Cpp</string>
