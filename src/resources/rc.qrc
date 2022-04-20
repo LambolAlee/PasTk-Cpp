@@ -8,5 +8,6 @@
         <file>icons/box.svg</file>
         <file>icons/pin.png</file>
         <file>icons/unpin.png</file>
+        <file>icons/text.svg</file>
     </qresource>
 </RCC>

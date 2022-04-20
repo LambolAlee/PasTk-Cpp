@@ -7,6 +7,8 @@
 
 #include "util/cframelessbridge.h"
 #include "bottombar.h"
+#include "datamanager/datamanager.h"
+#include "datamanager/itemdelegate.h"
 
 
 Home::Home(QWidget *parent)
@@ -18,6 +20,13 @@ Home::Home(QWidget *parent)
     ui->menubar->setVisible(false);
     ui->layout->addWidget(_bottomBar);
     ui->actionAbout_Qt->setIcon(qApp->style()->standardIcon(QStyle::SP_TitleBarMenuButton)); // qtlogo
+
+    auto &dm = DataManager::instance();
+    dm.insert("Hello World");
+    dm.insert("wo d shij");
+    dm.insert("你好");
+    ui->detailView->setItemDelegate(new ItemDelegate);
+    ui->detailView->setModel(dm.model());
 
     connectSignalsWithSlots();
 }

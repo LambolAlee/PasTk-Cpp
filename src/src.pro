@@ -44,31 +44,39 @@ include(third-party/qhotkey/qhotkey.pri)
 DEFINES += QAPPLICATION_CLASS=QApplication
 
 SOURCES += \
+    datamanager/datamanager.cpp \
+    datamanager/itemdelegate.cpp \
     formatter/generatorhelper.cpp \
     main.cpp \
     ui/bottombar.cpp \
-    ui/detaileditor.cpp \
+    ui/detaillistview.cpp \
     ui/home.cpp \
+    ui/itemfloatbuttons.cpp \
     ui/templateeditor.cpp \
     ui/titlebar.cpp \
-    util/cframelessbridge.cpp
+    util/cframelessbridge.cpp \
+    util/config.cpp
 
 HEADERS += \
+    datamanager/datamanager.h \
+    datamanager/itemdelegate.h \
     formatter/generatorhelper.h \
     formatter/generatorinterface.h \
     ui/bottombar.h \
-    ui/detaileditor.h \
+    ui/detaillistview.h \
     ui/home.h \
+    ui/itemfloatbuttons.h \
     ui/templateeditor.h \
     ui/titlebar.h \
     util/cframelessbridge.h \
+    util/config.h \
     util/pasteutil.h \
     util/Singleton.h
 
 FORMS += \
     ui/bottombar.ui \
-    ui/detaileditor.ui \
     ui/home.ui \
+    ui/itemfloatbuttons.ui \
     ui/templateeditor.ui \
     ui/titlebar.ui
 

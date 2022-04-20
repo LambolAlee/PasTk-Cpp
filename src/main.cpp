@@ -8,6 +8,8 @@
 int main(int argc, char *argv[])
 {
     SingleApplication a(argc, argv);
+    a.setOrganizationDomain("lambol.pastk-cpp.org");
+    a.setOrganizationName("Lambol.Michael.Alee");
 
     Home w;
     TitleBar titleBar;

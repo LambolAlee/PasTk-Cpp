@@ -31,7 +31,7 @@
      <number>5</number>
     </property>
     <item>
-     <widget class="QListView" name="detailView">
+     <widget class="DetailListView" name="detailView">
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
       </property>
@@ -50,7 +50,7 @@
         <number>5</number>
        </property>
        <item>
-        <widget class="QPushButton" name="recordButton">
+        <widget class="QPushButton" name="pasteButton">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -58,7 +58,7 @@
           </size>
          </property>
          <property name="text">
-          <string>Record</string>
+          <string>Paste</string>
          </property>
         </widget>
        </item>
@@ -93,14 +93,14 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pasteButton">
+          <widget class="QPushButton" name="recordButton">
            <property name="font">
             <font>
              <underline>true</underline>
             </font>
            </property>
            <property name="text">
-            <string>Paste</string>
+            <string>Record</string>
            </property>
            <property name="flat">
             <bool>true</bool>
@@ -123,7 +123,7 @@
      <x>0</x>
      <y>0</y>
      <width>354</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTool">
@@ -199,6 +199,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DetailListView</class>
+   <extends>QListView</extends>
+   <header>ui/detaillistview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../resources/rc.qrc"/>
  </resources>
