@@ -15,7 +15,7 @@
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>5</number>
+    <number>11</number>
    </property>
    <property name="topMargin">
     <number>0</number>
@@ -35,19 +35,16 @@
       <enum>QLayout::SetFixedSize</enum>
      </property>
      <item>
-      <widget class="QToolButton" name="settingTB">
+      <widget class="QToolButton" name="toolButton">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="text">
-        <string/>
-       </property>
        <property name="icon">
         <iconset resource="../resources/rc.qrc">
-         <normaloff>:/icons/setting.svg</normaloff>:/icons/setting.svg</iconset>
+         <normaloff>:/icons/play.svg</normaloff>:/icons/play.svg</iconset>
        </property>
        <property name="autoRaise">
         <bool>true</bool>
@@ -55,9 +52,42 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="settingText">
+      <widget class="QToolButton" name="toolButton_2">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="icon">
+        <iconset resource="../resources/rc.qrc">
+         <normaloff>:/icons/clear.svg</normaloff>:/icons/clear.svg</iconset>
+       </property>
+       <property name="autoRaise">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="toolButton_3">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
-        <string>Settings</string>
+        <string>Paste</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../resources/rc.qrc">
+         <normaloff>:/icons/execute.svg</normaloff>:/icons/execute.svg</iconset>
+       </property>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonTextBesideIcon</enum>
+       </property>
+       <property name="autoRaise">
+        <bool>true</bool>
        </property>
       </widget>
      </item>

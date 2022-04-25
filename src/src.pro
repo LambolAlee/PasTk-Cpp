@@ -33,6 +33,7 @@ macx {
     LIBS += \
         -framework AppKit \
         -framework Carbon
+    QMAKE_INFO_PLIST = ./Info.plist
 
     OBJECTIVE_SOURCES += util/pasteutil.mm
 
@@ -52,6 +53,7 @@ SOURCES += \
     ui/detaillistview.cpp \
     ui/home.cpp \
     ui/itemfloatbuttons.cpp \
+    ui/systray.cpp \
     ui/templateeditor.cpp \
     ui/titlebar.cpp \
     util/cframelessbridge.cpp \
@@ -66,6 +68,7 @@ HEADERS += \
     ui/detaillistview.h \
     ui/home.h \
     ui/itemfloatbuttons.h \
+    ui/systray.h \
     ui/templateeditor.h \
     ui/titlebar.h \
     util/cframelessbridge.h \

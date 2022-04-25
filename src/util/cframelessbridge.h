@@ -16,11 +16,15 @@ signals:
     void closed();
     void topmost(bool);
 
+    void hideForPaste(bool);
+
 public:
     void emitAltKeyTriggered();
     void emitMinimized();
     void emitClosed();
     void emitTopmost(bool state);
+
+    void emitHideForPaste(bool state);
 };
 
 #endif // CFRAMELESSBRIDGE_H

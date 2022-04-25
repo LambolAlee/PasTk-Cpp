@@ -25,6 +25,9 @@ Home::Home(QWidget *parent)
     dm.insert("Hello World");
     dm.insert("wo d shij");
     dm.insert("你好");
+    dm.insert("你好");
+    dm.insert("你好");
+    dm.insert("你好");
     ui->detailView->setItemDelegate(new ItemDelegate);
     ui->detailView->setModel(dm.model());
 

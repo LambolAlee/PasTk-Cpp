@@ -22,3 +22,8 @@ void CFramelessBridge::emitTopmost(bool state)
 {
     emit topmost(state);
 }
+
+void CFramelessBridge::emitHideForPaste(bool state)
+{
+    emit hideForPaste(state);
+}
