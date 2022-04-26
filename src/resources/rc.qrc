@@ -16,5 +16,7 @@
         <file>icons/clear.svg</file>
         <file>icons/edit.svg</file>
         <file>icons/execute_normal.svg</file>
+        <file>icons/delete_one.svg</file>
+        <file>style/basic_style.qss</file>
     </qresource>
 </RCC>

@@ -15,7 +15,7 @@
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>11</number>
+    <number>5</number>
    </property>
    <property name="topMargin">
     <number>0</number>
@@ -46,6 +46,9 @@
         <iconset resource="../resources/rc.qrc">
          <normaloff>:/icons/play.svg</normaloff>:/icons/play.svg</iconset>
        </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
        <property name="autoRaise">
         <bool>true</bool>
        </property>
@@ -65,6 +68,13 @@
        </property>
        <property name="autoRaise">
         <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
        </property>
       </widget>
      </item>
@@ -134,6 +144,30 @@
     </layout>
    </item>
   </layout>
+  <action name="actionSwitch">
+   <property name="text">
+    <string>Switch Listen</string>
+   </property>
+   <property name="toolTip">
+    <string>start to listen to the clipboard</string>
+   </property>
+  </action>
+  <action name="actionClearAll">
+   <property name="text">
+    <string>Clear All Items</string>
+   </property>
+   <property name="toolTip">
+    <string>clear all the listed items</string>
+   </property>
+  </action>
+  <action name="actionPaste">
+   <property name="text">
+    <string>Paste</string>
+   </property>
+   <property name="toolTip">
+    <string>Paste</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="../resources/rc.qrc"/>

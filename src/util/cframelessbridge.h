@@ -5,6 +5,7 @@
 
 #include <QObject>
 
+
 class CFramelessBridge : public QObject
 {
     Q_OBJECT

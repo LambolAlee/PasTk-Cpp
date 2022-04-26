@@ -2,7 +2,8 @@
 //#include "QHotkey"
 #include "SingleApplication"
 #include "ui/framelesswindow.h"
-#include "ui/systray.h"
+//#include "ui/systray.h"
+#include "util/util.h"
 
 #include <QApplication>
 
@@ -13,6 +14,7 @@ int main(int argc, char *argv[])
     a.setOrganizationName("Lambol.Michael.Alee");
 
     Home w;
+    Util::loadStyleSheet(":/style/basic_style.qss");
 
 #ifdef Q_OS_WIN
     TitleBar titleBar;

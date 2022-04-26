@@ -4,6 +4,8 @@
 #include <QMainWindow>
 
 class BottomBar;
+class ItemDelegate;
+class QAbstractItemModel;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Home; }
@@ -20,10 +22,14 @@ public:
 private slots:
     void toggleMenubar();
     void triggerAboutQtAction();
+    void editOne(QAbstractItemModel *model, const QModelIndex &index);
 
 private:
     Ui::Home *ui;
     BottomBar *_bottomBar;
+    ItemDelegate *_delegate;
+
     void connectSignalsWithSlots();
+    void initDetailView();
 };
 #endif // HOME_H

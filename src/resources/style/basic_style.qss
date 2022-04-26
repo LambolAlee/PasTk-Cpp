@@ -1,0 +1,22 @@
+.DelegateTB {
+    background: transparent;
+    border: none;
+    border-radius: 5px;
+}
+
+.DelegateTB:hover {
+    background: rgba(203,216,251, 160);
+}
+
+.DelegateTB:pressed {
+    background: rgba(179,198,250, 200);
+}
+
+.DelegateTB#deleteTB:hover {
+    background: rgba(251,203,216, 180);
+    border: 1px solid red;
+}
+
+.DelegateTB#deleteTB:pressed {
+    background: rgba(250,179,198, 200);
+}

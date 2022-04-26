@@ -50,14 +50,14 @@ SOURCES += \
     formatter/generatorhelper.cpp \
     main.cpp \
     ui/bottombar.cpp \
-    ui/detaillistview.cpp \
     ui/home.cpp \
     ui/itemfloatbuttons.cpp \
     ui/systray.cpp \
     ui/templateeditor.cpp \
     ui/titlebar.cpp \
     util/cframelessbridge.cpp \
-    util/config.cpp
+    util/config.cpp \
+    util/util.cpp
 
 HEADERS += \
     datamanager/datamanager.h \
@@ -65,7 +65,6 @@ HEADERS += \
     formatter/generatorhelper.h \
     formatter/generatorinterface.h \
     ui/bottombar.h \
-    ui/detaillistview.h \
     ui/home.h \
     ui/itemfloatbuttons.h \
     ui/systray.h \
@@ -74,7 +73,8 @@ HEADERS += \
     util/cframelessbridge.h \
     util/config.h \
     util/pasteutil.h \
-    util/Singleton.h
+    util/Singleton.h \
+    util/util.h
 
 FORMS += \
     ui/bottombar.ui \
