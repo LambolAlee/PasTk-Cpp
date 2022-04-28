@@ -22,7 +22,10 @@ public:
 private slots:
     void toggleMenubar();
     void triggerAboutQtAction();
+
     void editOne(QAbstractItemModel *model, const QModelIndex &index);
+    void pasteOne(QAbstractItemModel *model, const QModelIndex &index);
+    void deleteOne(QAbstractItemModel *model, const QModelIndex &index);
 
 private:
     Ui::Home *ui;

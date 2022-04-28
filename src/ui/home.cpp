@@ -7,6 +7,7 @@
 #include <QMessageBox>
 
 #include "util/cframelessbridge.h"
+#include "util/pasteutil.h"
 #include "bottombar.h"
 #include "datamanager/datamanager.h"
 #include "datamanager/itemdelegate.h"
@@ -46,6 +47,8 @@ void Home::connectSignalsWithSlots()
     connect(&CFramelessBridge::instance(), &CFramelessBridge::altKeyTriggered, this, &Home::toggleMenubar);
     connect(ui->actionAbout_Qt, &QAction::triggered, this, &Home::triggerAboutQtAction);
     connect(_delegate, &ItemDelegate::doEdit, this, &Home::editOne);
+    connect(_delegate, &ItemDelegate::doPaste, this, &Home::pasteOne);
+    connect(_delegate, &ItemDelegate::doDelete, this, &Home::deleteOne);
 }
 
 void Home::initDetailView()
@@ -53,7 +56,6 @@ void Home::initDetailView()
     ui->detailView->setMouseTracking(true);
     ui->detailView->setAlternatingRowColors(true);
     ui->detailView->setSpacing(5);
-    ui->detailView->setEditTriggers(QListView::NoEditTriggers);
     ui->detailView->setAutoScroll(false);
     ui->detailView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     ui->detailView->verticalScrollBar()->setSingleStep(15);
@@ -69,7 +71,17 @@ void Home::triggerAboutQtAction()
     QMessageBox::aboutQt(this);
 }
 
-void Home::editOne(QAbstractItemModel *model, const QModelIndex &index)
+void Home::editOne(QAbstractItemModel */*model*/, const QModelIndex &index)
 {
+    emit ui->detailView->edit(index);
+}
 
+void Home::pasteOne(QAbstractItemModel */*model*/, const QModelIndex &index)
+{
+    PasteUtil::instance().paste(index.data().toString());
+}
+
+void Home::deleteOne(QAbstractItemModel *model, const QModelIndex &index)
+{
+    model->removeRow(index.row());
 }

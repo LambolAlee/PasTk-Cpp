@@ -51,6 +51,7 @@ SOURCES += \
     main.cpp \
     ui/bottombar.cpp \
     ui/home.cpp \
+    ui/itemeditor.cpp \
     ui/itemfloatbuttons.cpp \
     ui/systray.cpp \
     ui/templateeditor.cpp \
@@ -66,6 +67,7 @@ HEADERS += \
     formatter/generatorinterface.h \
     ui/bottombar.h \
     ui/home.h \
+    ui/itemeditor.h \
     ui/itemfloatbuttons.h \
     ui/systray.h \
     ui/templateeditor.h \

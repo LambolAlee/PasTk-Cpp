@@ -30,8 +30,10 @@ public:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
     bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
 
-private slots:
-    void deleteOne(QAbstractItemModel *model, const QModelIndex &index);
+    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    void setEditorData(QWidget *editor, const QModelIndex &index) const override;
+    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
+    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
 private:
     enum ButtonState {
@@ -43,13 +45,14 @@ private:
     QHash<QToolButton *, signalFunc> _signalMap;
 
     QPoint getItemBtnTopLeft(const QStyleOptionViewItem &option) const;
+    QPoint getTextTopLeft(QPainter *painter, const QStyleOptionViewItem &option) const;
 
+    void setBgColor(QPainter *painter, const QStyleOptionViewItem &option) const;
     void paintBackGround(QPainter *painter, const QStyleOptionViewItem &option) const;
     void drawEditorButtons(QPainter *painter, const QStyleOptionViewItem &option) const;
+    void drawBasicItemView(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
-    const QString formatText(const QModelIndex &index) const;
-
-    void connectSignalsWithSlots();
+    const QString formatText(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 private:
     // painter const value
@@ -62,8 +65,8 @@ private:
     static constexpr QSize iconRectSize = QSize(iconRectBorder, iconRectBorder);
     static constexpr int marginBetweenBtns = 8;
     static constexpr int distBetweenBtns = marginBetweenBtns + iconSize;
-    static constexpr QColor bgColorHovered = QColor(253, 246, 227, 130);
-    static constexpr QColor bgColorSelected = QColor(253, 246, 227, 255);
+    static constexpr QColor bgColorHovered = QColor(254, 250, 241);
+    static constexpr QColor bgColorSelected = QColor(253, 246, 227);
 
     QList<QToolButton *> _btnList;
     QList<QString> _iconList;

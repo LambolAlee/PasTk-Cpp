@@ -5,6 +5,8 @@
 #include <QStandardItemModel>
 #include <QStyleOptionToolButton>
 
+#include "ui/itemeditor.h"
+
 
 ItemDelegate::ItemDelegate(QObject *parent)
     : QStyledItemDelegate(parent)
@@ -25,18 +27,11 @@ ItemDelegate::ItemDelegate(QObject *parent)
     _signalMap.insert(_editTB, &ItemDelegate::doEdit);
     _signalMap.insert(_deleteTB, &ItemDelegate::doDelete);
     _signalMap.insert(_quickPasteTB, &ItemDelegate::doPaste);
-
-    connectSignalsWithSlots();
 }
 
 ItemDelegate::~ItemDelegate()
 {
     qDeleteAll(_btnList);
-}
-
-void ItemDelegate::connectSignalsWithSlots()
-{
-    connect(this, &ItemDelegate::doDelete, &ItemDelegate::deleteOne);
 }
 
 QSize ItemDelegate::sizeHint(const QStyleOptionViewItem &/*option*/, const QModelIndex &/*index*/) const
@@ -46,29 +41,51 @@ QSize ItemDelegate::sizeHint(const QStyleOptionViewItem &/*option*/, const QMode
 
 void ItemDelegate::paintBackGround(QPainter *painter, const QStyleOptionViewItem &option) const
 {
-    painter->save();
+/*[0]*/painter->save();
+    setBgColor(painter, option);
+    painter->drawRoundedRect(option.rect, radius, radius);
+/*[0]*/painter->restore();
+}
+
+QPoint ItemDelegate::getItemBtnTopLeft(const QStyleOptionViewItem &option) const
+{
+    QPoint topRight = option.rect.topRight();
+    QPoint btnTopLeft = QPoint(topRight.x()-marginToBorder-iconRectBorder,
+                                        topRight.y()+HEIGHT/2-iconRectBorder/2);
+    return btnTopLeft;
+}
+
+QPoint ItemDelegate::getTextTopLeft(QPainter *painter, const QStyleOptionViewItem &option) const
+{
+    QPoint bottomLeft = option.rect.bottomLeft();
+    QPoint textP = QPoint(bottomLeft.x()+33, bottomLeft.y()-18+painter->fontMetrics().height()/2);
+    return textP;
+}
+
+void ItemDelegate::setBgColor(QPainter *painter, const QStyleOptionViewItem &option) const
+{
     if (option.state & QStyle::State_Selected) {
         painter->setBrush(QBrush(bgColorSelected));
     } else if (option.state & QStyle::State_MouseOver) {
         painter->setBrush(QBrush(bgColorHovered));
     }
-    painter->drawRoundedRect(option.rect, radius, radius);
-    painter->restore();
-}
-
-QPoint ItemDelegate::getItemBtnTopLeft(const QStyleOptionViewItem &option) const
-{
-    auto topRight = option.rect.topRight();
-    QPoint btnTopLeft = QPoint(topRight.x()-marginToBorder-iconRectBorder,
-                                        topRight.y()+HEIGHT/2-iconRectBorder/2);
-    return btnTopLeft;
 }
 
 void ItemDelegate::drawEditorButtons(QPainter *painter, const QStyleOptionViewItem &option) const
 {
     auto btnTopLeft = getItemBtnTopLeft(option);
 
-    painter->save();
+/*[0]*/painter->save();
+
+/*[1]*/painter->save();
+    setBgColor(painter, option);
+    painter->setPen(Qt::NoPen);
+    auto btnMaskRect = QRect(QPoint(btnTopLeft.x()-2*distBetweenBtns, btnTopLeft.y()),
+                             QSize(2*distBetweenBtns+iconRectBorder, iconRectBorder));
+    btnMaskRect.adjust(-2, -2, 2, 2);
+    painter->drawRect(btnMaskRect);
+/*[1]*/painter->restore();
+
     for (int i = 0; i < _btnList.count(); ++i) {
         QStyleOptionToolButton opt;
 
@@ -94,40 +111,47 @@ void ItemDelegate::drawEditorButtons(QPainter *painter, const QStyleOptionViewIt
 
         _btnList.at(i)->style()->drawComplexControl(QStyle::CC_ToolButton, &opt, painter, _btnList.at(i));
     }
-    painter->restore();
+/*[0]*/painter->restore();
 }
 
-const QString ItemDelegate::formatText(const QModelIndex &index) const
+const QString ItemDelegate::formatText(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    QPoint textTopLeft = getTextTopLeft(painter, option);
+    QPoint btnTopRight = getItemBtnTopLeft(option);
+    btnTopRight.rx() -= iconRectBorder;
+
+    auto distance = btnTopRight.x() - textTopLeft.x();
+    qDebug() << distance / painter->fontMetrics().lineWidth();
     return index.data().toString();
+}
+
+void ItemDelegate::drawBasicItemView(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    QPoint topLeft = option.rect.topLeft();
+
+    QPoint picP = QPoint(topLeft.x()+radius, topLeft.y()+radius+2);
+    painter->drawPixmap(picP, QPixmap(":/icons/text.svg"));
+
+    QFont font;
+    font.setPointSize(10);
+    painter->setFont(font);
+    painter->drawText(getTextTopLeft(painter, option), formatText(painter, option, index));
 }
 
 void ItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     if (!index.isValid()) return;
-    painter->save();
-
+/*[0]*/painter->save();
     painter->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
-    paintBackGround(painter, option);
 
+    paintBackGround(painter, option);
     if (option.state & QStyle::State_Enabled) {
+        drawBasicItemView(painter, option, index);
+
         if (option.state & QStyle::State_MouseOver)
             drawEditorButtons(painter, option);
-
-        QPoint topLeft = option.rect.topLeft();
-        QPoint bottomLeft = option.rect.bottomLeft();
-
-        QPoint picP = QPoint(topLeft.x()+radius, topLeft.y()+radius+2);
-        painter->drawPixmap(picP, QPixmap(":/icons/text.svg"));
-
-        QFont font;
-        font.setPointSize(10);
-        painter->setFont(font);
-        QPoint textP = QPoint(bottomLeft.x()+33, bottomLeft.y()-18+painter->fontMetrics().height()/2);
-        painter->drawText(textP, formatText(index));
     }
-
-    painter->restore();
+/*[0]*/painter->restore();
 }
 
 bool ItemDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
@@ -179,8 +203,26 @@ bool ItemDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const Q
     return repaint;
 }
 
-void ItemDelegate::deleteOne(QAbstractItemModel *model, const QModelIndex &index)
+QWidget *ItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &/*index*/) const
 {
-    QStandardItemModel *m = static_cast<QStandardItemModel *>(model);
-    m->removeRow(index.row());
+    ItemEditor *editor = new ItemEditor(parent);
+    editor->initUI(option);
+    return editor;
+}
+
+void ItemDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+{
+    ItemEditor *iEditor = static_cast<ItemEditor *>(editor);
+    iEditor->setEditorData(index);
+}
+
+void ItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+{
+    ItemEditor *iEditor = static_cast<ItemEditor *>(editor);
+    model->setData(index, iEditor->toPlainText());
+}
+
+void ItemDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &/*index*/) const
+{
+    editor->move(option.rect.topLeft());
 }
