@@ -59,6 +59,7 @@ void Home::initDetailView()
     ui->detailView->setAutoScroll(false);
     ui->detailView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     ui->detailView->verticalScrollBar()->setSingleStep(15);
+    ui->detailView->setEditTriggers(QListView::NoEditTriggers);
 }
 
 void Home::toggleMenubar()
@@ -73,7 +74,8 @@ void Home::triggerAboutQtAction()
 
 void Home::editOne(QAbstractItemModel */*model*/, const QModelIndex &index)
 {
-    emit ui->detailView->edit(index);
+    ui->detailView->edit(index);
+    //ui->itemDock->show();
 }
 
 void Home::pasteOne(QAbstractItemModel */*model*/, const QModelIndex &index)

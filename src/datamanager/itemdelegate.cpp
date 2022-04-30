@@ -118,15 +118,18 @@ const QString ItemDelegate::formatText(QPainter *painter, const QStyleOptionView
 {
     QPoint textTopLeft = getTextTopLeft(painter, option);
     QPoint btnTopRight = getItemBtnTopLeft(option);
-    btnTopRight.rx() -= iconRectBorder;
+    btnTopRight.rx() += iconRectBorder;
 
     auto distance = btnTopRight.x() - textTopLeft.x();
-    qDebug() << distance / painter->fontMetrics().lineWidth();
-    return index.data().toString();
+    auto text = painter->fontMetrics().elidedText(index.data().toString(), Qt::ElideRight, distance);
+    return text;
 }
 
 void ItemDelegate::drawBasicItemView(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    painter->save();
+    painter->setRenderHint(QPainter::Antialiasing, false);
+    painter->setRenderHint(QPainter::SmoothPixmapTransform, false);
     QPoint topLeft = option.rect.topLeft();
 
     QPoint picP = QPoint(topLeft.x()+radius, topLeft.y()+radius+2);
@@ -136,6 +139,7 @@ void ItemDelegate::drawBasicItemView(QPainter *painter, const QStyleOptionViewIt
     font.setPointSize(10);
     painter->setFont(font);
     painter->drawText(getTextTopLeft(painter, option), formatText(painter, option, index));
+    painter->restore();
 }
 
 void ItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -201,28 +205,4 @@ bool ItemDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const Q
         _lastUpdatedTBIndex = -1;
     }
     return repaint;
-}
-
-QWidget *ItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &/*index*/) const
-{
-    ItemEditor *editor = new ItemEditor(parent);
-    editor->initUI(option);
-    return editor;
-}
-
-void ItemDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
-{
-    ItemEditor *iEditor = static_cast<ItemEditor *>(editor);
-    iEditor->setEditorData(index);
-}
-
-void ItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
-{
-    ItemEditor *iEditor = static_cast<ItemEditor *>(editor);
-    model->setData(index, iEditor->toPlainText());
-}
-
-void ItemDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &/*index*/) const
-{
-    editor->move(option.rect.topLeft());
 }
