@@ -18,7 +18,11 @@ SysTray::~SysTray()
 void SysTray::showHome()
 {
 #ifdef Q_OS_MAC
-    _home->resize(280, 400);
+    static bool firstShow = true;
+    if (firstShow) {
+        firstShow = false;
+        _home->resize(0, 400);
+    }
 #endif
     _home->show();
 }

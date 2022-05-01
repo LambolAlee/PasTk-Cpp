@@ -10,7 +10,7 @@ class QToolButton;
 class ItemDelegate;
 class QStandardItemModel;
 
-using signalFunc = void(ItemDelegate::*)(QAbstractItemModel *model, const QModelIndex &index);
+using signalFunc = void(ItemDelegate::*)(const QModelIndex &index, QAbstractItemModel *model);
 
 class ItemDelegate : public QStyledItemDelegate
 {
@@ -20,9 +20,9 @@ public:
     ~ItemDelegate();
 
 signals:
-    void doPaste(QAbstractItemModel *model, const QModelIndex &index);
-    void doEdit(QAbstractItemModel *model, const QModelIndex &index);
-    void doDelete(QAbstractItemModel *model, const QModelIndex &index);
+    void doPaste(const QModelIndex &index, QAbstractItemModel *model);
+    void doEdit(const QModelIndex &index, QAbstractItemModel *model);
+    void doDelete(const QModelIndex &index, QAbstractItemModel *model);
 
 // QAbstractItemDelegate interface
 public:

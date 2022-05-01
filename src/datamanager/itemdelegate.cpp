@@ -5,8 +5,6 @@
 #include <QStandardItemModel>
 #include <QStyleOptionToolButton>
 
-#include "ui/itemeditor.h"
-
 
 ItemDelegate::ItemDelegate(QObject *parent)
     : QStyledItemDelegate(parent)
@@ -190,7 +188,7 @@ bool ItemDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const Q
         case QEvent::MouseButtonRelease: {
 //            qDebug() << "emit!";
             _state = Hover;
-            emit (this->*_signalMap.value(_btnList.at(i)))(model, index);
+            emit (this->*_signalMap.value(_btnList.at(i)))(index, model);
             break;
         }
         default:

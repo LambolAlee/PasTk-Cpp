@@ -122,7 +122,7 @@ void CFramelessWindow::keyReleaseEvent(QKeyEvent *event)
 
 QSize CFramelessWindow::sizeHint() const
 {
-    return QSize(280, 400);
+    return QSize(0, 400);
 }
 
 bool CFramelessWindow::nativeEvent(const QByteArray &eventType, void *message, qintptr *result)

@@ -51,12 +51,13 @@ SOURCES += \
     main.cpp \
     ui/bottombar.cpp \
     ui/home.cpp \
-    ui/itemeditor.cpp \
+    ui/itemeditordialog.cpp \
     ui/itemfloatbuttons.cpp \
     ui/systray.cpp \
     ui/templateeditor.cpp \
     ui/titlebar.cpp \
     util/cframelessbridge.cpp \
+    util/clipboardlistner.cpp \
     util/config.cpp \
     util/util.cpp
 
@@ -67,12 +68,13 @@ HEADERS += \
     formatter/generatorinterface.h \
     ui/bottombar.h \
     ui/home.h \
-    ui/itemeditor.h \
+    ui/itemeditordialog.h \
     ui/itemfloatbuttons.h \
     ui/systray.h \
     ui/templateeditor.h \
     ui/titlebar.h \
     util/cframelessbridge.h \
+    util/clipboardlistner.h \
     util/config.h \
     util/pasteutil.h \
     util/Singleton.h \
@@ -81,6 +83,7 @@ HEADERS += \
 FORMS += \
     ui/bottombar.ui \
     ui/home.ui \
+    ui/itemeditordialog.ui \
     ui/itemfloatbuttons.ui \
     ui/templateeditor.ui \
     ui/titlebar.ui

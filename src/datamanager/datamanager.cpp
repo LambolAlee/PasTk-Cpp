@@ -8,6 +8,11 @@ void DataManager::insert(const QString &data)
     appendRow(new QStandardItem(data));
 }
 
+void DataManager::setItem(const QModelIndex &index, const QString &data)
+{
+    setData(index, data);
+}
+
 void DataManager::remove(int index)
 {
     removeRow(index);
@@ -21,4 +26,9 @@ void DataManager::remove(const QModelIndex &index)
 void DataManager::clear()
 {
     QStandardItemModel::clear();
+}
+
+int DataManager::count()
+{
+    return QStandardItemModel::rowCount();
 }

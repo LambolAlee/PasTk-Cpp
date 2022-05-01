@@ -35,19 +35,12 @@
       <enum>QLayout::SetFixedSize</enum>
      </property>
      <item>
-      <widget class="QToolButton" name="toolButton">
+      <widget class="QToolButton" name="switchBtn">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
-       </property>
-       <property name="icon">
-        <iconset resource="../resources/rc.qrc">
-         <normaloff>:/icons/play.svg</normaloff>:/icons/play.svg</iconset>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
        </property>
        <property name="autoRaise">
         <bool>true</bool>
@@ -55,16 +48,12 @@
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="toolButton_2">
+      <widget class="QToolButton" name="clearAllBtn">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
-       </property>
-       <property name="icon">
-        <iconset resource="../resources/rc.qrc">
-         <normaloff>:/icons/clear.svg</normaloff>:/icons/clear.svg</iconset>
        </property>
        <property name="autoRaise">
         <bool>true</bool>
@@ -79,7 +68,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="toolButton_3">
+      <widget class="QToolButton" name="pasteBtn">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -88,10 +77,6 @@
        </property>
        <property name="text">
         <string>Paste</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../resources/rc.qrc">
-         <normaloff>:/icons/execute.svg</normaloff>:/icons/execute.svg</iconset>
        </property>
        <property name="toolButtonStyle">
         <enum>Qt::ToolButtonTextBesideIcon</enum>
@@ -126,7 +111,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="countLabel">
+      <widget class="QLabel" name="counterLabel">
        <property name="minimumSize">
         <size>
          <width>22</width>
@@ -145,6 +130,13 @@
    </item>
   </layout>
   <action name="actionSwitch">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/rc.qrc">
+     <normaloff>:/icons/play.svg</normaloff>:/icons/play.svg</iconset>
+   </property>
    <property name="text">
     <string>Switch Listen</string>
    </property>
@@ -153,6 +145,10 @@
    </property>
   </action>
   <action name="actionClearAll">
+   <property name="icon">
+    <iconset resource="../resources/rc.qrc">
+     <normaloff>:/icons/clear.svg</normaloff>:/icons/clear.svg</iconset>
+   </property>
    <property name="text">
     <string>Clear All Items</string>
    </property>
@@ -161,6 +157,10 @@
    </property>
   </action>
   <action name="actionPaste">
+   <property name="icon">
+    <iconset resource="../resources/rc.qrc">
+     <normaloff>:/icons/execute.svg</normaloff>:/icons/execute.svg</iconset>
+   </property>
    <property name="text">
     <string>Paste</string>
    </property>

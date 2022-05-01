@@ -3,9 +3,12 @@
 
 #include <QMainWindow>
 
+#include "util/clipboardlistner.h"
+
 class BottomBar;
 class ItemDelegate;
 class QAbstractItemModel;
+class ItemEditorDialog;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Home; }
@@ -21,18 +24,24 @@ public:
 
 private slots:
     void toggleMenubar();
-    void triggerAboutQtAction();
 
-    void editOne(QAbstractItemModel *model, const QModelIndex &index);
-    void pasteOne(QAbstractItemModel *model, const QModelIndex &index);
-    void deleteOne(QAbstractItemModel *model, const QModelIndex &index);
+    void editOne(const QModelIndex &index, QAbstractItemModel *model = nullptr);
+    void pasteOne(const QModelIndex &index, QAbstractItemModel *model = nullptr);
+    void deleteOne(const QModelIndex &index, QAbstractItemModel *model = nullptr);
+    void setData(const QModelIndex &index, const QString &data);
+
+    void switchCopy(bool state);
+    void showHelpContent();
 
 private:
     Ui::Home *ui;
     BottomBar *_bottomBar;
     ItemDelegate *_delegate;
+    ItemEditorDialog *_editor;
+    ClipBoardListner _listner;
 
     void connectSignalsWithSlots();
     void initDetailView();
+    void showDetailContent();
 };
 #endif // HOME_H

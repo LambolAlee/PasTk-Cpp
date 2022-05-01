@@ -16,10 +16,14 @@ public:
 
     void insert(const QString &data);
 
+    void setItem(const QModelIndex &index, const QString &data);
+
     void remove(int index);
     void remove(const QModelIndex &index);
 
     void clear();
+
+    int count();
 };
 
 #endif // DATAMANAGER_H
