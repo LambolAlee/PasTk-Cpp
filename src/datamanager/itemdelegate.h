@@ -6,6 +6,7 @@
 #include <QToolButton>
 
 
+class QTimer;
 class QToolButton;
 class ItemDelegate;
 class QStandardItemModel;
@@ -29,6 +30,7 @@ public:
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
     bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
+    bool helpEvent(QHelpEvent *event, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index) override;
 
 private:
     enum ButtonState {
@@ -41,6 +43,7 @@ private:
 
     QPoint getItemBtnTopLeft(const QStyleOptionViewItem &option) const;
     QPoint getTextTopLeft(QPainter *painter, const QStyleOptionViewItem &option) const;
+    QRect getBtnMaskRect(const QStyleOptionViewItem &option) const;
 
     void setBgColor(QPainter *painter, const QStyleOptionViewItem &option) const;
     void paintBackGround(QPainter *painter, const QStyleOptionViewItem &option) const;

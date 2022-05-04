@@ -18,5 +18,7 @@
         <file>icons/execute_normal.svg</file>
         <file>icons/delete_one.svg</file>
         <file>style/basic_style.qss</file>
+        <file>logo/github.svg</file>
+        <file>style/font-win.qss</file>
     </qresource>
 </RCC>

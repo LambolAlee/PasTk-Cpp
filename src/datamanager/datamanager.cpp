@@ -23,6 +23,12 @@ void DataManager::remove(const QModelIndex &index)
     removeRow(index.row());
 }
 
+void DataManager::remove(const QModelIndexList &idxList)
+{
+    for (auto &&idx = idxList.crbegin(); idx < idxList.crend(); ++idx)
+        removeRow(idx->row());
+}
+
 void DataManager::clear()
 {
     QStandardItemModel::clear();

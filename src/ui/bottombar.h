@@ -18,7 +18,7 @@ public:
     void triggerSwitchAction();
 
 signals:
-    void clearAllItems();
+    void clearItems();
     void startPaste();
     void switchState(bool state);
 

@@ -19,6 +19,16 @@ bool ClipBoardListner::isCopying()
     return _inCopying;
 }
 
+void ClipBoardListner::startQuickPaste()
+{
+    _clipboard->blockSignals(true);
+}
+
+void ClipBoardListner::endQuickPaste()
+{
+    _clipboard->blockSignals(false);
+}
+
 void ClipBoardListner::push()
 {
     auto text = _clipboard->text();

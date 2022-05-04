@@ -10,7 +10,12 @@ class PasteUtil : public QObject
     SINGLETON(PasteUtil)
 public:
     void paste(const QString &str);
-    void paste(bool directly = false);
+    void paste(bool directly = false, bool needQuickPaste = false);
+    void quickPaste(const QString &str);
+
+signals:
+    void startQuickPaste();
+    void endQuickPaste();
 
 private slots:
     void _paste() const;

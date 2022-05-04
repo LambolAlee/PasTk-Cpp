@@ -134,7 +134,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../resources/rc.qrc">
+    <iconset>
      <normaloff>:/icons/play.svg</normaloff>:/icons/play.svg</iconset>
    </property>
    <property name="text">
@@ -144,21 +144,21 @@
     <string>start to listen to the clipboard</string>
    </property>
   </action>
-  <action name="actionClearAll">
+  <action name="actionClear">
    <property name="icon">
-    <iconset resource="../resources/rc.qrc">
+    <iconset>
      <normaloff>:/icons/clear.svg</normaloff>:/icons/clear.svg</iconset>
    </property>
    <property name="text">
-    <string>Clear All Items</string>
+    <string>Clear Items</string>
    </property>
    <property name="toolTip">
-    <string>clear all the listed items</string>
+    <string>clear selected items</string>
    </property>
   </action>
   <action name="actionPaste">
    <property name="icon">
-    <iconset resource="../resources/rc.qrc">
+    <iconset>
      <normaloff>:/icons/execute.svg</normaloff>:/icons/execute.svg</iconset>
    </property>
    <property name="text">
@@ -169,8 +169,6 @@
    </property>
   </action>
  </widget>
- <resources>
-  <include location="../resources/rc.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

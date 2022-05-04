@@ -12,6 +12,8 @@
 #include "datamanager/datamanager.h"
 #include "datamanager/itemdelegate.h"
 #include "itemeditordialog.h"
+#include "suspendscrollbar.h"
+#include "aboutpastkcpp.h"
 
 
 Home::Home(QWidget *parent)
@@ -30,7 +32,7 @@ Home::Home(QWidget *parent)
     // for test begin
     dm.insert("Hello World");
     dm.insert("wo d shij");
-    for (int i=0; i < 4; ++i) {
+    for (int i=0; i < 100; ++i) {
         dm.insert(QString::number(i));
     }
     _bottomBar->updateCounter();
@@ -39,8 +41,9 @@ Home::Home(QWidget *parent)
     ui->detailView->setModel(dm.model());
     setMinimumSize(QSize(280, 200));
 
-    initDetailView();
     connectSignalsWithSlots();
+    // TODO...
+    // as for macOS need to set QAction role
 }
 
 Home::~Home()
@@ -50,39 +53,33 @@ Home::~Home()
 
 void Home::connectSignalsWithSlots()
 {
-    connect(&CFramelessBridge::instance(), &CFramelessBridge::altKeyTriggered, this, &Home::toggleMenubar);
+    connect(&CFramelessBridge::instance(), &CFramelessBridge::altKeyTriggered, this, QOverload<>::of(&Home::toggleMenubar));
     connect(ui->actionAbout_Qt, &QAction::triggered, this, [=]{QMessageBox::aboutQt(this);});
     connect(_delegate, &ItemDelegate::doEdit, this, &Home::editOne);
     connect(_delegate, &ItemDelegate::doPaste, this, &Home::pasteOne);
     connect(_delegate, &ItemDelegate::doDelete, this, &Home::deleteOne);
     connect(ui->detailView, &QListView::doubleClicked, this, [=](const QModelIndex &index){editOne(index);});
     connect(_editor, &ItemEditorDialog::updateIndex, this, &Home::setData);
-    connect(_bottomBar, &BottomBar::clearAllItems, this, [=]{
-        if (QMessageBox::question(this, QLatin1String("Decision"), QLatin1String("Do you want to remove all the items?")) == QMessageBox::Yes) {
-            DataManager::instance().clear();
-            _bottomBar->updateCounter();
-        }
-    });
+    connect(_bottomBar, &BottomBar::clearItems, this, &Home::clearSelectedItems);
     connect(_bottomBar, &BottomBar::switchState, this, &Home::switchCopy);
     connect(&_listner, &ClipBoardListner::updateCount, _bottomBar, &BottomBar::updateCounter);
     connect(_bottomBar, &BottomBar::noData, this, &Home::showHelpContent);
     connect(ui->quickStartBtn, &QPushButton::clicked, _bottomBar, &BottomBar::triggerSwitchAction);
-}
-
-void Home::initDetailView()
-{
-    ui->detailView->setMouseTracking(true);
-    ui->detailView->setAlternatingRowColors(true);
-    ui->detailView->setSpacing(5);
-    ui->detailView->setAutoScroll(false);
-    ui->detailView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
-    ui->detailView->verticalScrollBar()->setSingleStep(15);
-    ui->detailView->setEditTriggers(QListView::NoEditTriggers);
+    connect(ui->actionMenu_Bar, &QAction::toggled, this, QOverload<bool>::of(&Home::toggleMenubar));
+    connect(ui->actionAbout_PasTk_Cpp, &QAction::triggered, this, &Home::showAboutMe);
 }
 
 void Home::toggleMenubar()
 {
+    if (ui->actionMenu_Bar->isChecked())
+        return;
     ui->menubar->setVisible(!ui->menubar->isVisible());
+}
+
+void Home::toggleMenubar(bool state)
+{
+    if (!state)
+        ui->menubar->setVisible(state);
 }
 
 void Home::editOne(const QModelIndex &index, QAbstractItemModel */*model*/)
@@ -92,7 +89,7 @@ void Home::editOne(const QModelIndex &index, QAbstractItemModel */*model*/)
 
 void Home::pasteOne(const QModelIndex &index, QAbstractItemModel */*model*/)
 {
-    PasteUtil::instance().paste(index.data().toString());
+    PasteUtil::instance().quickPaste(index.data().toString());
 }
 
 void Home::deleteOne(const QModelIndex &index, QAbstractItemModel *model)
@@ -104,6 +101,19 @@ void Home::deleteOne(const QModelIndex &index, QAbstractItemModel *model)
 void Home::setData(const QModelIndex &index, const QString &data)
 {
     DataManager::instance().setItem(index, data);
+}
+
+void Home::clearSelectedItems()
+{
+    auto idxList = ui->detailView->selectedIndexes();
+    if (idxList.isEmpty()) {
+        if (QMessageBox::question(this, QLatin1String("Decision"), QLatin1String("Do you want to remove all the items?")) == QMessageBox::Yes)
+            DataManager::instance().clear();
+    } else {
+        if (QMessageBox::question(this, QLatin1String("Decision"), QLatin1String("Do you want to remove selected items?")) == QMessageBox::Yes)
+            DataManager::instance().remove(idxList);
+    }
+    _bottomBar->updateCounter();
 }
 
 void Home::switchCopy(bool state)
@@ -122,6 +132,12 @@ void Home::showHelpContent()
 {
     if (!_listner.isCopying())
         ui->stackedWidget->setCurrentIndex(0);
+}
+
+void Home::showAboutMe()
+{
+    AboutPasTkCpp *about = new AboutPasTkCpp(this);
+    about->show();
 }
 
 void Home::showDetailContent()

@@ -24,14 +24,17 @@ public:
 
 private slots:
     void toggleMenubar();
+    void toggleMenubar(bool state);
 
     void editOne(const QModelIndex &index, QAbstractItemModel *model = nullptr);
     void pasteOne(const QModelIndex &index, QAbstractItemModel *model = nullptr);
     void deleteOne(const QModelIndex &index, QAbstractItemModel *model = nullptr);
     void setData(const QModelIndex &index, const QString &data);
+    void clearSelectedItems();
 
     void switchCopy(bool state);
     void showHelpContent();
+    void showAboutMe();
 
 private:
     Ui::Home *ui;
@@ -41,7 +44,6 @@ private:
     ClipBoardListner _listner;
 
     void connectSignalsWithSlots();
-    void initDetailView();
     void showDetailContent();
 };
 #endif // HOME_H

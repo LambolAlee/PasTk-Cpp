@@ -11,7 +11,7 @@ BottomBar::BottomBar(QWidget *parent) :
     ui->setupUi(this);
 
     ui->switchBtn->setDefaultAction(ui->actionSwitch);
-    ui->clearAllBtn->setDefaultAction(ui->actionClearAll);
+    ui->clearAllBtn->setDefaultAction(ui->actionClear);
     ui->pasteBtn->setDefaultAction(ui->actionPaste);
 
     connectSignalsWithSlots();
@@ -51,5 +51,5 @@ void BottomBar::connectSignalsWithSlots()
 {
     connect(ui->actionSwitch, &QAction::toggled, this, &BottomBar::toggleSwitch);
     connect(ui->actionPaste, &QAction::triggered, this, &BottomBar::startPaste);
-    connect(ui->actionClearAll, &QAction::triggered, this, &BottomBar::clearAllItems);
+    connect(ui->actionClear, &QAction::triggered, this, &BottomBar::clearItems);
 }

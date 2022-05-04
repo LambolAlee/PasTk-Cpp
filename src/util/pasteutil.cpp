@@ -18,11 +18,23 @@ void PasteUtil::paste(const QString &str)
     paste();
 }
 
-void PasteUtil::paste(bool directly)
+void PasteUtil::paste(bool directly, bool needQuickPaste)
 {
     if (!directly)
         CFramelessBridge::instance().emitHideForPaste(true);
-    QTimer::singleShot(100, this, &PasteUtil::_paste);
+    QTimer::singleShot(220, this, [=]{
+        _paste();
+        CFramelessBridge::instance().emitHideForPaste(false);
+        if (needQuickPaste)
+            _clipBoard->blockSignals(false);
+    });
+}
+
+void PasteUtil::quickPaste(const QString &str)
+{
+    _clipBoard->blockSignals(true);
+    _clipBoard->setText(str);
+    paste(false, true);
 }
 
 void PasteUtil::_paste() const
@@ -31,7 +43,5 @@ void PasteUtil::_paste() const
     keybd_event(VK_V, 0,0,0);
     keybd_event(VK_V, 0,2,0);
     keybd_event(VK_CONTROL, 0,2,0);
-
-    CFramelessBridge::instance().emitHideForPaste(false);
 }
 #undef VK_V

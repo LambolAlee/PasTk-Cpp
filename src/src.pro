@@ -49,10 +49,12 @@ SOURCES += \
     datamanager/itemdelegate.cpp \
     formatter/generatorhelper.cpp \
     main.cpp \
+    ui/aboutpastkcpp.cpp \
     ui/bottombar.cpp \
+    ui/detailview.cpp \
     ui/home.cpp \
     ui/itemeditordialog.cpp \
-    ui/itemfloatbuttons.cpp \
+    ui/suspendscrollbar.cpp \
     ui/systray.cpp \
     ui/templateeditor.cpp \
     ui/titlebar.cpp \
@@ -66,10 +68,12 @@ HEADERS += \
     datamanager/itemdelegate.h \
     formatter/generatorhelper.h \
     formatter/generatorinterface.h \
+    ui/aboutpastkcpp.h \
     ui/bottombar.h \
+    ui/detailview.h \
     ui/home.h \
     ui/itemeditordialog.h \
-    ui/itemfloatbuttons.h \
+    ui/suspendscrollbar.h \
     ui/systray.h \
     ui/templateeditor.h \
     ui/titlebar.h \
@@ -78,13 +82,14 @@ HEADERS += \
     util/config.h \
     util/pasteutil.h \
     util/Singleton.h \
-    util/util.h
+    util/util.h \
+    version.h
 
 FORMS += \
+    ui/aboutpastkcpp.ui \
     ui/bottombar.ui \
     ui/home.ui \
     ui/itemeditordialog.ui \
-    ui/itemfloatbuttons.ui \
     ui/templateeditor.ui \
     ui/titlebar.ui
 

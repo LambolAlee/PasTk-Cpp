@@ -33,7 +33,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page">
        <layout class="QGridLayout" name="gridLayout">
@@ -70,7 +70,7 @@ Or click start button below
        </layout>
       </widget>
       <widget class="QWidget" name="page_2">
-       <layout class="QGridLayout" name="gridLayout_2">
+       <layout class="QGridLayout" name="viewGridLayout">
         <property name="leftMargin">
          <number>6</number>
         </property>
@@ -87,7 +87,7 @@ Or click start button below
          <number>0</number>
         </property>
         <item row="0" column="0">
-         <widget class="QListView" name="detailView">
+         <widget class="DetailView" name="detailView">
           <property name="frameShape">
            <enum>QFrame::NoFrame</enum>
           </property>
@@ -133,8 +133,6 @@ Or click start button below
     <property name="title">
      <string>View</string>
     </property>
-    <addaction name="actionShow_Detail_Panel"/>
-    <addaction name="separator"/>
     <addaction name="actionMenu_Bar"/>
    </widget>
    <addaction name="menuview"/>
@@ -187,6 +185,13 @@ Or click start button below
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DetailView</class>
+   <extends>QListView</extends>
+   <header>ui/detailview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../resources/rc.qrc"/>
  </resources>

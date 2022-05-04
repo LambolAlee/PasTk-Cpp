@@ -3,6 +3,7 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QStandardItemModel>
+#include <QToolTip>
 #include <QStyleOptionToolButton>
 
 
@@ -69,6 +70,16 @@ void ItemDelegate::setBgColor(QPainter *painter, const QStyleOptionViewItem &opt
     }
 }
 
+QRect ItemDelegate::getBtnMaskRect(const QStyleOptionViewItem &option) const
+{
+    auto btnTopLeft = getItemBtnTopLeft(option);
+    auto btnMaskRect = QRect(QPoint(btnTopLeft.x()-2*distBetweenBtns, btnTopLeft.y()),
+                             QSize(2*distBetweenBtns+iconRectBorder, iconRectBorder));
+    btnMaskRect.adjust(-2, -2, 2, 2);
+
+    return btnMaskRect;
+}
+
 void ItemDelegate::drawEditorButtons(QPainter *painter, const QStyleOptionViewItem &option) const
 {
     auto btnTopLeft = getItemBtnTopLeft(option);
@@ -78,9 +89,7 @@ void ItemDelegate::drawEditorButtons(QPainter *painter, const QStyleOptionViewIt
 /*[1]*/painter->save();
     setBgColor(painter, option);
     painter->setPen(Qt::NoPen);
-    auto btnMaskRect = QRect(QPoint(btnTopLeft.x()-2*distBetweenBtns, btnTopLeft.y()),
-                             QSize(2*distBetweenBtns+iconRectBorder, iconRectBorder));
-    btnMaskRect.adjust(-2, -2, 2, 2);
+    auto btnMaskRect = getBtnMaskRect(option);
     painter->drawRect(btnMaskRect);
 /*[1]*/painter->restore();
 
@@ -203,4 +212,18 @@ bool ItemDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const Q
         _lastUpdatedTBIndex = -1;
     }
     return repaint;
+}
+
+bool ItemDelegate::helpEvent(QHelpEvent *event, QAbstractItemView */*view*/, const QStyleOptionViewItem &option, const QModelIndex &index)
+{
+    if (!index.isValid()) {
+        QToolTip::hideText();
+        event->ignore();
+    } else if (auto mask = getBtnMaskRect(option); mask.contains(event->pos())) {
+        QToolTip::hideText();
+        event->ignore();
+    } else {
+        QToolTip::showText(event->globalPos(), index.data().toString());
+    }
+    return true;
 }

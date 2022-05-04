@@ -13,6 +13,8 @@ public:
     void stop();
 
     bool isCopying();
+    void startQuickPaste();
+    void endQuickPaste();
 
 signals:
     void updateCount();

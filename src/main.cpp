@@ -17,12 +17,14 @@ int main(int argc, char *argv[])
     Util::loadStyleSheet(":/style/basic_style.qss");
 
 #ifdef Q_OS_WIN
+    Util::loadStyleSheet(":/style/font-win.qss");
     TitleBar titleBar;
     CFramelessWindow *frameless = new CFramelessWindow; // ??? if not newing an object, it will crash while quitting
     frameless->makeFrameless(&w, &titleBar, titleBar.titleWidget());
 
     frameless->show();
 #elif defined Q_OS_MAC
+    //Util::loadStyleSheet(":/style/font-mac.qss");
 //    SysTray tray(&w);
 //    tray.show();
     w.show();
