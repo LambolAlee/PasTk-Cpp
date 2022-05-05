@@ -9,6 +9,7 @@ class BottomBar;
 class ItemDelegate;
 class QAbstractItemModel;
 class ItemEditorDialog;
+class QActionGroup;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Home; }
@@ -42,8 +43,10 @@ private:
     ItemDelegate *_delegate;
     ItemEditorDialog *_editor;
     ClipBoardListner _listner;
+    QActionGroup *_modeActions;
 
     void connectSignalsWithSlots();
     void showDetailContent();
+    void initModeActions();
 };
 #endif // HOME_H

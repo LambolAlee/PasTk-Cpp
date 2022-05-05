@@ -129,13 +129,22 @@ Or click start button below
     <addaction name="actionAbout_PasTk_Cpp"/>
     <addaction name="actionAbout_Qt"/>
    </widget>
-   <widget class="QMenu" name="menuview">
+   <widget class="QMenu" name="menuView">
     <property name="title">
      <string>View</string>
     </property>
     <addaction name="actionMenu_Bar"/>
    </widget>
-   <addaction name="menuview"/>
+   <widget class="QMenu" name="menuMode">
+    <property name="title">
+     <string>Mode</string>
+    </property>
+    <addaction name="actionTemplate_Mode"/>
+    <addaction name="actionContinuous_Mode"/>
+    <addaction name="actionSelection_Mode"/>
+   </widget>
+   <addaction name="menuMode"/>
+   <addaction name="menuView"/>
    <addaction name="menuTool"/>
    <addaction name="menuHelp"/>
   </widget>
@@ -182,6 +191,33 @@ Or click start button below
    </property>
    <property name="text">
     <string>Settings</string>
+   </property>
+  </action>
+  <action name="actionTemplate_Mode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Template Mode</string>
+   </property>
+  </action>
+  <action name="actionContinuous_Mode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Continuous Mode</string>
+   </property>
+  </action>
+  <action name="actionSelection_Mode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Selection Mode</string>
    </property>
   </action>
  </widget>

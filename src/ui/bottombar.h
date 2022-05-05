@@ -7,6 +7,8 @@ namespace Ui {
 class BottomBar;
 }
 
+class QActionGroup;
+
 class BottomBar : public QWidget
 {
     Q_OBJECT
@@ -16,6 +18,8 @@ public:
     ~BottomBar();
 
     void triggerSwitchAction();
+    void setModeActions(QActionGroup *modeActions);
+    void setDeleteBtnDisabled(bool disable);
 
 signals:
     void clearItems();
@@ -32,6 +36,7 @@ private slots:
 
 private:
     Ui::BottomBar *ui;
+    QActionGroup *_modeActions;
 
     void connectSignalsWithSlots();
 };

@@ -3,6 +3,9 @@
 
 #include "datamanager/datamanager.h"
 
+#include <QMenu>
+#include <QActionGroup>
+
 
 BottomBar::BottomBar(QWidget *parent) :
     QWidget(parent),
@@ -11,7 +14,7 @@ BottomBar::BottomBar(QWidget *parent) :
     ui->setupUi(this);
 
     ui->switchBtn->setDefaultAction(ui->actionSwitch);
-    ui->clearAllBtn->setDefaultAction(ui->actionClear);
+    ui->clearBtn->setDefaultAction(ui->actionClear);
     ui->pasteBtn->setDefaultAction(ui->actionPaste);
 
     connectSignalsWithSlots();
@@ -25,6 +28,19 @@ BottomBar::~BottomBar()
 void BottomBar::triggerSwitchAction()
 {
     ui->actionSwitch->toggle();
+}
+
+void BottomBar::setModeActions(QActionGroup *modeActions)
+{
+    _modeActions = modeActions;
+    QMenu *menu = new QMenu(this);
+    menu->addActions(modeActions->actions());
+    ui->pasteBtn->setMenu(menu);
+}
+
+void BottomBar::setDeleteBtnDisabled(bool disable)
+{
+    ui->clearBtn->setDisabled(disable);
 }
 
 void BottomBar::toggleSwitch(bool state)

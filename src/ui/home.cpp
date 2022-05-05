@@ -5,6 +5,7 @@
 #include <QKeyEvent>
 #include <QScrollBar>
 #include <QMessageBox>
+#include <QActionGroup>
 
 #include "util/cframelessbridge.h"
 #include "util/pasteutil.h"
@@ -27,6 +28,7 @@ Home::Home(QWidget *parent)
     ui->menubar->setVisible(false);
     ui->layout->addWidget(_bottomBar);
     ui->actionAbout_Qt->setIcon(qApp->style()->standardIcon(QStyle::SP_TitleBarMenuButton)); // qtlogo
+    initModeActions();
 
     auto &dm = DataManager::instance();
     // for test begin
@@ -37,6 +39,7 @@ Home::Home(QWidget *parent)
     }
     _bottomBar->updateCounter();
     // for test end
+
     ui->detailView->setItemDelegate(_delegate);
     ui->detailView->setModel(dm.model());
     setMinimumSize(QSize(280, 200));
@@ -49,6 +52,16 @@ Home::Home(QWidget *parent)
 Home::~Home()
 {
     delete ui;
+}
+
+void Home::initModeActions()
+{
+    _modeActions = new QActionGroup(this);
+    auto actions = {ui->actionTemplate_Mode, ui->actionContinuous_Mode, ui->actionSelection_Mode};
+    for (auto &&action: actions)
+        _modeActions->addAction(action);
+    _modeActions->setExclusive(true);
+    _bottomBar->setModeActions(_modeActions);
 }
 
 void Home::connectSignalsWithSlots()
@@ -105,6 +118,10 @@ void Home::setData(const QModelIndex &index, const QString &data)
 
 void Home::clearSelectedItems()
 {
+    if (!DataManager::instance().count()) {
+        QMessageBox::information(this, QLatin1String("Information"), QLatin1String("There is no item going to be cleared."));
+        return;
+    }
     auto idxList = ui->detailView->selectedIndexes();
     if (idxList.isEmpty()) {
         if (QMessageBox::question(this, QLatin1String("Decision"), QLatin1String("Do you want to remove all the items?")) == QMessageBox::Yes)
@@ -130,8 +147,10 @@ void Home::switchCopy(bool state)
 
 void Home::showHelpContent()
 {
-    if (!_listner.isCopying())
+    if (!_listner.isCopying()) {
         ui->stackedWidget->setCurrentIndex(0);
+        _bottomBar->setDeleteBtnDisabled(true);
+    }
 }
 
 void Home::showAboutMe()
@@ -143,4 +162,5 @@ void Home::showAboutMe()
 void Home::showDetailContent()
 {
     ui->stackedWidget->setCurrentIndex(1);
+    _bottomBar->setDeleteBtnDisabled(false);
 }
