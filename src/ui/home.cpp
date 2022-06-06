@@ -56,17 +56,19 @@ Home::~Home()
 
 void Home::initModeActions()
 {
+    int mode = 0;
     _modeActions = new QActionGroup(this);
     auto actions = {ui->actionTemplate_Mode, ui->actionContinuous_Mode, ui->actionSelection_Mode};
-    for (auto &&action: actions)
+    for (auto &&action: actions) {
+        action->setData(mode++);
         _modeActions->addAction(action);
+    }
     _modeActions->setExclusive(true);
     _bottomBar->setModeActions(_modeActions);
 }
 
 void Home::connectSignalsWithSlots()
 {
-    connect(&CFramelessBridge::instance(), &CFramelessBridge::altKeyTriggered, this, QOverload<>::of(&Home::toggleMenubar));
     connect(ui->actionAbout_Qt, &QAction::triggered, this, [=]{QMessageBox::aboutQt(this);});
     connect(_delegate, &ItemDelegate::doEdit, this, &Home::editOne);
     connect(_delegate, &ItemDelegate::doPaste, this, &Home::pasteOne);
@@ -75,11 +77,17 @@ void Home::connectSignalsWithSlots()
     connect(_editor, &ItemEditorDialog::updateIndex, this, &Home::setData);
     connect(_bottomBar, &BottomBar::clearItems, this, &Home::clearSelectedItems);
     connect(_bottomBar, &BottomBar::switchState, this, &Home::switchCopy);
-    connect(&_listner, &ClipBoardListner::updateCount, _bottomBar, &BottomBar::updateCounter);
+    connect(&_listener, &ClipBoardListner::updateCount, _bottomBar, &BottomBar::updateCounter);
     connect(_bottomBar, &BottomBar::noData, this, &Home::showHelpContent);
     connect(ui->quickStartBtn, &QPushButton::clicked, _bottomBar, &BottomBar::triggerSwitchAction);
-    connect(ui->actionMenu_Bar, &QAction::toggled, this, QOverload<bool>::of(&Home::toggleMenubar));
     connect(ui->actionAbout_PasTk_Cpp, &QAction::triggered, this, &Home::showAboutMe);
+    connect(_bottomBar, &BottomBar::startPaste, this, &Home::startPaste);
+
+#ifdef Q_OS_WIN
+    connect(&CFramelessBridge::instance(), &CFramelessBridge::altKeyTriggered, this, QOverload<>::of(&Home::toggleMenubar));
+    connect(ui->actionMenu_Bar, &QAction::toggled, this, QOverload<bool>::of(&Home::toggleMenubar));
+    connect(&_manager, &PasteManager::pasteOver, this, [=]{CFramelessBridge::instance().emitHideForPaste(false);});
+#endif
 }
 
 void Home::toggleMenubar()
@@ -136,10 +144,10 @@ void Home::clearSelectedItems()
 void Home::switchCopy(bool state)
 {
     if (state) {
-        _listner.start();
+        _listener.start();
         showDetailContent();
     } else {
-        _listner.stop();
+        _listener.stop();
         if (DataManager::instance().count() == 0)
             showHelpContent();
     }
@@ -147,7 +155,7 @@ void Home::switchCopy(bool state)
 
 void Home::showHelpContent()
 {
-    if (!_listner.isCopying()) {
+    if (!_listener.isCopying()) {
         ui->stackedWidget->setCurrentIndex(0);
         _bottomBar->setDeleteBtnDisabled(true);
     }
@@ -157,6 +165,22 @@ void Home::showAboutMe()
 {
     AboutPasTkCpp *about = new AboutPasTkCpp(this);
     about->show();
+}
+
+void Home::startPaste()
+{
+    bool needReport = false;
+    if (_listener.isCopying()) {
+        _listener.stop();
+        _bottomBar->triggerSwitchAction();
+    }
+    if (isVisible()) {
+        needReport = true;
+        CFramelessBridge::instance().emitHideForPaste(true);
+    }
+
+    auto *action = _modeActions->checkedAction();
+    _manager.startPaste(action->data().toInt(), needReport);
 }
 
 void Home::showDetailContent()

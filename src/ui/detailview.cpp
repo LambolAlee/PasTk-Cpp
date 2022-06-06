@@ -7,7 +7,6 @@ DetailView::DetailView(QWidget *parent)
     , _scrollBar(new SuspendScrollBar(Qt::Vertical, this))
 {
     setMouseTracking(true);
-    setAlternatingRowColors(true);
     setSpacing(5);
     setAutoScroll(false);
     //setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);

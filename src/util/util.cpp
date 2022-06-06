@@ -2,6 +2,11 @@
 
 #include <QFile>
 #include <QApplication>
+#include <QWidget>
+
+#ifdef Q_OS_WIN
+#include <windows.h>
+#endif
 
 void Util::loadStyleSheet(const QString &path)
 {
@@ -29,3 +34,12 @@ void Util::dumpStructure(const QObject *obj, int spaceCount) {
         dumpStructure(child, spaceCount + 4);
     }
 }
+
+#ifdef Q_OS_WIN
+void Util::setWindowUnfocusable(QWidget *widget)
+{
+    HWND hWnd = (HWND)widget->winId();
+    LONG exs = GetWindowLong(hWnd, GWL_EXSTYLE);
+    SetWindowLong(hWnd, GWL_EXSTYLE, exs | WS_EX_NOACTIVATE | WS_EX_COMPOSITED);
+}
+#endif

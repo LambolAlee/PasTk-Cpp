@@ -5,6 +5,7 @@
 
 
 class QXmlStreamAttributes;
+class QDir;
 
 class IGenerator
 {
@@ -17,6 +18,12 @@ public:
     virtual void setNext(IGenerator *gen) =0;
     virtual IGenerator *next() const =0;
     virtual void finish() =0;
+
+    virtual bool enabled() const =0;
+    virtual void setEnabled(bool state) =0;
+
+    virtual void setConfDir(QDir dir) =0;
+    virtual void sync() =0;
 
 protected:
     virtual std::function<QString()> addHandler(QStringView tagName, const QXmlStreamAttributes &attrs) =0;

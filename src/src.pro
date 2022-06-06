@@ -48,15 +48,23 @@ SOURCES += \
     datamanager/datamanager.cpp \
     datamanager/itemdelegate.cpp \
     formatter/generatorhelper.cpp \
+    formatter/pluginmanager.cpp \
+    formatter/processor.cpp \
+    formatter/templatehelper.cpp \
     main.cpp \
     ui/aboutpastkcpp.cpp \
     ui/bottombar.cpp \
+    ui/continuouspastewindow.cpp \
     ui/detailview.cpp \
     ui/home.cpp \
     ui/itemeditordialog.cpp \
+    ui/mergewindow.cpp \
+    ui/pastemanager.cpp \
+    ui/selectionpastewindow.cpp \
     ui/suspendscrollbar.cpp \
     ui/systray.cpp \
     ui/templateeditor.cpp \
+    ui/templatepanel.cpp \
     ui/titlebar.cpp \
     util/cframelessbridge.cpp \
     util/clipboardlistner.cpp \
@@ -68,14 +76,22 @@ HEADERS += \
     datamanager/itemdelegate.h \
     formatter/generatorhelper.h \
     formatter/generatorinterface.h \
+    formatter/pluginmanager.h \
+    formatter/processor.h \
+    formatter/templatehelper.h \
     ui/aboutpastkcpp.h \
     ui/bottombar.h \
+    ui/continuouspastewindow.h \
     ui/detailview.h \
     ui/home.h \
     ui/itemeditordialog.h \
+    ui/mergewindow.h \
+    ui/pastemanager.h \
+    ui/selectionpastewindow.h \
     ui/suspendscrollbar.h \
     ui/systray.h \
     ui/templateeditor.h \
+    ui/templatepanel.h \
     ui/titlebar.h \
     util/cframelessbridge.h \
     util/clipboardlistner.h \
@@ -88,9 +104,13 @@ HEADERS += \
 FORMS += \
     ui/aboutpastkcpp.ui \
     ui/bottombar.ui \
+    ui/continuouspastewindow.ui \
     ui/home.ui \
     ui/itemeditordialog.ui \
+    ui/mergewindow.ui \
+    ui/selectionpastewindow.ui \
     ui/templateeditor.ui \
+    ui/templatepanel.ui \
     ui/titlebar.ui
 
 # Default rules for deployment.

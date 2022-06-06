@@ -4,7 +4,7 @@
 #include "ui/framelesswindow.h"
 //#include "ui/systray.h"
 #include "util/util.h"
-
+#include <QDir>
 #include <QApplication>
 
 int main(int argc, char *argv[])

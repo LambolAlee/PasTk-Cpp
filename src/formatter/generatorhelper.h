@@ -1,7 +1,8 @@
 #ifndef GENERATORHELPER_H
 #define GENERATORHELPER_H
 
-class QString;
+#include <QDir>
+
 class QXmlStreamAttributes;
 
 namespace GeneratorHelper

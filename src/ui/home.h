@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 #include "util/clipboardlistner.h"
+#include "pastemanager.h"
 
 class BottomBar;
 class ItemDelegate;
@@ -37,13 +38,17 @@ private slots:
     void showHelpContent();
     void showAboutMe();
 
+    void startPaste();
+
 private:
     Ui::Home *ui;
     BottomBar *_bottomBar;
     ItemDelegate *_delegate;
     ItemEditorDialog *_editor;
-    ClipBoardListner _listner;
+    ClipBoardListner _listener;
     QActionGroup *_modeActions;
+
+    PasteManager _manager;
 
     void connectSignalsWithSlots();
     void showDetailContent();

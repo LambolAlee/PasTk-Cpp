@@ -6,6 +6,8 @@
 #include <QObject>
 
 
+class QSettings;
+
 class SeqGenerator : public QObject, public IGenerator
 {
     Q_OBJECT
@@ -27,17 +29,26 @@ public:
 
     void finish() override;
 
+    bool enabled() const override;
+    void setEnabled(bool state) override;
+
+    void setConfDir(QDir dir) override;
+    void sync() override;
+
 protected:
     std::function<QString ()> addHandler(QStringView tagName, const QXmlStreamAttributes &attrs) override;
 
 private:
     IGenerator *_nextGenerator = nullptr;
     QMap<QString, QString> _simpleMapping;
+    QSettings *_settings = nullptr;
 
+    bool _enabled;
     bool _firstRun = true;
     int _beginNum = 0;
 
     QString accumulate(int begin, const QString &mode);
+    QVariant deliverToNext(QStringView tagName, const QXmlStreamAttributes &attrs);
 };
 
 #endif // SEQGENERATOR_H

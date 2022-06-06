@@ -22,6 +22,8 @@ public:
     void remove(const QModelIndex &index);
     void remove(const QModelIndexList &idxList);
 
+    QStandardItem *getItem(int row);
+
     void clear();
 
     int count();
