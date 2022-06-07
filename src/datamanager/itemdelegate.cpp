@@ -7,10 +7,12 @@
 #include <QStyleOptionToolButton>
 
 
-ItemDelegate::ItemDelegate(QObject *parent)
+ItemDelegate::ItemDelegate(QObject *parent, bool viewOnly)
     : QStyledItemDelegate(parent)
     , _state(Normal)
     , _lastUpdatedTBIndex(-1)
+    , _viewOnlyState(viewOnly)
+    , _btnLikeState(Normal)
     , _editTB(new QToolButton)
     , _deleteTB(new QToolButton)
     , _quickPasteTB(new QToolButton)
@@ -63,10 +65,13 @@ QPoint ItemDelegate::getTextTopLeft(QPainter *painter, const QStyleOptionViewIte
 
 void ItemDelegate::setBgColor(QPainter *painter, const QStyleOptionViewItem &option) const
 {
-    if (option.state & QStyle::State_Selected) {
+    if (option.state & QStyle::State_Selected)
         painter->setBrush(QBrush(bgColorSelected));
-    } else if (option.state & QStyle::State_MouseOver) {
+    else if (option.state & QStyle::State_MouseOver)
         painter->setBrush(QBrush(bgColorHovered));
+
+    if (_viewOnlyState && _btnLikeState == Press && (option.state & QStyle::State_MouseOver)) {
+        painter->setBrush(QBrush(bgColorSelected));
     }
 }
 
@@ -159,7 +164,7 @@ void ItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     if (option.state & QStyle::State_Enabled) {
         drawBasicItemView(painter, option, index);
 
-        if (option.state & QStyle::State_MouseOver)
+        if (!_viewOnlyState && (option.state & QStyle::State_MouseOver))
             drawEditorButtons(painter, option);
     }
 /*[0]*/painter->restore();
@@ -168,7 +173,15 @@ void ItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
 bool ItemDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
 {
     bool repaint = false;
+    if (_viewOnlyState) {
+        _btnLikeState = Normal;
+        if (event->type() == QEvent::MouseButtonPress)
+            _btnLikeState = Press;
+        return true;
+    }
 
+    // QMouseEvent belongs to SinglePointEvent
+    // Here I want to check whether it is a mouse event
     if (!event->isSinglePointEvent())
         return repaint;
 
@@ -219,11 +232,23 @@ bool ItemDelegate::helpEvent(QHelpEvent *event, QAbstractItemView */*view*/, con
     if (!index.isValid()) {
         QToolTip::hideText();
         event->ignore();
-    } else if (auto mask = getBtnMaskRect(option); mask.contains(event->pos())) {
-        QToolTip::hideText();
-        event->ignore();
+    } else if (!_viewOnlyState) {
+        if (auto mask = getBtnMaskRect(option); mask.contains(event->pos())) {
+            QToolTip::hideText();
+            event->ignore();
+        }
     } else {
         QToolTip::showText(event->globalPos(), index.data().toString());
     }
     return true;
+}
+
+void ItemDelegate::setViewOnly(bool state)
+{
+    _viewOnlyState = state;
+}
+
+bool ItemDelegate::isViewOnlyState() const
+{
+    return _viewOnlyState;
 }

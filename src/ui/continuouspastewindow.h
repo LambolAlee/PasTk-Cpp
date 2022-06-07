@@ -18,6 +18,9 @@ public:
     explicit ContinuousPasteWindow(QWidget *parent = nullptr);
     ~ContinuousPasteWindow();
 
+signals:
+    void reportQuit();
+
 private:
     Ui::ContinuousPasteWindow *ui;
     DataManager &_dataManager;
@@ -25,6 +28,10 @@ private:
     int _current;
 
     void connectSignalsWithSlots();
+
+// QWidget interface
+protected:
+    void closeEvent(QCloseEvent *event) override;
 };
 
 #endif // CONTINUOUSPASTEWINDOW_H

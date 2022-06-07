@@ -17,11 +17,18 @@ public:
     explicit MergeWindow(QWidget *parent = nullptr);
     ~MergeWindow();
 
+signals:
+    void reportQuit();
+
 private:
     Ui::MergeWindow *ui;
     TemplatePanel *_panel;
 
     void connectSignalsWithSlots();
+
+// QWidget interface
+protected:
+    void closeEvent(QCloseEvent *event) override;
 };
 
 #endif // MERGEWINDOW_H

@@ -8,6 +8,7 @@ class SelectionPasteWindow;
 }
 
 class TemplatePanel;
+class ItemDelegate;
 
 class SelectionPasteWindow : public QMainWindow
 {
@@ -17,11 +18,21 @@ public:
     explicit SelectionPasteWindow(QWidget *parent = nullptr);
     ~SelectionPasteWindow();
 
+    bool eventFilter(QObject *watched, QEvent *event) override;
+
+signals:
+    void reportQuit();
+
 private:
     Ui::SelectionPasteWindow *ui;
     TemplatePanel *_panel;
+    ItemDelegate *_delegate;
 
-    void connectSignalsWithSlots();
+    void connectSignalsWithSlots();   
+
+// QWidget interface
+protected:
+    void closeEvent(QCloseEvent *event) override;
 };
 
 #endif // SELECTIONPASTEWINDOW_H

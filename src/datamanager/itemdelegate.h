@@ -17,7 +17,7 @@ class ItemDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-    explicit ItemDelegate(QObject *parent = nullptr);
+    explicit ItemDelegate(QObject *parent = nullptr, bool viewOnly = false);
     ~ItemDelegate();
 
 signals:
@@ -31,6 +31,10 @@ public:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
     bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
     bool helpEvent(QHelpEvent *event, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index) override;
+
+public:
+    void setViewOnly(bool state);
+    bool isViewOnlyState() const;
 
 private:
     enum ButtonState {
@@ -71,10 +75,12 @@ private:
     QPoint _mousePos;
     ButtonState _state;
     int _lastUpdatedTBIndex;
+    bool _viewOnlyState;
+    ButtonState _btnLikeState;    // make each list item behave like a button
 
     QToolButton *_editTB;
     QToolButton *_deleteTB;
-    QToolButton *_quickPasteTB;
+    QToolButton *_quickPasteTB;   
 };
 
 #endif // ITEMDELEGATE_H

@@ -336,7 +336,13 @@ void CFramelessWindow::connectSignalsWithSlots()
     connect(_bridge, &CFramelessBridge::minimized, this, &CFramelessWindow::showMinimized);
     connect(_bridge, &CFramelessBridge::closed, this, &CFramelessWindow::close);
     connect(_bridge, &CFramelessBridge::topmost, this, &CFramelessWindow::setTopmost);
-    connect(_bridge, &CFramelessBridge::hideForPaste, this, [=](bool needHide){ setVisible(!needHide); });
+    connect(_bridge, &CFramelessBridge::hideForPaste, this, [=](bool needHide){
+        if (needHide) hide();
+        else {
+            show();
+            ::SetForegroundWindow((HWND)winId());
+        }
+    });
 }
 
 void CFramelessWindow::setTopmost(bool state)

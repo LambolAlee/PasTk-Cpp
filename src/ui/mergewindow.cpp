@@ -32,5 +32,11 @@ MergeWindow::~MergeWindow()
 
 void MergeWindow::connectSignalsWithSlots()
 {
+    connect(ui->quitButton, &QPushButton::clicked, this, &MergeWindow::close);
+}
 
+void MergeWindow::closeEvent(QCloseEvent *event)
+{
+    emit reportQuit();
+    return QMainWindow::closeEvent(event);
 }

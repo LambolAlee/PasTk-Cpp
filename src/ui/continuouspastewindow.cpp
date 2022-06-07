@@ -37,4 +37,11 @@ ContinuousPasteWindow::~ContinuousPasteWindow()
 
 void ContinuousPasteWindow::connectSignalsWithSlots()
 {
+    connect(ui->quitButton, &QPushButton::clicked, this, &ContinuousPasteWindow::close);
+}
+
+void ContinuousPasteWindow::closeEvent(QCloseEvent *event)
+{
+    emit reportQuit();
+    return QMainWindow::closeEvent(event);
 }

@@ -3,10 +3,11 @@
 
 #include <QObject>
 
+
 class PasteManager : public QObject
 {
     Q_OBJECT
-public:    
+public:
     enum PasteMode {
         Merge,
         Continuous,
