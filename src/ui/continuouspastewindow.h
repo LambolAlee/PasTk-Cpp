@@ -21,13 +21,21 @@ public:
 signals:
     void reportQuit();
 
+private slots:
+    void run();
+    void prepareNextData();
+
 private:
     Ui::ContinuousPasteWindow *ui;
     DataManager &_dataManager;
     TemplatePanel *_panel;
     int _current;
+    QString _currentData;
+    int _max;
+    bool _endToQuit;
 
     void connectSignalsWithSlots();
+    bool checkForTheEnd();
 
 // QWidget interface
 protected:

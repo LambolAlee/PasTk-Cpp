@@ -2,6 +2,7 @@
 #define SELECTIONPASTEWINDOW_H
 
 #include <QMainWindow>
+#include <QModelIndex>
 
 namespace Ui {
 class SelectionPasteWindow;
@@ -23,12 +24,20 @@ public:
 signals:
     void reportQuit();
 
+private slots:
+    void run(const QModelIndex &index);
+    void startCheckClick(const QModelIndex &index);
+    void onDoubleClicked(const QModelIndex &index);
+    void onSingleClicked();
+
 private:
     Ui::SelectionPasteWindow *ui;
     TemplatePanel *_panel;
     ItemDelegate *_delegate;
+    QTimer *_timer;
+    QModelIndex _index;
 
-    void connectSignalsWithSlots();   
+    void connectSignalsWithSlots();
 
 // QWidget interface
 protected:

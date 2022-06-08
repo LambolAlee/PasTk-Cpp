@@ -4,6 +4,7 @@
 #include "datamanager/datamanager.h"
 #include "templatepanel.h"
 #include "util/util.h"
+#include "util/pasteutil.h"
 
 
 ContinuousPasteWindow::ContinuousPasteWindow(QWidget *parent) :
@@ -11,9 +12,12 @@ ContinuousPasteWindow::ContinuousPasteWindow(QWidget *parent) :
     ui(new Ui::ContinuousPasteWindow),
     _dataManager(DataManager::instance()),
     _panel(new TemplatePanel(false, this)),
-    _current(0)
+    _current(0),
+    _endToQuit(false)
 {
     ui->setupUi(this);
+
+    _max = _dataManager.count() -1;
 
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowFlag(Qt::WindowStaysOnTopHint);
@@ -23,7 +27,7 @@ ContinuousPasteWindow::ContinuousPasteWindow(QWidget *parent) :
     Util::setWindowUnfocusable(this);
 #endif
 
-    ui->previewBrowser->setText(_dataManager.getItem(_current)->data().toString());
+    prepareNextData();
     setWindowTitle("PasTkCpp - Continuous Mode");
     resize(320, 320);
     setWindowOpacity(0.8);
@@ -35,9 +39,36 @@ ContinuousPasteWindow::~ContinuousPasteWindow()
     delete ui;
 }
 
+void ContinuousPasteWindow::run()
+{
+    if (_endToQuit) close();
+    // need to interact with the template system
+    PasteUtil::instance().paste(_currentData, true);
+    prepareNextData();
+}
+
 void ContinuousPasteWindow::connectSignalsWithSlots()
 {
     connect(ui->quitButton, &QPushButton::clicked, this, &ContinuousPasteWindow::close);
+    connect(ui->pasteButton, &QPushButton::clicked, this, &ContinuousPasteWindow::run);
+    connect(ui->skipButton, &QPushButton::clicked, this, &ContinuousPasteWindow::prepareNextData);
+}
+
+bool ContinuousPasteWindow::checkForTheEnd()
+{
+    return _current > _max;
+}
+
+void ContinuousPasteWindow::prepareNextData()
+{
+    if (_endToQuit) close();
+    if (checkForTheEnd()) {
+        ui->previewBrowser->setText(QStringLiteral("There is no data behind, click any button to quit..."));
+        _endToQuit = true;
+    } else {
+        _currentData = _dataManager.getItem(_current++)->text();
+        ui->previewBrowser->setText(_currentData);
+    }
 }
 
 void ContinuousPasteWindow::closeEvent(QCloseEvent *event)

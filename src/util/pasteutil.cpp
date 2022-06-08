@@ -12,10 +12,10 @@
 PasteUtil::PasteUtil() {}
 PasteUtil::~PasteUtil() {}
 
-void PasteUtil::paste(const QString &str)
+void PasteUtil::paste(const QString &str, bool directly)
 {
     _clipBoard->setText(str);
-    paste();
+    paste(directly);
 }
 
 void PasteUtil::paste(bool directly, bool needQuickPaste)
@@ -24,7 +24,8 @@ void PasteUtil::paste(bool directly, bool needQuickPaste)
         CFramelessBridge::instance().emitHideForPaste(true);
     QTimer::singleShot(220, this, [=]{
         _paste();
-        CFramelessBridge::instance().emitHideForPaste(false);
+        if (!directly)
+            CFramelessBridge::instance().emitHideForPaste(false);
         if (needQuickPaste)
             _clipBoard->blockSignals(false);
     });
@@ -32,6 +33,7 @@ void PasteUtil::paste(bool directly, bool needQuickPaste)
 
 void PasteUtil::quickPaste(const QString &str)
 {
+    // used for pasting when on listening to the clipboard in home window
     _clipBoard->blockSignals(true);
     _clipBoard->setText(str);
     paste(false, true);
