@@ -1,6 +1,5 @@
 #include "pluginmanager.h"
 
-#include <QLibrary>
 #include <QApplication>
 #include <QPluginLoader>
 

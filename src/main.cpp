@@ -2,7 +2,7 @@
 //#include "QHotkey"
 #include "SingleApplication"
 #include "ui/framelesswindow.h"
-//#include "ui/systray.h"
+#include "ui/systray.h"
 #include "util/util.h"
 #include <QDir>
 #include <QApplication>
@@ -12,9 +12,12 @@ int main(int argc, char *argv[])
     SingleApplication a(argc, argv);
     a.setOrganizationDomain("lambol.pastk-cpp.org");
     a.setOrganizationName("Lambol.Michael.Alee");
+    a.setApplicationName("PasTk-Cpp");
 
     Home w;
     Util::loadStyleSheet(":/style/basic_style.qss");
+    SysTray tray(&w);
+    tray.show();
 
 #ifdef Q_OS_WIN
     Util::loadStyleSheet(":/style/font-win.qss");

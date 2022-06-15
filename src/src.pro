@@ -60,15 +60,17 @@ SOURCES += \
     ui/itemeditordialog.cpp \
     ui/mergewindow.cpp \
     ui/pastemanager.cpp \
+    ui/preferences.cpp \
     ui/selectionpastewindow.cpp \
     ui/suspendscrollbar.cpp \
     ui/systray.cpp \
     ui/templateeditor.cpp \
     ui/templatepanel.cpp \
     ui/titlebar.cpp \
-    util/cframelessbridge.cpp \
     util/clipboardlistner.cpp \
     util/config.cpp \
+    util/defaultsettings.cpp \
+    util/postoffice.cpp \
     util/util.cpp
 
 HEADERS += \
@@ -87,17 +89,19 @@ HEADERS += \
     ui/itemeditordialog.h \
     ui/mergewindow.h \
     ui/pastemanager.h \
+    ui/preferences.h \
     ui/selectionpastewindow.h \
     ui/suspendscrollbar.h \
     ui/systray.h \
     ui/templateeditor.h \
     ui/templatepanel.h \
     ui/titlebar.h \
-    util/cframelessbridge.h \
     util/clipboardlistner.h \
     util/config.h \
+    util/defaultsettings.h \
     util/pasteutil.h \
     util/Singleton.h \
+    util/postoffice.h \
     util/util.h \
     version.h
 
@@ -108,6 +112,7 @@ FORMS += \
     ui/home.ui \
     ui/itemeditordialog.ui \
     ui/mergewindow.ui \
+    ui/preferences.ui \
     ui/selectionpastewindow.ui \
     ui/templateeditor.ui \
     ui/templatepanel.ui \

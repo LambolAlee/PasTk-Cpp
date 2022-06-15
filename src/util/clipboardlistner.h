@@ -1,7 +1,6 @@
 #ifndef CLIPBOARDLISTNER_H
 #define CLIPBOARDLISTNER_H
 
-#include <QClipboard>
 #include <QApplication>
 
 

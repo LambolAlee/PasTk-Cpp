@@ -1,13 +1,10 @@
 #include "home.h"
 #include "ui_home.h"
 
-#include <QStyle>
-#include <QKeyEvent>
-#include <QScrollBar>
 #include <QMessageBox>
 #include <QActionGroup>
+#include <QCloseEvent>
 
-#include "util/cframelessbridge.h"
 #include "util/pasteutil.h"
 #include "bottombar.h"
 #include "datamanager/datamanager.h"
@@ -15,6 +12,8 @@
 #include "itemeditordialog.h"
 #include "suspendscrollbar.h"
 #include "aboutpastkcpp.h"
+#include "preferences.h"
+#include "util/config.h"
 
 
 Home::Home(QWidget *parent)
@@ -25,7 +24,6 @@ Home::Home(QWidget *parent)
     , _editor(new ItemEditorDialog(this))
 {
     ui->setupUi(this);
-    ui->menubar->setVisible(false);
     ui->layout->addWidget(_bottomBar);
     ui->actionAbout_Qt->setIcon(qApp->style()->standardIcon(QStyle::SP_TitleBarMenuButton)); // qtlogo
     initModeActions();
@@ -56,14 +54,17 @@ Home::~Home()
 
 void Home::initModeActions()
 {
+    Config config;
+    int checkedMode = config.getLastUsedMode();
     int mode = 0;
     _modeActions = new QActionGroup(this);
-    auto actions = {ui->actionTemplate_Mode, ui->actionContinuous_Mode, ui->actionSelection_Mode};
-    for (auto &&action: actions) {
-        action->setData(mode++);
+    _modeActions->setExclusive(true);
+    for (auto &&action: {ui->actionTemplate_Mode, ui->actionContinuous_Mode, ui->actionSelection_Mode}) {
+        action->setData(mode);
+        if (mode++ == checkedMode)
+            action->setChecked(true);
         _modeActions->addAction(action);
     }
-    _modeActions->setExclusive(true);
     _bottomBar->setModeActions(_modeActions);
 }
 
@@ -82,11 +83,13 @@ void Home::connectSignalsWithSlots()
     connect(ui->quickStartBtn, &QPushButton::clicked, _bottomBar, &BottomBar::triggerSwitchAction);
     connect(ui->actionAbout_PasTk_Cpp, &QAction::triggered, this, &Home::showAboutMe);
     connect(_bottomBar, &BottomBar::startPaste, this, &Home::startPaste);
+    connect(ui->actionSettings, &QAction::triggered, this, &Home::openSettingsWindow);
 
 #ifdef Q_OS_WIN
-    connect(&CFramelessBridge::instance(), &CFramelessBridge::altKeyTriggered, this, QOverload<>::of(&Home::toggleMenubar));
+    PostOffice::instance().upload(this, "home_menu_toggle", SIGNAL(altKeyTriggered()), "altKeyTriggered");
+    PostOffice::instance().subscribe(this, "home_menu_toggle", SLOT(toggleMenubar()));
     connect(ui->actionMenu_Bar, &QAction::toggled, this, QOverload<bool>::of(&Home::toggleMenubar));
-    connect(&_manager, &PasteManager::pasteOver, this, [=]{CFramelessBridge::instance().emitHideForPaste(false);});
+    connect(&_manager, &PasteManager::pasteOver, this, [=]{PostOffice::instance().publish("home_hide_for_paste", Q_ARG(bool, false));});
 #endif
 }
 
@@ -176,15 +179,34 @@ void Home::startPaste()
     }
     if (isVisible()) {
         needReport = true;
-        CFramelessBridge::instance().emitHideForPaste(true);
+        PostOffice::instance().publish("home_hide_for_paste", Q_ARG(bool, true));
     }
 
     auto *action = _modeActions->checkedAction();
     _manager.startPaste(action->data().toInt(), needReport);
 }
 
+void Home::openSettingsWindow()
+{
+    Preferences preferences(this);
+    preferences.exec();
+}
+
+void Home::updateUi()
+{
+    Config config;
+    ui->actionMenu_Bar->setChecked(config.getMenuBarShow());
+    toggleMenubar();
+}
+
 void Home::showDetailContent()
 {
     ui->stackedWidget->setCurrentIndex(1);
     _bottomBar->setDeleteBtnDisabled(false);
+}
+
+void Home::showEvent(QShowEvent *event)
+{
+    updateUi();
+    return QWidget::showEvent(event);
 }

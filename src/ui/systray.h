@@ -4,19 +4,24 @@
 #include <QSystemTrayIcon>
 
 
+class QAction;
+class Home;
+
 class SysTray : public QSystemTrayIcon
 {
     Q_OBJECT
 public:
-    SysTray(QWidget *home, QObject *parent = nullptr);
+    SysTray(Home *home, QObject *parent = nullptr);
     ~SysTray();
 
 private slots:
     void showHome();
 
 private:
-    QWidget *_home;
+    Home *_home;
     QMenu *_menu;
+    QAction *_record;
+    QAction *_paste;
 
     void initUI();
 };

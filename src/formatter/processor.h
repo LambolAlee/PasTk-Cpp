@@ -1,8 +1,6 @@
 #ifndef PROCESSOR_H
 #define PROCESSOR_H
 
-#include <QList>
-#include <QObject>
 #include <QPluginLoader>
 #include <QXmlStreamReader>
 

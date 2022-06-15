@@ -1,9 +1,10 @@
 ﻿#include "framelesswindow.h"
-#include <QApplication>
-#include <QPoint>
-#include <QSize>
+//#include <QApplication>
+//#include <QPoint>
+//#include <QSize>
 #include <QVBoxLayout>
 #include <QKeyEvent>
+#include <QLabel>
 
 #include <windows.h>
 #include <WinUser.h>
@@ -106,6 +107,15 @@ void CFramelessWindow::onTitleBarDestroyed()
     }
 }
 
+void CFramelessWindow::onHideForPaste(bool needHide)
+{
+    if (needHide) hide();
+    else {
+        show();
+        ::SetForegroundWindow((HWND)winId());
+    }
+}
+
 void CFramelessWindow::addIgnoreWidget(QWidget* widget)
 {
     if (!widget) return;
@@ -116,7 +126,7 @@ void CFramelessWindow::addIgnoreWidget(QWidget* widget)
 void CFramelessWindow::keyReleaseEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Alt)
-        _bridge->emitAltKeyTriggered();
+        _poster->publish("home_menu_toggle");
     return QMainWindow::keyReleaseEvent(event);
 }
 
@@ -333,16 +343,17 @@ void CFramelessWindow::showFullScreen()
 
 void CFramelessWindow::connectSignalsWithSlots()
 {
-    connect(_bridge, &CFramelessBridge::minimized, this, &CFramelessWindow::showMinimized);
-    connect(_bridge, &CFramelessBridge::closed, this, &CFramelessWindow::close);
-    connect(_bridge, &CFramelessBridge::topmost, this, &CFramelessWindow::setTopmost);
-    connect(_bridge, &CFramelessBridge::hideForPaste, this, [=](bool needHide){
-        if (needHide) hide();
-        else {
-            show();
-            ::SetForegroundWindow((HWND)winId());
-        }
-    });
+    _poster->upload(this, "home_minimize", SIGNAL(minimizeSig()), "minimizeSig");
+    _poster->upload(this, "home_close", SIGNAL(closeSig()), "closeSig");
+    _poster->upload(this, "home_show", SIGNAL(showSig()), "showSig");
+    _poster->upload(this, "home_topmost", SIGNAL(topmostSig(bool)), "topmostSig");
+    _poster->upload(this, "home_hide_for_paste", SIGNAL(hideForPaste(bool)), "hideForPaste");
+
+    _poster->subscribe(this, "home_minimize", SLOT(showMinimized()));
+    _poster->subscribe(this, "home_close", SLOT(close()));
+    _poster->subscribe(this, "home_show", SLOT(show()));
+    _poster->subscribe(this, "home_topmost", SLOT(setTopmost(bool)));
+    _poster->subscribe(this, "home_hide_for_paste", SLOT(onHideForPaste(bool)));
 }
 
 void CFramelessWindow::setTopmost(bool state)

@@ -24,6 +24,9 @@ public:
     Home(QWidget *parent = nullptr);
     ~Home();
 
+signals:
+    void altKeyTriggered();
+
 private slots:
     void toggleMenubar();
     void toggleMenubar(bool state);
@@ -39,6 +42,8 @@ private slots:
     void showAboutMe();
 
     void startPaste();
+    void openSettingsWindow();
+    void updateUi();
 
 private:
     Ui::Home *ui;
@@ -53,5 +58,9 @@ private:
     void connectSignalsWithSlots();
     void showDetailContent();
     void initModeActions();
+
+    // QWidget interface
+protected:
+    void showEvent(QShowEvent *event) override;
 };
 #endif // HOME_H

@@ -1,6 +1,8 @@
 #include "clipboardlistner.h"
 #include "datamanager/datamanager.h"
 
+#include <QClipboard>
+
 
 void ClipBoardListner::start()
 {

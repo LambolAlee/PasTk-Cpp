@@ -1,7 +1,5 @@
 #include "pasteutil.h"
 
-#include "cframelessbridge.h"
-
 #include <windows.h>
 #include <QClipboard>
 #include <QTimer>
@@ -21,11 +19,11 @@ void PasteUtil::paste(const QString &str, bool directly)
 void PasteUtil::paste(bool directly, bool needQuickPaste)
 {
     if (!directly)
-        CFramelessBridge::instance().emitHideForPaste(true);
+        PostOffice::instance().publish("home_hide_for_paste", Q_ARG(bool, true));
     QTimer::singleShot(220, this, [=]{
         _paste();
         if (!directly)
-            CFramelessBridge::instance().emitHideForPaste(false);
+            PostOffice::instance().publish("home_hide_for_paste", Q_ARG(bool, false));
         if (needQuickPaste)
             _clipBoard->blockSignals(false);
     });

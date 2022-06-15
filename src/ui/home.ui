@@ -111,7 +111,7 @@ Or click start button below
      <x>0</x>
      <y>0</y>
      <width>354</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTool">
@@ -192,12 +192,12 @@ Or click start button below
    <property name="text">
     <string>Settings</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
   </action>
   <action name="actionTemplate_Mode">
    <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
     <bool>true</bool>
    </property>
    <property name="text">

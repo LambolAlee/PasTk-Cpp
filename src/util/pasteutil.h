@@ -2,7 +2,9 @@
 #define PASTEUTIL_H
 
 #include <QApplication>
-#include "Singleton.h"
+
+#include "util/postoffice.h"
+
 
 class PasteUtil : public QObject
 {

@@ -3,7 +3,8 @@
 
 #include <QWidget>
 
-#include "util/cframelessbridge.h"
+#include "util/postoffice.h"
+
 
 class QLabel;
 
@@ -27,9 +28,13 @@ private slots:
 
 private:
     Ui::TitleBar *ui;
-    CFramelessBridge &_bridge = CFramelessBridge::instance();
+    PostOffice &_poster = PostOffice::instance();
 
     void connectSignalsWithSlots();
+
+    // QWidget interface
+protected:
+    void showEvent(QShowEvent *event) override;
 };
 
 #endif // TITLEBAR_H

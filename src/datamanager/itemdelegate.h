@@ -2,8 +2,6 @@
 #define ITEMDELEGATE_H
 
 #include <QStyledItemDelegate>
-#include <QScopedPointer>
-#include <QToolButton>
 
 
 class QTimer;

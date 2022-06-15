@@ -1,11 +1,10 @@
 ﻿#ifndef CFRAMELESSWINDOW_H
 #define CFRAMELESSWINDOW_H
-#include "qsystemdetection.h"
-#include <QObject>
+
 #include <QMainWindow>
 
 #include "titlebar.h"
-#include "util/cframelessbridge.h"
+#include "util/postoffice.h"
 
 //A nice frameless window for both Windows and OS X
 //Author: Bringer-of-Light
@@ -14,18 +13,21 @@
 
 // fit with qt6 now -- by lambol
 // getContentsMargins has been abandoned in qt6 use contentsMargins instead
-#include <QWidget>
-#include <QList>
-#include <QMargins>
-#include <QRect>
-#include <QLabel>
+
 class CFramelessWindow : public QMainWindow
 {
     Q_OBJECT
 public:
     explicit CFramelessWindow(QWidget *parent = 0);
-public:
 
+signals:
+    void minimizeSig();
+    void closeSig();
+    void showSig();
+    void topmostSig(bool);
+    void hideForPaste(bool);
+
+public:
     //设置是否可以通过鼠标调整窗口大小
     //if resizeable is set to false, then the window can not be resized by mouse
     //but still can be resized programtically
@@ -55,6 +57,8 @@ protected:
 
 private slots:
     void onTitleBarDestroyed();
+    void onHideForPaste(bool needHide);
+    void setTopmost(bool state);
 
 public:
     void setContentsMargins(const QMargins &margins);
@@ -77,10 +81,9 @@ private:
 
     bool m_bResizeable;
 
-    CFramelessBridge *_bridge = &CFramelessBridge::instance();
+    PostOffice *_poster = &PostOffice::instance();
 
     void connectSignalsWithSlots();
-    void setTopmost(bool state);
 };
 
 #endif // CFRAMELESSWINDOW_H

@@ -1,13 +1,14 @@
 #include "titlebar.h"
 #include "ui_titlebar.h"
 
+#include "util/config.h"
+
 
 TitleBar::TitleBar(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TitleBar)
 {
     ui->setupUi(this);
-    ui->topmostTB->setProperty("topmost", false);
 
     connectSignalsWithSlots();
 }
@@ -31,12 +32,12 @@ QLabel *TitleBar::titleWidget()
 
 void TitleBar::closeButtonClicked()
 {
-    _bridge.emitClosed();
+    _poster.publish("home_close");
 }
 
 void TitleBar::minimizeButtonClicked()
 {
-    _bridge.emitMinimized();
+    _poster.publish("home_minimize");
 }
 
 void TitleBar::topmostButtonToggled()
@@ -44,12 +45,20 @@ void TitleBar::topmostButtonToggled()
     if (ui->topmostTB->property("topmost").toBool()) {
         // cancel setting the window topmost
         ui->topmostTB->setProperty("topmost", false);
-        _bridge.emitTopmost(false);
+        _poster.publish("home_topmost", Q_ARG(bool, false));
         ui->topmostTB->setIcon(QIcon(":/icons/unpin.png"));
     } else {
         // set the window the topmost
         ui->topmostTB->setProperty("topmost", true);
-        _bridge.emitTopmost(true);
+        _poster.publish("home_topmost", Q_ARG(bool, true));
         ui->topmostTB->setIcon(QIcon(":/icons/pin.png"));
     }
+}
+
+void TitleBar::showEvent(QShowEvent *event)
+{
+    Config config;
+    ui->topmostTB->setProperty("topmost", !config.getTopmost());
+    topmostButtonToggled();
+    return QWidget::showEvent(event);
 }

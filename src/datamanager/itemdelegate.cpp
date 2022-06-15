@@ -2,9 +2,8 @@
 
 #include <QPainter>
 #include <QMouseEvent>
-#include <QStandardItemModel>
 #include <QToolTip>
-#include <QStyleOptionToolButton>
+#include <QToolButton>
 
 
 ItemDelegate::ItemDelegate(QObject *parent, bool viewOnly)
