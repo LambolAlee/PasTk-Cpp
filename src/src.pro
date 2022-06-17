@@ -70,6 +70,7 @@ SOURCES += \
     util/clipboardlistner.cpp \
     util/config.cpp \
     util/defaultsettings.cpp \
+    util/ghotkeytrigger.cpp \
     util/postoffice.cpp \
     util/util.cpp
 
@@ -99,6 +100,7 @@ HEADERS += \
     util/clipboardlistner.h \
     util/config.h \
     util/defaultsettings.h \
+    util/ghotkeytrigger.h \
     util/pasteutil.h \
     util/Singleton.h \
     util/postoffice.h \

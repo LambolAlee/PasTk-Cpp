@@ -19,11 +19,11 @@ void PasteUtil::paste(const QString &str, bool directly)
 void PasteUtil::paste(bool directly, bool needQuickPaste)
 {
     if (!directly)
-        PostOffice::instance().publish("home_hide_for_paste", Q_ARG(bool, true));
+        PostOffice::instance().post("home_hide_for_paste", Q_ARG(bool, true));
     QTimer::singleShot(220, this, [=]{
         _paste();
         if (!directly)
-            PostOffice::instance().publish("home_hide_for_paste", Q_ARG(bool, false));
+            PostOffice::instance().post("home_hide_for_paste", Q_ARG(bool, false));
         if (needQuickPaste)
             _clipBoard->blockSignals(false);
     });

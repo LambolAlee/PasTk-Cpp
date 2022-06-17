@@ -126,7 +126,7 @@ void CFramelessWindow::addIgnoreWidget(QWidget* widget)
 void CFramelessWindow::keyReleaseEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Alt)
-        _poster->publish("home_menu_toggle");
+        _poster->post("home_menu_toggle");
     return QMainWindow::keyReleaseEvent(event);
 }
 
@@ -350,7 +350,7 @@ void CFramelessWindow::connectSignalsWithSlots()
     _poster->upload(this, "home_hide_for_paste", SIGNAL(hideForPaste(bool)), "hideForPaste");
 
     _poster->subscribe(this, "home_minimize", SLOT(showMinimized()));
-    _poster->subscribe(this, "home_close", SLOT(close()));
+    _poster->subscribe(this, "home_close", SLOT(hide()));
     _poster->subscribe(this, "home_show", SLOT(show()));
     _poster->subscribe(this, "home_topmost", SLOT(setTopmost(bool)));
     _poster->subscribe(this, "home_hide_for_paste", SLOT(onHideForPaste(bool)));

@@ -24,6 +24,9 @@ public:
     Home(QWidget *parent = nullptr);
     ~Home();
 
+    const QList<QAction *> bottomBarActions();
+    QAction *preferencesAction();
+
 signals:
     void altKeyTriggered();
 

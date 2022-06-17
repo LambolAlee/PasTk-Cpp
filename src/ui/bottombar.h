@@ -3,6 +3,7 @@
 
 #include <QWidget>
 
+
 namespace Ui {
 class BottomBar;
 }
@@ -20,6 +21,7 @@ public:
     void triggerSwitchAction();
     void setModeActions(QActionGroup *modeActions);
     void setDeleteBtnDisabled(bool disable);
+    const QList<QAction *> actions();
 
 signals:
     void clearItems();
@@ -36,7 +38,6 @@ private slots:
 
 private:
     Ui::BottomBar *ui;
-    QActionGroup *_modeActions;
 
     void connectSignalsWithSlots();
 };

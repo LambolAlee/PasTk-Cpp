@@ -32,12 +32,12 @@ QLabel *TitleBar::titleWidget()
 
 void TitleBar::closeButtonClicked()
 {
-    _poster.publish("home_close");
+    _poster.post("home_close");
 }
 
 void TitleBar::minimizeButtonClicked()
 {
-    _poster.publish("home_minimize");
+    _poster.post("home_minimize");
 }
 
 void TitleBar::topmostButtonToggled()
@@ -45,12 +45,12 @@ void TitleBar::topmostButtonToggled()
     if (ui->topmostTB->property("topmost").toBool()) {
         // cancel setting the window topmost
         ui->topmostTB->setProperty("topmost", false);
-        _poster.publish("home_topmost", Q_ARG(bool, false));
+        _poster.post("home_topmost", Q_ARG(bool, false));
         ui->topmostTB->setIcon(QIcon(":/icons/unpin.png"));
     } else {
         // set the window the topmost
         ui->topmostTB->setProperty("topmost", true);
-        _poster.publish("home_topmost", Q_ARG(bool, true));
+        _poster.post("home_topmost", Q_ARG(bool, true));
         ui->topmostTB->setIcon(QIcon(":/icons/pin.png"));
     }
 }

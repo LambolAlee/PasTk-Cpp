@@ -32,15 +32,19 @@ void BottomBar::triggerSwitchAction()
 
 void BottomBar::setModeActions(QActionGroup *modeActions)
 {
-    _modeActions = modeActions;
     QMenu *menu = new QMenu(this);
     menu->addActions(modeActions->actions());
-    ui->pasteBtn->setMenu(menu);
+    ui->actionPaste->setMenu(menu);
 }
 
 void BottomBar::setDeleteBtnDisabled(bool disable)
 {
     ui->clearBtn->setDisabled(disable);
+}
+
+const QList<QAction *> BottomBar::actions()
+{
+    return {ui->actionSwitch, ui->actionClear, ui->actionPaste};
 }
 
 void BottomBar::toggleSwitch(bool state)

@@ -13,6 +13,7 @@
 #include "suspendscrollbar.h"
 #include "aboutpastkcpp.h"
 #include "preferences.h"
+#include "util/ghotkeytrigger.h"
 #include "util/config.h"
 
 
@@ -52,6 +53,16 @@ Home::~Home()
     delete ui;
 }
 
+const QList<QAction *> Home::bottomBarActions()
+{
+    return _bottomBar->actions();
+}
+
+QAction *Home::preferencesAction()
+{
+    return ui->actionSettings;
+}
+
 void Home::initModeActions()
 {
     Config config;
@@ -89,7 +100,7 @@ void Home::connectSignalsWithSlots()
     PostOffice::instance().upload(this, "home_menu_toggle", SIGNAL(altKeyTriggered()), "altKeyTriggered");
     PostOffice::instance().subscribe(this, "home_menu_toggle", SLOT(toggleMenubar()));
     connect(ui->actionMenu_Bar, &QAction::toggled, this, QOverload<bool>::of(&Home::toggleMenubar));
-    connect(&_manager, &PasteManager::pasteOver, this, [=]{PostOffice::instance().publish("home_hide_for_paste", Q_ARG(bool, false));});
+    connect(&_manager, &PasteManager::pasteOver, this, [=]{PostOffice::instance().post("home_hide_for_paste", Q_ARG(bool, false));});
 #endif
 }
 
@@ -179,7 +190,7 @@ void Home::startPaste()
     }
     if (isVisible()) {
         needReport = true;
-        PostOffice::instance().publish("home_hide_for_paste", Q_ARG(bool, true));
+        PostOffice::instance().post("home_hide_for_paste", Q_ARG(bool, true));
     }
 
     auto *action = _modeActions->checkedAction();
@@ -189,6 +200,7 @@ void Home::startPaste()
 void Home::openSettingsWindow()
 {
     Preferences preferences(this);
+    connect(&preferences, &QDialog::accepted, this, [=]{PostOffice::instance().post("update_shortcuts");});
     preferences.exec();
 }
 

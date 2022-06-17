@@ -20,7 +20,7 @@ public:
     bool subscribe(QObject *obj, const QString &theme, const char *slot);
     bool unsubscribe(QObject *obj, const QString &theme);
 
-    void publish(const QString &theme,
+    void post(const QString &theme,
                  QGenericArgument val0 = QGenericArgument(nullptr),
                  QGenericArgument val1 = QGenericArgument(),
                  QGenericArgument val2 = QGenericArgument(),

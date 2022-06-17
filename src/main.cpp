@@ -1,11 +1,13 @@
 #include "ui/home.h"
-//#include "QHotkey"
 #include "SingleApplication"
-#include "ui/framelesswindow.h"
 #include "ui/systray.h"
 #include "util/util.h"
 #include <QDir>
 #include <QApplication>
+
+#ifdef Q_OS_WIN
+#include "ui/framelesswindow.h"
+#endif
 
 int main(int argc, char *argv[])
 {
@@ -13,6 +15,7 @@ int main(int argc, char *argv[])
     a.setOrganizationDomain("lambol.pastk-cpp.org");
     a.setOrganizationName("Lambol.Michael.Alee");
     a.setApplicationName("PasTk-Cpp");
+    a.setQuitOnLastWindowClosed(false);
 
     Home w;
     Util::loadStyleSheet(":/style/basic_style.qss");
@@ -28,8 +31,6 @@ int main(int argc, char *argv[])
     frameless->show();
 #elif defined Q_OS_MAC
     //Util::loadStyleSheet(":/style/font-mac.qss");
-//    SysTray tray(&w);
-//    tray.show();
     w.show();
 #endif
     return a.exec();
