@@ -14,8 +14,7 @@ class GHotkeyTrigger : public QObject, private QMap<QString, QHotkey*>
 
 public:
     using QMap::value;
-    void setHotkey(const QString &name, const QKeySequence &sequence);
-    void update(const QString &name, const QKeySequence &sequence);
+    void setHotkey(const QString &name, const QKeySequence &sequence, bool autoRegister = false);
 
 signals:
     void updateShortcutsSig();

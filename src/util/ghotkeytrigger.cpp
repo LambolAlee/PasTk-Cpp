@@ -2,6 +2,8 @@
 #include "config.h"
 #include "postoffice.h"
 
+#include <QApplication>
+
 
 GHotkeyTrigger::GHotkeyTrigger()
 {
@@ -11,36 +13,29 @@ GHotkeyTrigger::GHotkeyTrigger()
 
 GHotkeyTrigger::~GHotkeyTrigger()
 {
-    auto hotkeys = values();
-    qDeleteAll(hotkeys);
     clear();
 }
 
-void GHotkeyTrigger::setHotkey(const QString &name, const QKeySequence &sequence)
+void GHotkeyTrigger::setHotkey(const QString &name, const QKeySequence &sequence, bool autoRegister)
 {
     if (contains(name))
-         delete take(name);
-    insert(name, new QHotkey(sequence, true, this));
-}
-
-void GHotkeyTrigger::update(const QString &name, const QKeySequence &sequence)
-{
-    if (!contains(name)) return;
-    value(name)->setShortcut(sequence, true);
+         value(name)->setShortcut(sequence, autoRegister);
+    insert(name, new QHotkey(sequence, autoRegister, qApp));
 }
 
 void GHotkeyTrigger::updateShortcuts()
 {
     Config config;
 
-    setHotkey("copy", config.getCopyShortcut());
-    setHotkey("runPaste", config.getRunPasteShortcut());
+    setHotkey("copy", config.getCopyShortcut(), true);
+    setHotkey("runPaste", config.getRunPasteShortcut(), true);
     setHotkey("paste", config.getPasteShortcut());
     setHotkey("skip", config.getSkipShortcut());
 }
 
 void GHotkeyTrigger::connectSignalsWithSlots()
 {
-    PostOffice::instance().upload(this, "update_shortcuts", SIGNAL(updateShortcutsSig()), "updateShortcutsSig");
-    PostOffice::instance().subscribe(this, "update_shortcuts", SLOT(updateShortcuts()));
+    auto &poster = PostOffice::instance();
+    poster.upload(this, "update_shortcuts", SIGNAL(updateShortcutsSig()), "updateShortcutsSig");
+    poster.subscribe(this, "update_shortcuts", SLOT(updateShortcuts()));
 }

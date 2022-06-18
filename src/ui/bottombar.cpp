@@ -2,6 +2,7 @@
 #include "ui_bottombar.h"
 
 #include "datamanager/datamanager.h"
+#include "util/ghotkeytrigger.h"
 
 #include <QMenu>
 #include <QActionGroup>
@@ -72,4 +73,8 @@ void BottomBar::connectSignalsWithSlots()
     connect(ui->actionSwitch, &QAction::toggled, this, &BottomBar::toggleSwitch);
     connect(ui->actionPaste, &QAction::triggered, this, &BottomBar::startPaste);
     connect(ui->actionClear, &QAction::triggered, this, &BottomBar::clearItems);
+
+    auto &trigger = GHotkeyTrigger::instance();
+    connect(trigger.value("copy"), &QHotkey::activated, ui->actionSwitch, &QAction::toggle);
+    connect(trigger.value("runPaste"), &QHotkey::activated, ui->actionPaste, &QAction::trigger);
 }

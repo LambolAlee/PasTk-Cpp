@@ -139,7 +139,7 @@ Or click start button below
     <property name="title">
      <string>Mode</string>
     </property>
-    <addaction name="actionTemplate_Mode"/>
+    <addaction name="actionMerge_Mode"/>
     <addaction name="actionContinuous_Mode"/>
     <addaction name="actionSelection_Mode"/>
    </widget>
@@ -196,12 +196,15 @@ Or click start button below
     <string>Ctrl+P</string>
    </property>
   </action>
-  <action name="actionTemplate_Mode">
+  <action name="actionMerge_Mode">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Template Mode</string>
+    <string>Merge Mode</string>
+   </property>
+   <property name="toolTip">
+    <string>Merge Mode</string>
    </property>
   </action>
   <action name="actionContinuous_Mode">

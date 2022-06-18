@@ -5,6 +5,7 @@
 #include "templatepanel.h"
 #include "util/util.h"
 #include "util/pasteutil.h"
+#include "util/ghotkeytrigger.h"
 
 
 ContinuousPasteWindow::ContinuousPasteWindow(QWidget *parent) :
@@ -52,6 +53,13 @@ void ContinuousPasteWindow::connectSignalsWithSlots()
     connect(ui->quitButton, &QPushButton::clicked, this, &ContinuousPasteWindow::close);
     connect(ui->pasteButton, &QPushButton::clicked, this, &ContinuousPasteWindow::run);
     connect(ui->skipButton, &QPushButton::clicked, this, &ContinuousPasteWindow::prepareNextData);
+
+    auto *pasteHotkey = GHotkeyTrigger::instance().value("paste");
+    auto *skipHotkey = GHotkeyTrigger::instance().value("skip");
+    pasteHotkey->setRegistered(true);
+    skipHotkey->setRegistered(true);
+    connect(pasteHotkey, &QHotkey::activated, this, &ContinuousPasteWindow::run);
+    connect(skipHotkey, &QHotkey::activated, this, &ContinuousPasteWindow::prepareNextData);
 }
 
 bool ContinuousPasteWindow::checkForTheEnd()
@@ -74,5 +82,7 @@ void ContinuousPasteWindow::prepareNextData()
 void ContinuousPasteWindow::closeEvent(QCloseEvent *event)
 {
     emit reportQuit();
+    GHotkeyTrigger::instance().value("paste")->setRegistered(false);
+    GHotkeyTrigger::instance().value("skip")->setRegistered(false);
     return QMainWindow::closeEvent(event);
 }

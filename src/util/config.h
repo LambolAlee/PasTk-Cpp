@@ -34,8 +34,8 @@ public:
     void setTopmost(bool onTop);
     bool getTopmost();
 
-    void setWindowVisibility(bool visible);
-    bool getWindowVisibility();
+    void setWindowVisible(bool visible);
+    bool getWindowVisible();
 
     void setClearAfterNewCopy(defaults::NewCopyOperation option);
     defaults::NewCopyOperation getClearAfterNewCopy();

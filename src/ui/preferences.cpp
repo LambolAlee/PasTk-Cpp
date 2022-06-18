@@ -34,7 +34,7 @@ Preferences::Preferences(QWidget *parent) :
     }
     ui->menubarShowOpt->setChecked(config.getMenuBarShow());
     ui->topmostOpt->setChecked(config.getTopmost());
-    ui->windowVisibility->setCurrentIndex(config.getWindowVisibility());
+    ui->windowVisibility->setCurrentIndex(config.getWindowVisible());
     ui->clearHistoryOpt->setCurrentIndex(config.getClearAfterNewCopy());
 
     // Hotkey settings
@@ -65,7 +65,7 @@ void Preferences::save()
     config.setLanguage(ui->languageCB->currentData().toString());
     config.setMenuBarShow(ui->menubarShowOpt->isChecked());
     config.setTopmost(ui->topmostOpt->isChecked());
-    config.setWindowVisibility(ui->windowVisibility->currentData().toBool());
+    config.setWindowVisible(ui->windowVisibility->currentData().toBool());
     config.setClearAfterNewCopy((defaults::NewCopyOperation)ui->clearHistoryOpt->currentIndex());
 
     // Hotkey settings

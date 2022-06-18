@@ -2,6 +2,7 @@
 #include "ui_mergewindow.h"
 #include "templatepanel.h"
 #include "util/util.h"
+#include "util/ghotkeytrigger.h"
 
 
 MergeWindow::MergeWindow(QWidget *parent) :
@@ -33,10 +34,15 @@ MergeWindow::~MergeWindow()
 void MergeWindow::connectSignalsWithSlots()
 {
     connect(ui->quitButton, &QPushButton::clicked, this, &MergeWindow::close);
+
+    auto *pasteHotkey = GHotkeyTrigger::instance().value("paste");
+    pasteHotkey->setRegistered(true);
+    connect(pasteHotkey, &QHotkey::activated, this, []{qDebug() << "paste";});
 }
 
 void MergeWindow::closeEvent(QCloseEvent *event)
 {
     emit reportQuit();
+    GHotkeyTrigger::instance().value("paste")->setRegistered(false);
     return QMainWindow::closeEvent(event);
 }

@@ -6,6 +6,7 @@
 #include "util/clipboardlistner.h"
 #include "pastemanager.h"
 
+
 class BottomBar;
 class ItemDelegate;
 class QAbstractItemModel;

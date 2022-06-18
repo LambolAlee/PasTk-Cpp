@@ -85,12 +85,12 @@ bool Config::getTopmost()
     return getValue(QStringLiteral("General"), QStringLiteral("topmost"), defaults::topmost);
 }
 
-void Config::setWindowVisibility(bool visible)
+void Config::setWindowVisible(bool visible)
 {
     setKey(QStringLiteral("General"), QStringLiteral("window_visible"), visible);
 }
 
-bool Config::getWindowVisibility()
+bool Config::getWindowVisible()
 {
     return getValue(QStringLiteral("General"), QStringLiteral("window_visible"), defaults::windowVisibility);
 }

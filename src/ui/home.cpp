@@ -50,6 +50,8 @@ Home::Home(QWidget *parent)
 
 Home::~Home()
 {
+    auto *lastUsedAction = _modeActions->checkedAction();
+    Config().setLastUsedMode(lastUsedAction->data().toInt());
     delete ui;
 }
 
@@ -65,12 +67,11 @@ QAction *Home::preferencesAction()
 
 void Home::initModeActions()
 {
-    Config config;
-    int checkedMode = config.getLastUsedMode();
+    int checkedMode = Config().getLastUsedMode();
     int mode = 0;
     _modeActions = new QActionGroup(this);
     _modeActions->setExclusive(true);
-    for (auto &&action: {ui->actionTemplate_Mode, ui->actionContinuous_Mode, ui->actionSelection_Mode}) {
+    for (auto &&action: {ui->actionMerge_Mode, ui->actionContinuous_Mode, ui->actionSelection_Mode}) {
         action->setData(mode);
         if (mode++ == checkedMode)
             action->setChecked(true);
@@ -81,20 +82,23 @@ void Home::initModeActions()
 
 void Home::connectSignalsWithSlots()
 {
-    connect(ui->actionAbout_Qt, &QAction::triggered, this, [=]{QMessageBox::aboutQt(this);});
     connect(_delegate, &ItemDelegate::doEdit, this, &Home::editOne);
     connect(_delegate, &ItemDelegate::doPaste, this, &Home::pasteOne);
     connect(_delegate, &ItemDelegate::doDelete, this, &Home::deleteOne);
-    connect(ui->detailView, &QListView::doubleClicked, this, [=](const QModelIndex &index){editOne(index);});
-    connect(_editor, &ItemEditorDialog::updateIndex, this, &Home::setData);
+
     connect(_bottomBar, &BottomBar::clearItems, this, &Home::clearSelectedItems);
     connect(_bottomBar, &BottomBar::switchState, this, &Home::switchCopy);
-    connect(&_listener, &ClipBoardListner::updateCount, _bottomBar, &BottomBar::updateCounter);
-    connect(_bottomBar, &BottomBar::noData, this, &Home::showHelpContent);
-    connect(ui->quickStartBtn, &QPushButton::clicked, _bottomBar, &BottomBar::triggerSwitchAction);
-    connect(ui->actionAbout_PasTk_Cpp, &QAction::triggered, this, &Home::showAboutMe);
     connect(_bottomBar, &BottomBar::startPaste, this, &Home::startPaste);
+    connect(_bottomBar, &BottomBar::noData, this, &Home::showHelpContent);
+
+    connect(ui->actionAbout_PasTk_Cpp, &QAction::triggered, this, &Home::showAboutMe);
     connect(ui->actionSettings, &QAction::triggered, this, &Home::openSettingsWindow);
+    connect(ui->actionAbout_Qt, &QAction::triggered, this, [=]{QMessageBox::aboutQt(this);});
+
+    connect(_editor, &ItemEditorDialog::updateIndex, this, &Home::setData);
+    connect(&_listener, &ClipBoardListner::updateCount, _bottomBar, &BottomBar::updateCounter);
+    connect(ui->quickStartBtn, &QPushButton::clicked, _bottomBar, &BottomBar::triggerSwitchAction);
+    connect(ui->detailView, &QListView::doubleClicked, this, [=](const QModelIndex &index){editOne(index);});
 
 #ifdef Q_OS_WIN
     PostOffice::instance().upload(this, "home_menu_toggle", SIGNAL(altKeyTriggered()), "altKeyTriggered");
@@ -158,6 +162,8 @@ void Home::clearSelectedItems()
 void Home::switchCopy(bool state)
 {
     if (state) {
+        if (Config().getClearAfterNewCopy() == defaults::ClearHistory)
+            DataManager::instance().clear();
         _listener.start();
         showDetailContent();
     } else {
@@ -206,8 +212,7 @@ void Home::openSettingsWindow()
 
 void Home::updateUi()
 {
-    Config config;
-    ui->actionMenu_Bar->setChecked(config.getMenuBarShow());
+    ui->actionMenu_Bar->setChecked(Config().getMenuBarShow());
     toggleMenubar();
 }
 
