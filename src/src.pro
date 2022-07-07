@@ -49,6 +49,7 @@ SOURCES += \
     datamanager/itemdelegate.cpp \
     formatter/generatorhelper.cpp \
     formatter/pluginmanager.cpp \
+    formatter/pluginmodel.cpp \
     formatter/processor.cpp \
     formatter/templatehelper.cpp \
     main.cpp \
@@ -60,12 +61,16 @@ SOURCES += \
     ui/itemeditordialog.cpp \
     ui/mergewindow.cpp \
     ui/pastemanager.cpp \
+    ui/pluginbrowserdialog.cpp \
+    ui/plugindetaildialog.cpp \
     ui/preferences.cpp \
     ui/selectionpastewindow.cpp \
     ui/suspendscrollbar.cpp \
     ui/systray.cpp \
     ui/templateeditor.cpp \
+    ui/templateinfowidget.cpp \
     ui/templatepanel.cpp \
+    ui/templateselectorpanel.cpp \
     ui/titlebar.cpp \
     util/clipboardlistner.cpp \
     util/config.cpp \
@@ -80,6 +85,7 @@ HEADERS += \
     formatter/generatorhelper.h \
     formatter/generatorinterface.h \
     formatter/pluginmanager.h \
+    formatter/pluginmodel.h \
     formatter/processor.h \
     formatter/templatehelper.h \
     ui/aboutpastkcpp.h \
@@ -90,12 +96,16 @@ HEADERS += \
     ui/itemeditordialog.h \
     ui/mergewindow.h \
     ui/pastemanager.h \
+    ui/pluginbrowserdialog.h \
+    ui/plugindetaildialog.h \
     ui/preferences.h \
     ui/selectionpastewindow.h \
     ui/suspendscrollbar.h \
     ui/systray.h \
     ui/templateeditor.h \
+    ui/templateinfowidget.h \
     ui/templatepanel.h \
+    ui/templateselectorpanel.h \
     ui/titlebar.h \
     util/clipboardlistner.h \
     util/config.h \
@@ -114,10 +124,14 @@ FORMS += \
     ui/home.ui \
     ui/itemeditordialog.ui \
     ui/mergewindow.ui \
+    ui/pluginbrowserdialog.ui \
+    ui/plugindetaildialog.ui \
     ui/preferences.ui \
     ui/selectionpastewindow.ui \
     ui/templateeditor.ui \
+    ui/templateinfowidget.ui \
     ui/templatepanel.ui \
+    ui/templateselectorpanel.ui \
     ui/titlebar.ui
 
 # Default rules for deployment.

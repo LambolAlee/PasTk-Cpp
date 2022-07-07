@@ -47,6 +47,8 @@ private slots:
 
     void startPaste();
     void openSettingsWindow();
+    void openAboutPluginsWindow();
+    void openTemplateEditorWindow();
     void updateUi();
 
 private:

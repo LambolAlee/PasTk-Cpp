@@ -1,1 +1,7 @@
-{}
+{
+    "name": "SeqGenerator",
+    "version": "1.0",
+    "author": "Lambol.Michael.Alee",
+    "url":"https://github.com/LambolAlee/PasTk-Cpp/tree/main/plugin_src/seqgenerator",
+    "description": "Basic function of template"
+}

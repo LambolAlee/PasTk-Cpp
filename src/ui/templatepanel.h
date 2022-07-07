@@ -18,6 +18,7 @@ public:
 
 private:
     Ui::TemplatePanel *ui;
+    QString _mergeChar;
 
     void connectSignalsWithSlots();
 };

@@ -22,8 +22,7 @@ void Processor::parse(const QString &templateStr)
         _xml.readNext();
         if (_xml.isStartElement()) {
             if (Q_UNLIKELY(_xml.name() == QStringLiteral("xml"))) continue;
-            if (auto *firstGen = begin(); firstGen)
-                _res << firstGen->handle(_xml.name(), _xml.attributes());
+            _res << _generators.at(0)->handle(_xml.name(), _xml.attributes());
         } else if (_xml.isEndElement()) {
             continue;
         } else if (!_xml.text().isEmpty()) {
@@ -46,13 +45,4 @@ QString Processor::yield(const QString &data)
             _stream << variant.toString();
     }
     return _stream.readAll().arg(data);
-}
-
-IGenerator *Processor::begin()
-{
-    for (auto &&generator: _generators) {
-        if (generator->enabled())
-            return generator;
-    }
-    return nullptr;
 }

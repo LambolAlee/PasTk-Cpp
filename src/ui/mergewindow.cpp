@@ -16,9 +16,9 @@ MergeWindow::MergeWindow(QWidget *parent) :
     setWindowFlag(Qt::WindowStaysOnTopHint);
     ui->layout->insertWidget(1, _panel);
 
-#ifdef Q_OS_WIN
-    Util::setWindowUnfocusable(this);
-#endif
+//#ifdef Q_OS_WIN
+//    Util::setWindowUnfocusable(this);
+//#endif
 
     setWindowTitle("PasTkCpp - Merge Mode");
     resize(320, 420);

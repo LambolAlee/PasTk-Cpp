@@ -7,6 +7,8 @@
 
 GHotkeyTrigger::GHotkeyTrigger()
 {
+    setHotkey("show_home_window", QKeySequence("Alt+Shift+H"), true);
+
     updateShortcuts();
     connectSignalsWithSlots();
 }

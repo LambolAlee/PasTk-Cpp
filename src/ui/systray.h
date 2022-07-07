@@ -16,6 +16,7 @@ public:
 
 private slots:
     void showHome();
+    void activateHandler(QSystemTrayIcon::ActivationReason reason);
 
 private:
     Home *_home;
@@ -24,6 +25,7 @@ private:
     QAction *_paste;
 
     void initUI();
+    void connectSignalsWithSlots();
 };
 
 #endif // SYSTRAY_H

@@ -19,17 +19,11 @@ public:
     virtual IGenerator *next() const =0;
     virtual void finish() =0;
 
-    virtual bool enabled() const =0;
-    virtual void setEnabled(bool state) =0;
-
-    virtual void setConfDir(QDir dir) =0;
-    virtual void sync() =0;
-
 protected:
     virtual std::function<QString()> addHandler(QStringView tagName, const QXmlStreamAttributes &attrs) =0;
 };
 
-#define IGenrator_iid "lambol.PasTk-Cpp.IGenerator/1.0"
+#define IGenrator_iid "lambol.PasTk-Cpp.IGenerator/1.1"
 Q_DECLARE_INTERFACE(IGenerator, IGenrator_iid)
 
 #endif // GENERATORINTERFACE_H

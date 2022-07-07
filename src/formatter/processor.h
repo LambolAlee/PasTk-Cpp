@@ -22,8 +22,6 @@ private:
     QVariantList _res;
     QString _data;
     QList<IGenerator *> _generators;
-
-    IGenerator *begin();
 };
 
 #endif // PROCESSOR_H

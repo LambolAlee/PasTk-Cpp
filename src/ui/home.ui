@@ -127,6 +127,7 @@ Or click start button below
      <string>Help</string>
     </property>
     <addaction name="actionAbout_PasTk_Cpp"/>
+    <addaction name="actionAbout_Plugins"/>
     <addaction name="actionAbout_Qt"/>
    </widget>
    <widget class="QMenu" name="menuView">
@@ -221,6 +222,11 @@ Or click start button below
    </property>
    <property name="text">
     <string>Selection Mode</string>
+   </property>
+  </action>
+  <action name="actionAbout_Plugins">
+   <property name="text">
+    <string>About Plugins...</string>
    </property>
   </action>
  </widget>

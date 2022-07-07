@@ -5,6 +5,7 @@
 #include <QKeySequence>
 
 #include "util/postoffice.h"
+#include "util/ghotkeytrigger.h"
 #include "home.h"
 
 
@@ -12,6 +13,8 @@ SysTray::SysTray(Home *home, QObject */*parent*/)
 {
     _home = home;
     initUI();
+
+    connectSignalsWithSlots();
 }
 
 SysTray::~SysTray()
@@ -33,6 +36,18 @@ void SysTray::showHome()
 #endif
 }
 
+void SysTray::activateHandler(ActivationReason reason)
+{
+    switch (reason) {
+    case QSystemTrayIcon::DoubleClick: {
+        showHome();
+        break;
+    }
+    default:
+        break;
+    }
+}
+
 void SysTray::initUI()
 {
     _menu = new QMenu;
@@ -48,7 +63,6 @@ void SysTray::initUI()
     QAction *runPaste = _menu->addAction("Paste");
     runPaste->setIcon(runPasteOld->icon());
     runPaste->setShortcut(runPasteOld->shortcut());
-    connect(runPasteOld, &QAction::changed, runPaste, [=]{runPaste->setShortcut(runPasteOld->shortcut());});
     connect(runPaste, &QAction::triggered, runPasteOld, &QAction::trigger);
 
     _menu->addSeparator();
@@ -60,4 +74,10 @@ void SysTray::initUI()
 
     setContextMenu(_menu);
     setIcon(QIcon(":/logo/PasTk_logo_128.png"));
+}
+
+void SysTray::connectSignalsWithSlots()
+{
+    connect(this, &SysTray::activated, this, &SysTray::activateHandler);
+    connect(GHotkeyTrigger::instance().value("show_home_window"), &QHotkey::activated, this, &SysTray::showHome);
 }

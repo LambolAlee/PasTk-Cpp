@@ -1,13 +1,17 @@
 #ifndef TEMPLATEEDITOR_H
 #define TEMPLATEEDITOR_H
 
-#include <QWidget>
+#include <QMainWindow>
+
 
 namespace Ui {
 class TemplateEditor;
 }
 
-class TemplateEditor : public QWidget
+class TemplateInfoWidget;
+class TemplateSelectorPanel;
+
+class TemplateEditor : public QMainWindow
 {
     Q_OBJECT
 
@@ -17,6 +21,8 @@ public:
 
 private:
     Ui::TemplateEditor *ui;
+    TemplateInfoWidget *_infoWidget;
+    TemplateSelectorPanel *_selectorPanel;
 };
 
 #endif // TEMPLATEEDITOR_H

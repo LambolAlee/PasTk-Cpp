@@ -15,6 +15,8 @@
 #include "preferences.h"
 #include "util/ghotkeytrigger.h"
 #include "util/config.h"
+#include "pluginbrowserdialog.h"
+#include "templateeditor.h"
 
 
 Home::Home(QWidget *parent)
@@ -44,8 +46,7 @@ Home::Home(QWidget *parent)
     setMinimumSize(QSize(280, 200));
 
     connectSignalsWithSlots();
-    // TODO...
-    // as for macOS need to set QAction role
+    // TODO: for macOS need to set QAction role
 }
 
 Home::~Home()
@@ -94,6 +95,8 @@ void Home::connectSignalsWithSlots()
     connect(ui->actionAbout_PasTk_Cpp, &QAction::triggered, this, &Home::showAboutMe);
     connect(ui->actionSettings, &QAction::triggered, this, &Home::openSettingsWindow);
     connect(ui->actionAbout_Qt, &QAction::triggered, this, [=]{QMessageBox::aboutQt(this);});
+    connect(ui->actionAbout_Plugins, &QAction::triggered, this, &Home::openAboutPluginsWindow);
+    connect(ui->actionTemplate_Editor, &QAction::triggered, this, &Home::openTemplateEditorWindow);
 
     connect(_editor, &ItemEditorDialog::updateIndex, this, &Home::setData);
     connect(&_listener, &ClipBoardListner::updateCount, _bottomBar, &BottomBar::updateCounter);
@@ -208,6 +211,18 @@ void Home::openSettingsWindow()
     Preferences preferences(this);
     connect(&preferences, &QDialog::accepted, this, [=]{PostOffice::instance().post("update_shortcuts");});
     preferences.exec();
+}
+
+void Home::openAboutPluginsWindow()
+{
+    PluginBrowserDialog dialog(this);
+    dialog.exec();
+}
+
+void Home::openTemplateEditorWindow()
+{
+    TemplateEditor *editor = new TemplateEditor(this);
+    editor->show();
 }
 
 void Home::updateUi()

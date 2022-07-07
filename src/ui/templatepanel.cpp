@@ -1,9 +1,11 @@
 #include "templatepanel.h"
 #include "ui_templatepanel.h"
 
+
 TemplatePanel::TemplatePanel(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::TemplatePanel)
+    ui(new Ui::TemplatePanel),
+    _mergeChar("")
 {
     ui->setupUi(this);
 
@@ -21,11 +23,6 @@ TemplatePanel::TemplatePanel(bool mergeOption, QWidget *parent)
     connect(ui->templateOption, &QButtonGroup::idClicked, ui->templatesCB, &QComboBox::setEnabled);
     if (!mergeOption) {
         ui->mergeWidget->hide();
-    } else {
-        id = 1;
-        for (auto &&btn: ui->mergeOption->buttons())
-            ui->mergeOption->setId(btn, id--);
-        connect(ui->mergeOption, &QButtonGroup::idClicked, ui->mergeCB, &QComboBox::setEnabled);
     }
 }
 
@@ -36,5 +33,4 @@ TemplatePanel::~TemplatePanel()
 
 void TemplatePanel::connectSignalsWithSlots()
 {
-
 }
