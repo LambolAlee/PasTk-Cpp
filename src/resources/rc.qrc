@@ -20,5 +20,7 @@
         <file>style/basic_style.qss</file>
         <file>logo/github.svg</file>
         <file>style/font-win.qss</file>
+        <file>icons/right-bar.svg</file>
+        <file>icons/star.svg</file>
     </qresource>
 </RCC>

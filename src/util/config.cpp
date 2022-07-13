@@ -19,14 +19,14 @@ const QStringList Config::getTemplatesNames() const
     return _templateHelper.getTemplatesNames();
 }
 
-const QString Config::getTemplate(const QString &name) const
+const TemplateContent Config::getTemplate(const QString &name) const
 {
     return _templateHelper.getTemplate(name);
 }
 
-void Config::setTemplate(const QString &name, const QString &templateString)
+void Config::setTemplate(const QString &name, const QString &templateString, const QString &description)
 {
-    _templateHelper.setTemplate(name, templateString);
+    _templateHelper.setTemplate(name, templateString, description);
 }
 
 void Config::loadTemplates()
@@ -34,23 +34,69 @@ void Config::loadTemplates()
     int size = beginReadArray("Templates");
     for (int i = 0; i < size; ++i) {
         setArrayIndex(i);
-        _templateHelper.setTemplate(value("name").toString(), value("template").toString());
+        _templateHelper.setTemplate(
+                    value("name").toString(),
+                    value("template").toString(),
+                    value("description").toString());
     }
     endArray();
+    _templateHelper.setModified(false);
 }
 
 void Config::saveTemplates()
 {
     if (!_templateHelper.isModified()) return;
 
+    qDebug() << "[Config] saving templates now..";
+
+    beginGroup("Templates");
+    remove("");
+    endGroup();
+
     int i = 0;
     beginWriteArray("Templates");
     for (auto pair = _templateHelper.keyValueBegin(); pair != _templateHelper.keyValueEnd(); ++pair) {
         setArrayIndex(i++);
         setValue("name", pair->first);
-        setValue("template", pair->second);
+        auto content = pair->second;
+        setValue("template", content.first);
+        setValue("description", content.second);
     }
     endArray();
+    _templateHelper.setModified(false);
+}
+
+void Config::setDefaultTemplate(const QString &name)
+{
+    setKey(QStringLiteral("DefaultTemplate"), QStringLiteral("default_template"), name);
+}
+
+QPair<QString, TemplateContent> Config::getDefaultTemplate()
+{
+    auto name = getValue(QStringLiteral("DefaultTemplate"), QStringLiteral("default_template"), QString());
+    if (name.isEmpty())
+        return {};
+    else
+        return {name, getTemplate(name)};
+}
+
+bool Config::contains(const QString &name)
+{
+    return _templateHelper.contains(name);
+}
+
+void Config::remove(const QString &name)
+{
+    if (name == getDefaultTemplate().first)
+        setDefaultTemplate(QString());
+    _templateHelper.removeTemplate(name);
+}
+
+void Config::rename(const QString &oldName, const QString &newName)
+{
+    if (oldName == getDefaultTemplate().first)
+        setDefaultTemplate(newName);
+    _templateHelper.renameTemplate(oldName, newName);
 }
 
 

@@ -12,8 +12,6 @@ class IGenerator
 public:
     virtual ~IGenerator() = default;
 
-    virtual QStringList normalTags() =0;
-    virtual QStringList specialTags() =0;
     virtual QVariant handle(QStringView tagName, const QXmlStreamAttributes &attrs) =0;
     virtual void setNext(IGenerator *gen) =0;
     virtual IGenerator *next() const =0;

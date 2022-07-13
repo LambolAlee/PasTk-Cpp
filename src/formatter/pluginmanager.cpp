@@ -213,11 +213,6 @@ void PluginManager::updatePluginsConfig()
     save2File(root);
 }
 
-bool PluginManager::isDisabled(const QString &path)
-{
-    return d->_disabled.contains(path);
-}
-
 void PluginManager::save2File(const QJsonObject &root)
 {
     QFile config(_pluginDir.absoluteFilePath(configName));

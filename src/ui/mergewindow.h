@@ -8,6 +8,8 @@ class MergeWindow;
 }
 
 class TemplatePanel;
+class Config;
+class Processor;
 
 class MergeWindow : public QMainWindow
 {
@@ -20,9 +22,15 @@ public:
 signals:
     void reportQuit();
 
+private slots:
+    //void updatePreviewText(const QString &mergeStr, QPair<int, QString> info);
+    void run();
+
 private:
     Ui::MergeWindow *ui;
     TemplatePanel *_panel;
+    Config *_config;
+    Processor *_processor;
 
     void connectSignalsWithSlots();
 

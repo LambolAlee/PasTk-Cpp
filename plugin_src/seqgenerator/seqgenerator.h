@@ -18,8 +18,6 @@ public:
     SeqGenerator();
     ~SeqGenerator();
 
-    QStringList normalTags() override;
-    QStringList specialTags() override;
     QVariant handle(QStringView tagName, const QXmlStreamAttributes &attrs) override;
 
     void setNext(IGenerator *gen) override;
@@ -40,6 +38,8 @@ private:
 
     QString accumulate(int begin, const QString &mode);
     QVariant deliverToNext(QStringView tagName, const QXmlStreamAttributes &attrs);
+    QStringList normalTags();
+    QStringList specialTags();
 };
 
 #endif // SEQGENERATOR_H

@@ -24,7 +24,7 @@ void PostOffice::remove(const QString &theme)
 
 void PostOffice::expire(QObject *obj)
 {
-    qDebug() << "expire the obj `" << obj << "` from themes";
+    qDebug() << "[PostOffice] expire the obj `" << obj << "` from themes";
     if (!obj) return;
     auto theme = _themes.key(obj);
     _themes.remove(theme);

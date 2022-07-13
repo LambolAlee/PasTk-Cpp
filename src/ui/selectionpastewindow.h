@@ -10,6 +10,8 @@ class SelectionPasteWindow;
 
 class TemplatePanel;
 class ItemDelegate;
+class Config;
+class Processor;
 
 class SelectionPasteWindow : public QMainWindow
 {
@@ -29,6 +31,7 @@ private slots:
     void startCheckClick(const QModelIndex &index);
     void onDoubleClicked(const QModelIndex &index);
     void onSingleClicked();
+    void updatePreviewText(QPair<int, QString> info);
 
 private:
     Ui::SelectionPasteWindow *ui;
@@ -36,8 +39,12 @@ private:
     ItemDelegate *_delegate;
     QTimer *_timer;
     QModelIndex _index;
+    Config *_config;
+    Processor *_processor;
 
     void connectSignalsWithSlots();
+    void updatePreviewText();
+    QString applyTemplate(const QString &data, QPair<int, QString> info);
 
 // QWidget interface
 protected:

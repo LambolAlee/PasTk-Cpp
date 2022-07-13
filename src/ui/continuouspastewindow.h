@@ -9,6 +9,8 @@ class ContinuousPasteWindow;
 
 class DataManager;
 class TemplatePanel;
+class Processor;
+class Config;
 
 class ContinuousPasteWindow : public QMainWindow
 {
@@ -24,11 +26,14 @@ signals:
 private slots:
     void run();
     void prepareNextData();
+    void updatePreviewText(QPair<int, QString> info);
 
 private:
     Ui::ContinuousPasteWindow *ui;
     DataManager &_dataManager;
+    Config *_config;
     TemplatePanel *_panel;
+    Processor *_processor;
     int _current;
     QString _currentData;
     int _max;
@@ -36,6 +41,7 @@ private:
 
     void connectSignalsWithSlots();
     bool checkForTheEnd();
+    void updatePreviewText();
 
 // QWidget interface
 protected:

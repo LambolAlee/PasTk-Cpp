@@ -2,6 +2,11 @@
     "name": "SeqGenerator",
     "version": "1.0",
     "author": "Lambol.Michael.Alee",
-    "url":"https://github.com/LambolAlee/PasTk-Cpp/tree/main/plugin_src/seqgenerator",
-    "description": "Basic function of template"
+    "url": "https://github.com/LambolAlee/PasTk-Cpp/tree/main/plugin_src/seqgenerator",
+    "description": "Basic function of template",
+    "help": {
+        "<br>": "equals to \\n",
+        "<tab>": "equals to \\t",
+        "<seq>": "help to add indexes before the given data"
+    }
 }

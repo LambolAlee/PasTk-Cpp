@@ -13,6 +13,7 @@ class PasteUtil : public QObject
 public:
     void paste(const QString &str, bool directly);
     void quickPaste(const QString &str);
+    void paste(QWidget *window, const QString &str);
 
 private slots:
     void _paste() const;

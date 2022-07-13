@@ -15,6 +15,7 @@ public:
 
     void parse(const QString &templateStr);
     QString yield(const QString &data);
+    void reset();
 
 private:
     QXmlStreamReader _xml;
@@ -22,6 +23,7 @@ private:
     QVariantList _res;
     QString _data;
     QList<IGenerator *> _generators;
+    QString _currentTemplate;
 };
 
 #endif // PROCESSOR_H

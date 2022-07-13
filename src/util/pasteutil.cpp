@@ -3,6 +3,7 @@
 #include <windows.h>
 #include <QClipboard>
 #include <QTimer>
+#include <QWidget>
 
 #define VK_V 0x56
 
@@ -20,7 +21,7 @@ void PasteUtil::paste(bool directly, bool needQuickPaste)
 {
     if (!directly)
         PostOffice::instance().post("home_hide_for_paste", Q_ARG(bool, true));
-    QTimer::singleShot(220, this, [=]{
+    QTimer::singleShot(300, this, [=]{
         _paste();
         if (!directly)
             PostOffice::instance().post("home_hide_for_paste", Q_ARG(bool, false));
@@ -35,6 +36,16 @@ void PasteUtil::quickPaste(const QString &str)
     _clipBoard->blockSignals(true);
     _clipBoard->setText(str);
     paste(false, true);
+}
+
+void PasteUtil::paste(QWidget *window, const QString &str)
+{
+    window->hide();
+    _clipBoard->setText(str);
+    QTimer::singleShot(300, this, [=]{
+        _paste();
+        window->show();
+    });
 }
 
 void PasteUtil::_paste() const

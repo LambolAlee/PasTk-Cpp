@@ -18,11 +18,17 @@ public:
 public:
 // Template edit area --------------------->
     const QStringList getTemplatesNames() const;
-    const QString getTemplate(const QString &name) const;
-    void setTemplate(const QString &name, const QString &templateString);
+    const TemplateContent getTemplate(const QString &name) const;
+    void setTemplate(const QString &name, const QString &templateString, const QString &description);
 
     void loadTemplates();
     void saveTemplates();
+
+    void setDefaultTemplate(const QString &name);
+    QPair<QString, TemplateContent> getDefaultTemplate();
+    bool contains(const QString &name);
+    void remove(const QString &name);
+    void rename(const QString &oldName, const QString &newName);
 
 // General settings --------------------->
     void setLanguage(const QString &language);
@@ -58,7 +64,7 @@ public:
     int getLastUsedMode();
 
 private:
-    TemplateHelper _templateHelper;
+    TemplateHelper &_templateHelper = TemplateHelper::instance();
 
 // helper function --------------------->
     template<typename T> void setKey(const QString &group, const QString &key, T value);

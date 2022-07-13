@@ -46,7 +46,6 @@ public:
 
 private:
     bool checkPluginsConfig();
-    bool isDisabled(const QString &path);
     void save2File(const QJsonObject &root);
     void createPluginsConfig();
 
