@@ -21,5 +21,3 @@ void TagLoader::parse(const QString &templateStr)
     }
     m_xml.clear();
 }
-
-
