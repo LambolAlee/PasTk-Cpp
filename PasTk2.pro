@@ -9,7 +9,7 @@ CONFIG += c++20
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 macx {
-    OBJECTIVE_SOURCES += src/utils/paste/pasteutil.mm
+    OBJECTIVE_SOURCES += src/paste/pasteutil.mm
     LIBS += -framework Cocoa
     LIBS += -framework Carbon
 
@@ -17,23 +17,43 @@ macx {
 }
 
 win32 {
-    SOURCES += src/utils/paste/pasteutil.cpp
+    SOURCES += src/paste/pasteutil.cpp
 }
 
 SOURCES += \
+    src/data/datacaster.cpp \
+    src/data/datamanager.cpp \
     src/main.cpp \
-    src/template/tagloader.cpp \
+    src/settings/config.cpp \
+    src/settings/defaultsettings.cpp \
+    src/tag/coretag.cpp \
+    src/tag/seqtag.cpp \
+    src/tag/tagloader.cpp \
+    src/template/segment.cpp \
+    src/template/segments.cpp \
+    src/template/templateparser.cpp \
     src/ui/bottombar.cpp \
     src/ui/pastkwindow.cpp \
     src/ui/templateeditorwindow.cpp \
 
 HEADERS += \
-    src/template/tagloader.h \
+    src/data/datacaster.h \
+    src/data/datamanager.h \
+    src/settings/config.h \
+    src/settings/defaultsettings.h \
+    src/tag/ITag.h \
+    src/tag/coretag.h \
+    src/tag/seqtag.h \
+    src/tag/tagloader.h \
+    src/template/segment.h \
+    src/template/segments.h \
+    src/template/templateparser.h \
     src/ui/bottombar.h \
     src/ui/pastkwindow.h \
     src/ui/templateeditorwindow.h \
     src/utils/Singleton.h \
-    src/utils/paste/pasteutil.h
+    src/paste/pasteutil.h \
+    src/utils/consts.h
 
 FORMS += \
     src/ui/bottombar.ui \
