@@ -13,8 +13,13 @@ QList<QString> CoreTag::tags() const
     return QList<QString>({"<data>", "<br>", "<tab>"});
 }
 
-QVariant CoreTag::handle(QStringView tagName, const QXmlStreamAttributes &attrs)
+ISegment *CoreTag::handle(QStringView tagName, [[maybe_unused]]const QXmlStreamAttributes &attrs)
 {
+    CoreSegment *seg = new CoreSegment;
+    if (tagName == QStringLiteral("data")) {
+
+    }
+    return seg;
 }
 
 void CoreTag::setNext(ITag *tag)

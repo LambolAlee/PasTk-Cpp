@@ -29,7 +29,6 @@ SOURCES += \
     src/tag/coretag.cpp \
     src/tag/seqtag.cpp \
     src/tag/tagloader.cpp \
-    src/template/segment.cpp \
     src/template/segments.cpp \
     src/template/templateparser.cpp \
     src/ui/bottombar.cpp \
@@ -45,7 +44,7 @@ HEADERS += \
     src/tag/coretag.h \
     src/tag/seqtag.h \
     src/tag/tagloader.h \
-    src/template/segment.h \
+    src/template/ISegment.h \
     src/template/segments.h \
     src/template/templateparser.h \
     src/ui/bottombar.h \

@@ -12,7 +12,7 @@ QList<QString> SeqTag::tags() const
 {
 }
 
-QVariant SeqTag::handle(QStringView tagName, const QXmlStreamAttributes &attrs)
+ISegment *SeqTag::handle(QStringView tagName, [[maybe_unused]]const QXmlStreamAttributes &attrs)
 {
 }
 
