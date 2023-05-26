@@ -3,17 +3,20 @@
 #define SEGMENTS_H
 
 #include <QList>
-#include "segment.h"
+#include "ISegment.h"
 
 
 class Segments
 {
 public:
+    Segments();
+    ~Segments();
+
     void clear();
-    void addSegment(SegType type);
+    void addSegment(ISegment *segment);
 
 private:
-    QList<Segment> m_segments;
+    QList<ISegment *> *m_segments;
 };
 
 #endif // SEGMENTS_H

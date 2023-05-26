@@ -1,23 +1,36 @@
 
 #include "coretag.h"
-#include <QVariant>
+#include "src/data/datamanager.h"
 
+
+CoreTag::CoreTag()
+{
+    m_tags = {"data", "br", "tab"};
+}
 
 CoreTag::~CoreTag()
 {
+    delete m_nextTag;
     m_nextTag = nullptr;
 }
 
 QList<QString> CoreTag::tags() const
 {
-    return QList<QString>({"<data>", "<br>", "<tab>"});
+    return m_tags;
 }
 
-ISegment *CoreTag::handle(QStringView tagName, [[maybe_unused]]const QXmlStreamAttributes &attrs)
+ISegment *CoreTag::handle(QStringView tagName, const QXmlStreamAttributes &attrs)
 {
-    CoreSegment *seg = new CoreSegment;
-    if (tagName == QStringLiteral("data")) {
-
+    ISegment *seg;
+    if (!m_tags.contains(tagName)) {
+        if (next())
+            seg = next()->handle(tagName, attrs);
+        else
+            seg = UtilSegment::createPlainTextSegment(tagName.toString());
+    } else if (tagName == QStringLiteral("data")) {
+        seg = new DataSegment;
+    } else {
+        seg = new LineBreakSegment(tagName);
     }
     return seg;
 }
@@ -32,6 +45,37 @@ ITag *CoreTag::next() const
     return m_nextTag;
 }
 
-void CoreTag::reset() const
+
+// ------------- LineBreakSegment -------------- //
+LineBreakSegment::LineBreakSegment(QStringView type)
 {
+    m_break_type = type;
+}
+
+void LineBreakSegment::build(DataManager */*dm*/)
+{
+    m_data = (m_break_type == QStringLiteral("br")) ? "\n" : "\t";
+}
+
+const QString LineBreakSegment::data()
+{
+    return m_data;
+}
+
+
+// ------------- DataSegment -------------- //
+DataSegment::~DataSegment()
+{
+    m_dm = nullptr;
+}
+
+void DataSegment::build(DataManager *dm)
+{
+    m_dm = dm;
+}
+
+const QString DataSegment::data()
+{
+    // TODO: DataManager object -> how to represent the current item
+    return m_dm->current;
 }

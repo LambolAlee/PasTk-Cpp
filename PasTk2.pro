@@ -31,6 +31,7 @@ SOURCES += \
     src/tag/tagloader.cpp \
     src/template/segments.cpp \
     src/template/templateparser.cpp \
+    src/template/utilsegment.cpp \
     src/ui/bottombar.cpp \
     src/ui/pastkwindow.cpp \
     src/ui/templateeditorwindow.cpp \
@@ -47,6 +48,7 @@ HEADERS += \
     src/template/ISegment.h \
     src/template/segments.h \
     src/template/templateparser.h \
+    src/template/utilsegment.h \
     src/ui/bottombar.h \
     src/ui/pastkwindow.h \
     src/ui/templateeditorwindow.h \
