@@ -21,7 +21,7 @@ win32 {
 }
 
 SOURCES += \
-    src/data/datacaster.cpp \
+    src/data/clipboardlistener.cpp \
     src/data/datamanager.cpp \
     src/main.cpp \
     src/settings/config.cpp \
@@ -37,6 +37,7 @@ SOURCES += \
     src/ui/templateeditorwindow.cpp \
 
 HEADERS += \
+    src/data/clipboardlistener.h \
     src/data/datacaster.h \
     src/data/datamanager.h \
     src/settings/config.h \

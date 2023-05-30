@@ -9,4 +9,10 @@ enum SegType
     Placeholder,
 };
 
+enum PasteType
+{
+    Continuous,
+    Selection,
+};
+
 #endif // CONSTS_H

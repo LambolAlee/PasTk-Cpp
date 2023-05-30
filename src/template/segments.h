@@ -2,9 +2,7 @@
 #ifndef SEGMENTS_H
 #define SEGMENTS_H
 
-#include <QList>
 #include "ISegment.h"
-
 
 class Segments
 {
@@ -12,11 +10,13 @@ public:
     Segments();
     ~Segments();
 
-    void clear();
-    void addSegment(ISegment *segment);
+    void build(DataManager *dm);
+    const QString data();
 
 private:
     QList<ISegment *> *m_segments;
+    QStringList *m_result;
 };
+
 
 #endif // SEGMENTS_H

@@ -3,8 +3,6 @@
 #define TEMPLATEPARSER_H
 
 
-
-
 class TemplateParser
 {
 public:

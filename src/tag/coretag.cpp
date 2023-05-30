@@ -77,5 +77,5 @@ void DataSegment::build(DataManager *dm)
 const QString DataSegment::data()
 {
     // TODO: DataManager object -> how to represent the current item
-    return m_dm->current;
+    return m_dm->castCurrent();
 }

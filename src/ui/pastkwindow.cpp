@@ -3,7 +3,8 @@
 #include <QToolButton>
 #include <QLabel>
 
-#include "src/utils/paste/pasteutil.h"
+#include "src/paste/pasteutil.h"
+#include "bottombar.h"
 
 
 PasTkWindow::PasTkWindow(QWidget *parent)
@@ -19,6 +20,7 @@ PasTkWindow::PasTkWindow(QWidget *parent)
 PasTkWindow::~PasTkWindow()
 {
     delete ui;
+    delete m_bottombar;
 }
 
 void PasTkWindow::showDetailContent()
@@ -34,5 +36,6 @@ void PasTkWindow::connectSignalsWithSlots()
 
 void PasTkWindow::buildBottomBar()
 {
+    m_bottombar = new BottomBar(this);
 
 }
