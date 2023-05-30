@@ -4,8 +4,7 @@
 #include <QSettings>
 
 #include "defaultsettings.h"
-#include "formatter/templatehelper.h"
-
+#include "src/template/templatehelper.h"
 
 class Config : private QSettings
 {
@@ -64,7 +63,7 @@ public:
     int getLastUsedMode();
 
 private:
-    TemplateHelper &_templateHelper = TemplateHelper::instance();
+    TemplateHelper &m_template_helper = TemplateHelper::instance();
 
 // helper function --------------------->
     template<typename T> void setKey(const QString &group, const QString &key, T value);

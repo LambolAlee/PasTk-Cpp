@@ -26,7 +26,7 @@ class SeqTag : public ITag
 {
 public:
     SeqTag();
-    ~SeqTag() override;
+    ~SeqTag();
 
 public:
     QList<QString> tags() const override;

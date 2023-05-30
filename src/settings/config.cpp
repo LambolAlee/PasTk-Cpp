@@ -16,17 +16,17 @@ Config::~Config()
 // Template edit area --------------------->
 const QStringList Config::getTemplatesNames() const
 {
-    return _templateHelper.getTemplatesNames();
+    return m_template_helper.getTemplatesNames();
 }
 
 const TemplateContent Config::getTemplate(const QString &name) const
 {
-    return _templateHelper.getTemplate(name);
+    return m_template_helper.getTemplate(name);
 }
 
 void Config::setTemplate(const QString &name, const QString &templateString, const QString &description)
 {
-    _templateHelper.setTemplate(name, templateString, description);
+    m_template_helper.setTemplate(name, templateString, description);
 }
 
 void Config::loadTemplates()
@@ -34,18 +34,18 @@ void Config::loadTemplates()
     int size = beginReadArray("Templates");
     for (int i = 0; i < size; ++i) {
         setArrayIndex(i);
-        _templateHelper.setTemplate(
+        m_template_helper.setTemplate(
                     value("name").toString(),
                     value("template").toString(),
                     value("description").toString());
     }
     endArray();
-    _templateHelper.setModified(false);
+    m_template_helper.setModified(false);
 }
 
 void Config::saveTemplates()
 {
-    if (!_templateHelper.isModified()) return;
+    if (!m_template_helper.isModified()) return;
 
     qDebug() << "[Config] saving templates now..";
 
@@ -55,7 +55,7 @@ void Config::saveTemplates()
 
     int i = 0;
     beginWriteArray("Templates");
-    for (auto pair = _templateHelper.keyValueBegin(); pair != _templateHelper.keyValueEnd(); ++pair) {
+    for (auto pair = m_template_helper.keyValueBegin(); pair != m_template_helper.keyValueEnd(); ++pair) {
         setArrayIndex(i++);
         setValue("name", pair->first);
         auto content = pair->second;
@@ -63,7 +63,7 @@ void Config::saveTemplates()
         setValue("description", content.second);
     }
     endArray();
-    _templateHelper.setModified(false);
+    m_template_helper.setModified(false);
 }
 
 void Config::setDefaultTemplate(const QString &name)
@@ -82,21 +82,21 @@ QPair<QString, TemplateContent> Config::getDefaultTemplate()
 
 bool Config::contains(const QString &name)
 {
-    return _templateHelper.contains(name);
+    return m_template_helper.contains(name);
 }
 
 void Config::remove(const QString &name)
 {
     if (name == getDefaultTemplate().first)
         setDefaultTemplate(QString());
-    _templateHelper.removeTemplate(name);
+    m_template_helper.removeTemplate(name);
 }
 
 void Config::rename(const QString &oldName, const QString &newName)
 {
     if (oldName == getDefaultTemplate().first)
         setDefaultTemplate(newName);
-    _templateHelper.renameTemplate(oldName, newName);
+    m_template_helper.renameTemplate(oldName, newName);
 }
 
 

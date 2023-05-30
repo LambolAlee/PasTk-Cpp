@@ -30,10 +30,13 @@ SOURCES += \
     src/tag/seqtag.cpp \
     src/tag/tagloader.cpp \
     src/template/segments.cpp \
+    src/template/templatehelper.cpp \
     src/template/templateparser.cpp \
     src/template/utilsegment.cpp \
+    src/ui/aboutpastkcpp.cpp \
     src/ui/bottombar.cpp \
     src/ui/pastkwindow.cpp \
+    src/ui/preferences.cpp \
     src/ui/templateeditorwindow.cpp \
 
 HEADERS += \
@@ -48,18 +51,24 @@ HEADERS += \
     src/tag/tagloader.h \
     src/template/ISegment.h \
     src/template/segments.h \
+    src/template/templatehelper.h \
     src/template/templateparser.h \
     src/template/utilsegment.h \
+    src/ui/aboutpastkcpp.h \
     src/ui/bottombar.h \
     src/ui/pastkwindow.h \
+    src/ui/preferences.h \
     src/ui/templateeditorwindow.h \
     src/utils/Singleton.h \
     src/paste/pasteutil.h \
-    src/utils/consts.h
+    src/utils/consts.h \
+    src/version.h
 
 FORMS += \
+    src/ui/aboutpastkcpp.ui \
     src/ui/bottombar.ui \
     src/ui/pastkwindow.ui \
+    src/ui/preferences.ui \
     src/ui/templateeditorwindow.ui
 
 # Default rules for deployment.

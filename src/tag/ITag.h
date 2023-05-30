@@ -10,7 +10,8 @@ class ISegment;
 class ITag
 {
 public:
-    virtual ~ITag() =0;
+    virtual ~ITag() =default;
+
     virtual QList<QString> tags() const =0;
     virtual ISegment *handle(QStringView tagName, const QXmlStreamAttributes &attrs) =0;
     virtual void setNext(ITag *tag) =0;

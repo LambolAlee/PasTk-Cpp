@@ -30,6 +30,4 @@ ISegment *createPlainTextSegment(const QString &text);
 QString readAttr(const QXmlStreamAttributes &attrs, const QString &key, const QString &default_value);
 }
 
-
-
 #endif // UTILSEGMENT_H

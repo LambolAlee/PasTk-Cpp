@@ -37,5 +37,5 @@ void PasTkWindow::connectSignalsWithSlots()
 void PasTkWindow::buildBottomBar()
 {
     m_bottombar = new BottomBar(this);
-
+    ui->centralwidget->layout()->addWidget(m_bottombar);
 }

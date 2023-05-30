@@ -38,7 +38,7 @@ class CoreTag : public ITag
 {
 public:
     CoreTag();
-    ~CoreTag() override;
+    ~CoreTag();
 
 public:
     QList<QString> tags() const override;

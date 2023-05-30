@@ -10,8 +10,9 @@ Segments::Segments()
 
 Segments::~Segments()
 {
-    qDeleteAll(m_segments);
-    qDeleteAll(m_result);
+    qDeleteAll(*m_segments);
+    m_result->clear();
+    delete m_result;
     m_segments = nullptr;
     m_result = nullptr;
 }
@@ -28,4 +29,9 @@ const QString Segments::data()
     for (auto segment : *m_segments)
         m_result->append(segment->data());
     return m_result->join("");
+}
+
+void Segments::append(ISegment *segment)
+{
+    m_segments->append(segment);
 }

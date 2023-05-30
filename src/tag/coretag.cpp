@@ -6,6 +6,7 @@
 CoreTag::CoreTag()
 {
     m_tags = {"data", "br", "tab"};
+    m_nextTag = nullptr;
 }
 
 CoreTag::~CoreTag()

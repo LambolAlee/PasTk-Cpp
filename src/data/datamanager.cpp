@@ -6,6 +6,8 @@ DataManager::DataManager()
     connect(&m_listener, &ClipboardListener::newDataOccurred, this, &DataManager::push);
 }
 
+DataManager::~DataManager() {}
+
 void DataManager::push(const QString &text)
 {
     if (!text.isEmpty())

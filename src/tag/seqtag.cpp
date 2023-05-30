@@ -6,6 +6,7 @@
 SeqTag::SeqTag()
 {
     m_tags = {"index"};
+    m_nextTag = nullptr;
 }
 
 SeqTag::~SeqTag()

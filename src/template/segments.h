@@ -12,6 +12,7 @@ public:
 
     void build(DataManager *dm);
     const QString data();
+    void append(ISegment *segment);
 
 private:
     QList<ISegment *> *m_segments;
