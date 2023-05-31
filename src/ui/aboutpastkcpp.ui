@@ -44,7 +44,7 @@
          <item>
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>&lt;img src=&quot;:/logo/PasTk_logo_128.png&quot; width=&quot;64&quot; height=&quot;64&quot;/&gt;</string>
+            <string>&lt;img src=&quot;:/PasTk_logo_128.png&quot; width=&quot;64&quot; height=&quot;64&quot;/&gt;</string>
            </property>
           </widget>
          </item>
@@ -88,8 +88,8 @@
             <string>Code</string>
            </property>
            <property name="icon">
-            <iconset resource="../resources/rc.qrc">
-             <normaloff>:/logo/github.svg</normaloff>:/logo/github.svg</iconset>
+            <iconset resource="../../qrc/logo/logo.qrc">
+             <normaloff>:/github.svg</normaloff>:/github.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -310,7 +310,7 @@ p, li { white-space: pre-wrap; }
   </layout>
  </widget>
  <resources>
-  <include location="../resources/rc.qrc"/>
+  <include location="../../qrc/logo/logo.qrc"/>
  </resources>
  <connections/>
 </ui>

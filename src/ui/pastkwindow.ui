@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>370</width>
-    <height>484</height>
+    <width>312</width>
+    <height>432</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -98,7 +98,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>370</width>
+     <width>312</width>
      <height>22</height>
     </rect>
    </property>
@@ -106,7 +106,6 @@
     <property name="title">
      <string>Mode</string>
     </property>
-    <addaction name="actionMerge"/>
     <addaction name="actionContinuous_Mode"/>
     <addaction name="actionSelection_Mode"/>
    </widget>
@@ -116,6 +115,8 @@
     </property>
     <addaction name="actionTemplate_Editor"/>
     <addaction name="actionSettings"/>
+    <addaction name="separator"/>
+    <addaction name="actionTopmost"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -128,11 +129,6 @@
    <addaction name="menuTool"/>
    <addaction name="menuHelp"/>
   </widget>
-  <action name="actionMerge">
-   <property name="text">
-    <string>Merge Mode</string>
-   </property>
-  </action>
   <action name="actionContinuous_Mode">
    <property name="text">
     <string>Continuous Mode</string>
@@ -143,22 +139,29 @@
     <string>Selection Mode</string>
    </property>
   </action>
-  <action name="actionMenu_Bar">
-   <property name="text">
-    <string>Menu Bar</string>
-   </property>
-  </action>
   <action name="actionTemplate_Editor">
+   <property name="icon">
+    <iconset resource="../../qrc/icons/icons.qrc">
+     <normaloff>:/about.svg</normaloff>:/about.svg</iconset>
+   </property>
    <property name="text">
     <string>Template Editor</string>
    </property>
   </action>
   <action name="actionSettings">
+   <property name="icon">
+    <iconset resource="../../qrc/icons/icons.qrc">
+     <normaloff>:/setting.svg</normaloff>:/setting.svg</iconset>
+   </property>
    <property name="text">
     <string>Settings</string>
    </property>
   </action>
   <action name="actionAbout_PasTk2">
+   <property name="icon">
+    <iconset resource="../../qrc/logo/logo.qrc">
+     <normaloff>:/PasTk_logo_128.png</normaloff>:/PasTk_logo_128.png</iconset>
+   </property>
    <property name="text">
     <string>About PasTk2</string>
    </property>
@@ -168,7 +171,18 @@
     <string>About Qt</string>
    </property>
   </action>
+  <action name="actionTopmost">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Topmost</string>
+   </property>
+  </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../qrc/logo/logo.qrc"/>
+  <include location="../../qrc/icons/icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

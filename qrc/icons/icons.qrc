@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/">
+        <file>about.svg</file>
+        <file>ashbin.svg</file>
+        <file>box.svg</file>
+        <file>clear.svg</file>
+        <file>clipboard.svg</file>
+        <file>close.svg</file>
+        <file>delete_one.svg</file>
+        <file>edit.svg</file>
+        <file>execute.svg</file>
+        <file>execute_normal.svg</file>
+        <file>pause.svg</file>
+        <file>pin.png</file>
+        <file>play.svg</file>
+        <file>reset.svg</file>
+        <file>right-bar.svg</file>
+        <file>setting.svg</file>
+        <file>star.svg</file>
+        <file>text.svg</file>
+        <file>unpin.png</file>
+        <file>window-maximize.svg</file>
+        <file>window-minimize.svg</file>
+        <file>window-restore.svg</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>github.svg</file>
+        <file>PasTk_logo.icns</file>
+        <file>PasTk_logo.ico</file>
+        <file>PasTk_logo.png</file>
+        <file>PasTk_logo_128.png</file>
+    </qresource>
+</RCC>

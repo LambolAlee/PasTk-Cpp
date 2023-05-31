@@ -15,6 +15,9 @@ public:
     explicit BottomBar(QWidget *parent = nullptr);
     ~BottomBar();
 
+    void setModeActions(QActionGroup *group);
+    const QList<QAction *> actions();
+
 private:
     Ui::BottomBar *ui;
 };

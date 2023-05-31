@@ -2,6 +2,7 @@
 
 #include <QApplication>
 #include <QStyleFactory>
+#include "src/ui/systray.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,6 +13,7 @@ int main(int argc, char *argv[])
 #endif
 
     PasTkWindow w;
-    w.show();
+    SysTray tray(&w);
+    tray.show();
     return a.exec();
 }

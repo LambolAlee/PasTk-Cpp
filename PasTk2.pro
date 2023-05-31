@@ -18,6 +18,7 @@ macx {
 
 win32 {
     SOURCES += src/paste/pasteutil.cpp
+    RC_ICONS = qrc\logo\PasTk_logo.ico
 }
 
 SOURCES += \
@@ -37,7 +38,9 @@ SOURCES += \
     src/ui/bottombar.cpp \
     src/ui/pastkwindow.cpp \
     src/ui/preferences.cpp \
+    src/ui/systray.cpp \
     src/ui/templateeditorwindow.cpp \
+    src/utils/windowhelper.cpp
 
 HEADERS += \
     src/data/clipboardlistener.h \
@@ -58,10 +61,12 @@ HEADERS += \
     src/ui/bottombar.h \
     src/ui/pastkwindow.h \
     src/ui/preferences.h \
+    src/ui/systray.h \
     src/ui/templateeditorwindow.h \
     src/utils/Singleton.h \
     src/paste/pasteutil.h \
     src/utils/consts.h \
+    src/utils/windowhelper.h \
     src/version.h
 
 FORMS += \
@@ -75,3 +80,7 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    qrc/icons/icons.qrc \
+    qrc/logo/logo.qrc
