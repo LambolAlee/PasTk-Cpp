@@ -85,7 +85,16 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QListView" name="listView"/>
+         <widget class="DetailView" name="listView">
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -99,7 +108,7 @@
      <x>0</x>
      <y>0</y>
      <width>312</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMode">
@@ -130,11 +139,17 @@
    <addaction name="menuHelp"/>
   </widget>
   <action name="actionContinuous_Mode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Continuous Mode</string>
    </property>
   </action>
   <action name="actionSelection_Mode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Selection Mode</string>
    </property>
@@ -179,10 +194,33 @@
     <string>Topmost</string>
    </property>
   </action>
+  <action name="actionDelete">
+   <property name="text">
+    <string>Delete</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete the item</string>
+   </property>
+  </action>
+  <action name="actionEdit">
+   <property name="text">
+    <string>Edit</string>
+   </property>
+   <property name="toolTip">
+    <string>Edit the item</string>
+   </property>
+  </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DetailView</class>
+   <extends>QListView</extends>
+   <header>src/ui/detailview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
-  <include location="../../qrc/logo/logo.qrc"/>
   <include location="../../qrc/icons/icons.qrc"/>
+  <include location="../../qrc/logo/logo.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -3,15 +3,45 @@
 
 DataManager::DataManager()
 {
+    m_state = ModelState::Normal;
     connect(&m_listener, &ClipboardListener::newDataOccurred, this, &DataManager::push);
+    for (int i=0; i< 10; i++)
+        appendRow(new QStandardItem(QString::number(i)));
 }
 
 DataManager::~DataManager() {}
 
 void DataManager::push(const QString &text)
 {
-    if (!text.isEmpty())
+    if (!text.isEmpty()) {
         appendRow(new QStandardItem(text));
+        emit itemCountChange(rowCount());
+    }
+}
+
+void DataManager::insert(int row, const QString &text)
+{
+    insertRow(row, new QStandardItem(text));
+    emit itemCountChange(rowCount());
+}
+
+void DataManager::remove(const QModelIndexList &indexs)
+{
+    for (auto &&index = indexs.crbegin(); index != indexs.crend(); index++)
+        removeRow(index->row());
+    emit itemCountChange(rowCount());
+}
+
+void DataManager::remove(const QModelIndex &index)
+{
+    removeRow(index.row());
+    emit itemCountChange(rowCount());
+}
+
+void DataManager::clearAll()
+{
+    clear();
+    emit itemCountChange(0);
 }
 
 void DataManager::listen()

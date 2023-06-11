@@ -2,13 +2,20 @@
 #include <QApplication>
 #include <QClipboard>
 
+
 ClipboardListener::ClipboardListener(QObject *parent)
     : QObject{parent}
 {
     m_clip = qApp->clipboard();
     connect(m_clip, &QClipboard::dataChanged, this, [this]{
-        emit newDataOccurred(m_clip->text());
+        if (!m_clip->text().isEmpty())
+            emit newDataOccurred(m_clip->text());
     });
+}
+
+ClipboardListener::~ClipboardListener()
+{
+    m_clip = nullptr;
 }
 
 void ClipboardListener::listen()

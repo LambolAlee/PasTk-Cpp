@@ -26,6 +26,8 @@ SysTray::~SysTray()
 void SysTray::showWindow()
 {
     m_window->show();
+    m_window->activateWindow();
+    m_window->raise();
 }
 
 void SysTray::activateHandler(ActivationReason reason)
@@ -52,6 +54,7 @@ void SysTray::initUI()
     QAction *runPasteOld = actions.at(2);
     QAction *modes = m_menu->addAction("Select Modes");
     modes->setMenu(runPasteOld->menu());
+
     QAction *runPaste = m_menu->addAction("Paste");
     runPaste->setIcon(runPasteOld->icon());
     runPaste->setShortcut(runPasteOld->shortcut());
@@ -61,6 +64,14 @@ void SysTray::initUI()
     m_menu->addAction("Show Home Window", this, &SysTray::showWindow);
     m_menu->addSeparator();
     m_menu->addAction(m_window->preferencesAction());
+    m_menu->addSeparator();
+    auto *tools = m_window->toolMenu();
+    for (auto *action: tools->actions())
+        m_menu->addAction(action);
+    m_menu->addSeparator();
+    auto *help = m_window->helpMenu();
+    for (auto *action: help->actions())
+        m_menu->addAction(action);
     m_menu->addSeparator();
     m_menu->addAction("Quit", qApp, &QApplication::quit);
 

@@ -9,20 +9,27 @@ CONFIG += c++20
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 macx {
-    OBJECTIVE_SOURCES += src/paste/pasteutil.mm
+    OBJECTIVE_SOURCES += \
+        src/paste/pasteutil.mm \
+        src/data/clipboardlistener_mac.cpp
+
     LIBS += -framework Cocoa
     LIBS += -framework Carbon
 
     QMAKE_INFO_PLIST = ./Info.plist
+    ICON = qrc/logo/PasTk_logo.icns
 }
 
 win32 {
-    SOURCES += src/paste/pasteutil.cpp
+    SOURCES += \
+        src/paste/pasteutil.cpp \
+        src/data/clipboardlistener.cpp
+
     RC_ICONS = qrc\logo\PasTk_logo.ico
 }
 
 SOURCES += \
-    src/data/clipboardlistener.cpp \
+    src/ui/detailview.cpp \
     src/data/datamanager.cpp \
     src/main.cpp \
     src/settings/config.cpp \
@@ -36,13 +43,17 @@ SOURCES += \
     src/template/utilsegment.cpp \
     src/ui/aboutpastkcpp.cpp \
     src/ui/bottombar.cpp \
+    src/ui/itemeditordialog.cpp \
     src/ui/pastkwindow.cpp \
     src/ui/preferences.cpp \
+    src/ui/suspendscrollbar.cpp \
     src/ui/systray.cpp \
     src/ui/templateeditorwindow.cpp \
+    src/utils/util.cpp \
     src/utils/windowhelper.cpp
 
 HEADERS += \
+    src/ui/detailview.h \
     src/data/clipboardlistener.h \
     src/data/datacaster.h \
     src/data/datamanager.h \
@@ -59,19 +70,23 @@ HEADERS += \
     src/template/utilsegment.h \
     src/ui/aboutpastkcpp.h \
     src/ui/bottombar.h \
+    src/ui/itemeditordialog.h \
     src/ui/pastkwindow.h \
     src/ui/preferences.h \
+    src/ui/suspendscrollbar.h \
     src/ui/systray.h \
     src/ui/templateeditorwindow.h \
     src/utils/Singleton.h \
     src/paste/pasteutil.h \
     src/utils/consts.h \
+    src/utils/util.h \
     src/utils/windowhelper.h \
     src/version.h
 
 FORMS += \
     src/ui/aboutpastkcpp.ui \
     src/ui/bottombar.ui \
+    src/ui/itemeditordialog.ui \
     src/ui/pastkwindow.ui \
     src/ui/preferences.ui \
     src/ui/templateeditorwindow.ui
@@ -83,4 +98,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     qrc/icons/icons.qrc \
-    qrc/logo/logo.qrc
+    qrc/logo/logo.qrc \
+    qrc/style/styles.qrc

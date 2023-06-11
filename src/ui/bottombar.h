@@ -18,8 +18,28 @@ public:
     void setModeActions(QActionGroup *group);
     const QList<QAction *> actions();
 
+    void switchCopy(bool on);
+    void setClearActionDisabled(bool disabled);
+
+    bool eventFilter(QObject *watched, QEvent *event) override;
+
+signals:
+    void switchActionToggled(bool state);
+    void clearSelectedItems();
+    void clearAllTriggered();
+
+public slots:
+    void updateCount(int count);
+
+private slots:
+    void on_BottomBar_clearAllTriggered();
+
 private:
     Ui::BottomBar *ui;
+
+    QIcon m_start;
+    QIcon m_pause;
+
 };
 
 #endif // BOTTOMBAR_H

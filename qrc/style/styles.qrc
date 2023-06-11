@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/styles">
+        <file>basic_style.qss</file>
+        <file>font-win.qss</file>
+    </qresource>
+</RCC>

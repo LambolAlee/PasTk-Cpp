@@ -9,6 +9,16 @@ namespace Ui { class PasTkWindow; }
 QT_END_NAMESPACE
 
 class BottomBar;
+class DataManager;
+class ItemEditorDialog;
+
+enum ContextIndex {
+    Start,
+    Detail,
+    Paste,
+    InListen,
+    EndListen,
+};
 
 class PasTkWindow : public QMainWindow
 {
@@ -23,6 +33,8 @@ public:
 
     const QList<QAction *> bottomBarActions();
     QAction *preferencesAction();
+    const QMenu *toolMenu();
+    const QMenu *helpMenu();
 
 signals:
     void topmostChanged(bool current);
@@ -35,22 +47,29 @@ public:
     void setUnfocus(bool value);
 
 private slots:
-    void showDetailContent();
+    void showAboutMe();
+    void switchCopy(bool on);
+    void clearSelectedItems();
+    void addNewItem(const QString &text, bool before);
+    void editSelectedItem();
 
 private:
     void connectSignalsWithSlots();
+    void initModeActions();
     void buildBottomBar();
 
 private:
     Ui::PasTkWindow *ui;
     BottomBar *m_bottombar;
     QActionGroup *m_mode_actions;
+    DataManager *m_datamanager;
+    ContextIndex m_current_page;
+    ItemEditorDialog *m_editor;
 
     QIcon m_pin;
     QIcon m_unpin;
 
     bool m_topmost;
     bool m_unfocus;
-    void initModeActions();
 };
 #endif // PASTKWINDOW_H

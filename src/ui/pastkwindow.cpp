@@ -1,26 +1,36 @@
 #include "pastkwindow.h"
 #include "ui_pastkwindow.h"
-#include <QToolButton>
-#include <QLabel>
+#include <QMessageBox>
+#include <QActionGroup>
 
-//#include "src/paste/pasteutil.h"
+#include "src/paste/pasteutil.h"
 #include "src/utils/windowhelper.h"
 #include "bottombar.h"
+#include "aboutpastkcpp.h"
 #include "src/settings/config.h"
-#include <QActionGroup>
+#include "src/data/datamanager.h"
+#include "itemeditordialog.h"
+
 
 PasTkWindow::PasTkWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::PasTkWindow)
+    , m_datamanager(&DataManager::instance())
+    , m_current_page(ContextIndex::Start)
     , m_pin(QIcon(":/pin.png"))
     , m_unpin(QIcon(":/unpin.png"))
     , m_unfocus(false)
 {
     ui->setupUi(this);
 
+    PasteUtil::instance().test();
+
+    m_editor = new ItemEditorDialog(this);
+
     initModeActions();
     buildBottomBar();
 
+    ui->listView->setModel(m_datamanager);
     m_topmost = false;
     ui->actionAbout_Qt->setIcon(qApp->style()->standardIcon(QStyle::SP_TitleBarMenuButton)); // qtlogo
     connectSignalsWithSlots();
@@ -30,7 +40,8 @@ PasTkWindow::~PasTkWindow()
 {
     delete ui;
     delete m_bottombar;
-    delete m_mode_actions;
+    m_datamanager = nullptr;
+    m_bottombar = nullptr;
 }
 
 const QList<QAction *> PasTkWindow::bottomBarActions()
@@ -41,6 +52,16 @@ const QList<QAction *> PasTkWindow::bottomBarActions()
 QAction *PasTkWindow::preferencesAction()
 {
     return ui->actionSettings;
+}
+
+const QMenu *PasTkWindow::toolMenu()
+{
+    return ui->menuTool;
+}
+
+const QMenu *PasTkWindow::helpMenu()
+{
+    return ui->menuHelp;
 }
 
 bool PasTkWindow::topmost() const
@@ -63,31 +84,113 @@ void PasTkWindow::setUnfocus(bool value)
     m_unfocus = value;
 }
 
-void PasTkWindow::showDetailContent()
+void PasTkWindow::showAboutMe()
 {
-    static bool flag = true;
-//    ui->stackedWidget->setCurrentIndex(1);
-    WindowHelper::setWindowUnfocusable(this, flag);
-    flag = !flag;
-//    PasteUtil::instance().paste(this);
+    AboutPasTkCpp *about = new AboutPasTkCpp;
+    about->show();
+}
+
+void PasTkWindow::switchCopy(bool on)
+{
+    if (on) {
+        ui->stackedWidget->setCurrentIndex(ContextIndex::Detail);
+        m_datamanager->startCopy();
+        m_datamanager->listen();
+    } else {
+        if (m_datamanager->rowCount() == 0)
+            ui->stackedWidget->setCurrentIndex(ContextIndex::Start);
+        m_datamanager->stop();
+        m_datamanager->endCopy();
+    }
+}
+
+void PasTkWindow::clearSelectedItems()
+{
+    auto indexs = ui->listView->selectedIndexes();
+    auto last = indexs.constLast().row();
+    if (indexs.length() > 0)
+        m_datamanager->remove(indexs);
+
+    if (m_datamanager->rowCount() == 0)
+        return;
+    else if (last == m_datamanager->rowCount())
+        ui->listView->setCurrentIndex(m_datamanager->index(m_datamanager->rowCount() -1, 0));
+    else
+        ui->listView->setCurrentIndex(m_datamanager->index(last, 0));
+}
+
+void PasTkWindow::addNewItem(const QString &text, bool before)
+{
+    auto index = ui->listView->selectedIndexes();
+    if (before) {
+        if (index.length() > 0) {
+            auto idx = index.constLast();
+            m_datamanager->insert(idx.row(), text);
+            ui->listView->setCurrentIndex(idx);
+            return;
+        }
+    }
+    m_datamanager->push(text);
+    ui->listView->setCurrentIndex(m_datamanager->index(m_datamanager->rowCount()-1, 0));
+}
+
+void PasTkWindow::editSelectedItem()
+{
+    QModelIndex idx;
+    auto index = ui->listView->selectedIndexes();
+    idx = index.constLast();
+    if (index.length() > 1) {
+        ui->listView->setCurrentIndex(idx);
+    }
+    m_datamanager->stop();
+    m_editor->edit(idx);
 }
 
 void PasTkWindow::connectSignalsWithSlots()
 {
-    connect(ui->startButton, &QPushButton::clicked, this, &PasTkWindow::showDetailContent);
+    connect(ui->startButton, &QPushButton::clicked, this, [this]{
+        emit m_bottombar->switchActionToggled(true);
+    });
     connect(ui->actionTopmost, &QAction::toggled, this, [this](bool checked){
         WindowHelper::setTopmost(this, checked);
-        if (checked)
-            ui->actionTopmost->setIcon(m_pin);
-        else
-            ui->actionTopmost->setIcon(m_unpin);
+        ui->actionTopmost->setIcon(checked ? m_pin : m_unpin);
+    });
+    connect(ui->actionAbout_Qt, &QAction::triggered, this, [this]{QMessageBox::aboutQt(this);});
+    connect(ui->actionAbout_PasTk2, &QAction::triggered, this, &PasTkWindow::showAboutMe);
+    connect(m_bottombar, &BottomBar::clearAllTriggered, this, [this]{
+        m_datamanager->clearAll();
+        ui->stackedWidget->setCurrentIndex(ContextIndex::Start);
+    });
+    connect(m_datamanager, &DataManager::itemCountChange, m_bottombar, &BottomBar::updateCount);
+    connect(m_bottombar, &BottomBar::switchActionToggled, this, &PasTkWindow::switchCopy);
+    connect(m_bottombar, &BottomBar::clearSelectedItems, this, &PasTkWindow::clearSelectedItems);
+    connect(ui->listView, &DetailView::deleteItem, this, &PasTkWindow::clearSelectedItems);
+    connect(ui->listView, &DetailView::editItem, this, &PasTkWindow::editSelectedItem);
+    connect(ui->listView, &DetailView::newItemAddManuallyBefore, this, [this]{
+        m_datamanager->stop();
+        m_editor->add(true);
+    });
+    connect(ui->listView, &DetailView::newItemAddManuallyAfter, this, [this]{
+        m_datamanager->stop();
+        m_editor->add(false);
+    });
+    connect(m_editor, &ItemEditorDialog::updateIndex, this, [this](const QModelIndex &index, const QString &data){
+        m_datamanager->setData(index, data);
+    });
+    connect(m_editor, &ItemEditorDialog::submitData, this, &PasTkWindow::addNewItem);
+    connect(m_editor, &ItemEditorDialog::editFinished, this, [this]{
+        if (!m_datamanager->isStopped()) {
+            m_datamanager->listen();
+            qDebug() << "here";
+        } else {
+            qDebug() << "out";
+        }
     });
 }
 
 void PasTkWindow::initModeActions()
 {
     int checkedMode = Config().getLastUsedMode();
-    qDebug() << checkedMode;
     int mode = 0;
     m_mode_actions = new QActionGroup(this);
     m_mode_actions->setExclusive(true);

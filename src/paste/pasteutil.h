@@ -12,6 +12,7 @@ class PasteUtil : public QObject
 
 public:
     void paste([[maybe_unused]] QWidget *window);
+    void test();
 
 private slots:
     void execute_paste();

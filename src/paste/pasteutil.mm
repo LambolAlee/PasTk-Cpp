@@ -5,7 +5,6 @@
 #include <AppKit/AppKit.h>
 #include <Carbon/Carbon.h>
 
-
 PasteUtil::PasteUtil()
 {
     // info.plist: set the LSUIElement to YES
@@ -38,4 +37,9 @@ void PasteUtil::execute_paste()
     CFRelease(source);
 
     [NSApp activateIgnoringOtherApps:YES];
+}
+
+void PasteUtil::test()
+{
+    NSApp.appearance = [NSAppearance appearanceNamed:NSAppearanceNameAqua];
 }

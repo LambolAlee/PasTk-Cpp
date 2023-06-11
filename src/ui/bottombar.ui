@@ -29,7 +29,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="spacing">
-      <number>0</number>
+      <number>2</number>
      </property>
      <property name="sizeConstraint">
       <enum>QLayout::SetFixedSize</enum>
@@ -80,6 +80,9 @@
        </property>
        <property name="text">
         <string>Paste</string>
+       </property>
+       <property name="popupMode">
+        <enum>QToolButton::MenuButtonPopup</enum>
        </property>
        <property name="toolButtonStyle">
         <enum>Qt::ToolButtonTextBesideIcon</enum>
@@ -133,6 +136,9 @@
    </item>
   </layout>
   <action name="actionSwitch">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../../qrc/icons/icons.qrc">
      <normaloff>:/play.svg</normaloff>:/play.svg</iconset>
@@ -150,10 +156,10 @@
      <normaloff>:/clear.svg</normaloff>:/clear.svg</iconset>
    </property>
    <property name="text">
-    <string>Clear All Items</string>
+    <string>Clear Items</string>
    </property>
    <property name="toolTip">
-    <string>clear all the listed items</string>
+    <string>clear items</string>
    </property>
   </action>
   <action name="actionPaste">

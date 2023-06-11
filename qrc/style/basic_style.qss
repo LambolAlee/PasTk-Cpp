@@ -1,0 +1,32 @@
+SuspendScrollBar:vertical {
+    background: transparent;
+    padding: 0px;
+}
+
+SuspendScrollBar::handle:vertical {
+    background-color: rgba(191,191,191,190);
+    border-radius: 4px;
+    width: 13px;
+}
+
+SuspendScrollBar::handle:vertical:hover {
+    background-color: rgba(171,171,171,220);
+}
+
+SuspendScrollBar::sub-line:vertical, SuspendScrollBar::add-line:vertical,
+SuspendScrollBar::sub-page:vertical,SuspendScrollBar::add-page:vertical {
+    border: none;
+}
+
+AboutPasTkCpp {
+    background: white;
+}
+
+AboutPasTkCpp > QWidget#dialogButtonArea {
+    background: #f0f0f0;
+    border-top: 1px solid grey;
+}
+
+DetailView::item {
+    height: 24px;
+}
