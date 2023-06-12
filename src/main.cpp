@@ -21,6 +21,11 @@ int main(int argc, char *argv[])
 
     PasTkWindow w;
     Util::loadStyleSheet(":/styles/basic_style.qss");
+#ifdef Q_OS_WIN
+    Util::loadStyleSheet(":/styles/font-win.qss");
+#elif Q_OS_MAC
+    Util::loadStyleSheet(":/styles/font-mac.qss");
+#endif
     SysTray tray(&w);
     tray.show();
     w.show();

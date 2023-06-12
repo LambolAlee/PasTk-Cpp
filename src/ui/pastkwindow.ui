@@ -86,11 +86,6 @@
         </property>
         <item>
          <widget class="DetailView" name="listView">
-          <property name="font">
-           <font>
-            <pointsize>14</pointsize>
-           </font>
-          </property>
           <property name="horizontalScrollBarPolicy">
            <enum>Qt::ScrollBarAlwaysOff</enum>
           </property>
@@ -108,7 +103,7 @@
      <x>0</x>
      <y>0</y>
      <width>312</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMode">

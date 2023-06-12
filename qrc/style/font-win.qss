@@ -6,7 +6,11 @@ AboutPasTkCpp QLabel#titleLabel {
     font-size: 18pt;
     font-weight: bold;
 }
-w
+
 ItemEditorDialog > QTextEdit {
     font-size: 11pt;
+}
+
+DetailView {
+    font-size: 12pt;
 }

@@ -23,7 +23,7 @@ PasTkWindow::PasTkWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    PasteUtil::instance().test();
+//    PasteUtil::instance().test();
 
     m_editor = new ItemEditorDialog(this);
 

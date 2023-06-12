@@ -44,10 +44,12 @@ SOURCES += \
     src/ui/aboutpastkcpp.cpp \
     src/ui/bottombar.cpp \
     src/ui/itemeditordialog.cpp \
+    src/ui/pastepanel.cpp \
     src/ui/pastkwindow.cpp \
     src/ui/preferences.cpp \
     src/ui/suspendscrollbar.cpp \
     src/ui/systray.cpp \
+    src/ui/templateeditor.cpp \
     src/ui/templateeditorwindow.cpp \
     src/utils/util.cpp \
     src/utils/windowhelper.cpp
@@ -71,10 +73,12 @@ HEADERS += \
     src/ui/aboutpastkcpp.h \
     src/ui/bottombar.h \
     src/ui/itemeditordialog.h \
+    src/ui/pastepanel.h \
     src/ui/pastkwindow.h \
     src/ui/preferences.h \
     src/ui/suspendscrollbar.h \
     src/ui/systray.h \
+    src/ui/templateeditor.h \
     src/ui/templateeditorwindow.h \
     src/utils/Singleton.h \
     src/paste/pasteutil.h \
@@ -87,8 +91,10 @@ FORMS += \
     src/ui/aboutpastkcpp.ui \
     src/ui/bottombar.ui \
     src/ui/itemeditordialog.ui \
+    src/ui/pastepanel.ui \
     src/ui/pastkwindow.ui \
     src/ui/preferences.ui \
+    src/ui/templateeditor.ui \
     src/ui/templateeditorwindow.ui
 
 # Default rules for deployment.

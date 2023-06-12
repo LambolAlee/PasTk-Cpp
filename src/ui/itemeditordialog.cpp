@@ -20,7 +20,7 @@ ItemEditorDialog::~ItemEditorDialog()
 
 void ItemEditorDialog::connectSignalsWithSlots()
 {
-    connect(ui->textEdit, &QTextEdit::textChanged, this, [=]{m_textChanged = true;});
+    connect(ui->textEdit, &QTextEdit::textChanged, this, [this]{m_textChanged = true;});
 }
 
 void ItemEditorDialog::hideEvent(QHideEvent *event)
