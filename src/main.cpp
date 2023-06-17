@@ -14,18 +14,17 @@ int main(int argc, char *argv[])
     a.setApplicationName("PasTk-Cpp");
     a.setQuitOnLastWindowClosed(false);
 
+    Util::loadStyleSheet(":/styles/basic_style.qss");
+
 #ifdef Q_OS_MAC
 //    a.setStyle(QStyleFactory::create("Fusion"));
     a.setStyle(QStyleFactory::create("Windows"));
+    Util::loadStyleSheet(":/styles/font-mac.qss");
+#elif defined Q_OS_WIN
+    Util::loadStyleSheet(":/styles/font-win.qss");
 #endif
 
     PasTkWindow w;
-    Util::loadStyleSheet(":/styles/basic_style.qss");
-#ifdef Q_OS_WIN
-    Util::loadStyleSheet(":/styles/font-win.qss");
-#elif Q_OS_MAC
-    Util::loadStyleSheet(":/styles/font-mac.qss");
-#endif
     SysTray tray(&w);
     tray.show();
     w.show();

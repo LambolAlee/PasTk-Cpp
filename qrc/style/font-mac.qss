@@ -1,0 +1,16 @@
+AboutPasTkCpp QLabel#versionLabel {
+    font-size: 10pt;
+}
+
+AboutPasTkCpp QLabel#titleLabel {
+    font-size: 18pt;
+    font-weight: bold;
+}
+
+ItemEditorDialog > QTextEdit {
+    font-size: 11pt;
+}
+
+DetailView {
+    font-size: 14pt;
+}

@@ -6,6 +6,9 @@ TemplateEditorWindow::TemplateEditorWindow(QWidget *parent) :
     ui(new Ui::TemplateEditorWindow)
 {
     ui->setupUi(this);
+    ui->toolBar->setOrientation(Qt::Vertical);
+    ui->toolBar->setFloatable(false);
+    ui->toolBar->setMovable(false);
 }
 
 TemplateEditorWindow::~TemplateEditorWindow()

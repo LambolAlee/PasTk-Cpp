@@ -2,5 +2,6 @@
     <qresource prefix="/styles">
         <file>basic_style.qss</file>
         <file>font-win.qss</file>
+        <file>font-mac.qss</file>
     </qresource>
 </RCC>
