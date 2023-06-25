@@ -2,11 +2,22 @@
 #define TAGLOADER_H
 
 #include "ITag.h"
+#include "src/utils/Singleton.h"
 
-typedef ITag TagChain;
 
-namespace TagLoader {
-    TagChain *load();
-}
+using TagChain = ITag;
+
+class TagLoader
+{
+    SINGLETON(TagLoader)
+
+public:
+    TagChain *chain();
+    const QMap<QString, QString> &tagDoc() const;
+
+private:
+    TagChain *m_chain;
+    QMap<QString, QString> m_tags;
+};
 
 #endif // TAGLOADER_H

@@ -4,28 +4,34 @@
 TemplateHelper::TemplateHelper() {}
 TemplateHelper::~TemplateHelper() {}
 
-const QStringList TemplateHelper::getTemplatesNames() const
+const QStringList TemplateHelper::getTemplateNameList() const
 {
     return keys();
 }
 
-const TemplateContent TemplateHelper::getTemplate(const QString &name) const
+const QString TemplateHelper::getTemplateStringByName(const QString &name) const
 {
     return value(name);
 }
 
-void TemplateHelper::setTemplate(const QString &name, const QString &templateString, const QString &description)
+const TemplatePair TemplateHelper::getTemplate(const QString &name) const
 {
-    setTemplate(name, {templateString, description});
+    return {name, getTemplateStringByName(name)};
 }
 
-void TemplateHelper::setTemplate(const QString &name, TemplateContent content)
+void TemplateHelper::setTemplate(const QString &name, const QString &templateString)
 {
-    insert(name, content);
+    insert(name, templateString);
     setModified(true);
 }
 
-const QPair<QString, TemplateContent> TemplateHelper::firstTemplate()
+void TemplateHelper::setTemplate(const TemplatePair &pair)
+{
+    insert(pair.first, pair.second);
+    setModified(true);
+}
+
+const TemplatePair TemplateHelper::firstTemplate()
 {
     if (isEmpty()) return {};
     auto pair = constKeyValueBegin();
@@ -40,7 +46,7 @@ void TemplateHelper::removeTemplate(const QString &name)
 
 void TemplateHelper::renameTemplate(const QString &oldName, const QString &newName)
 {
-    auto content = getTemplate(oldName);
+    auto content = getTemplateStringByName(oldName);
     remove(oldName);
     setTemplate(newName, content);
 }

@@ -9,7 +9,7 @@ namespace defaults
     enum NewCopyOperation { ClearHistory, NoClearOperation };
     // General settings
     const std::string_view language = "en_US";
-    constexpr bool menuBarShow = false;
+    [[deprecated]]constexpr bool menuBarShow = false;
     constexpr bool topmost = false;
     constexpr bool windowVisibility = false;
     constexpr int clearAfterNewCopy = NoClearOperation;

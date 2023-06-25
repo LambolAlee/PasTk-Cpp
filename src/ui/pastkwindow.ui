@@ -61,7 +61,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>hint text</string>
+           <string>Hit the button to start copy</string>
           </property>
          </widget>
         </item>

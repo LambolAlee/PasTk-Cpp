@@ -15,9 +15,11 @@ SeqTag::~SeqTag()
     m_nextTag = nullptr;
 }
 
-QList<QString> SeqTag::tags() const
+QMap<QString, QString> SeqTag::tags() const
 {
-    return m_tags;
+    return {
+        {"index", "index generator, which can generate a sequence number according to the `start` and `step` properties each time you paste"},
+    };
 }
 
 ISegment *SeqTag::handle(QStringView tagName, const QXmlStreamAttributes &attrs)

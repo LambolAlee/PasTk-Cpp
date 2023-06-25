@@ -41,7 +41,7 @@ public:
     ~CoreTag();
 
 public:
-    QList<QString> tags() const override;
+    QMap<QString, QString> tags() const override;
     ISegment *handle(QStringView tagName, const QXmlStreamAttributes &attrs) override;
     void setNext(ITag *tag) override;
     ITag *next() const override;

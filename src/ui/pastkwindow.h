@@ -11,6 +11,7 @@ QT_END_NAMESPACE
 class BottomBar;
 class DataManager;
 class ItemEditorDialog;
+class TemplateEditorWindow;
 
 enum ContextIndex {
     Start,
@@ -65,6 +66,7 @@ private:
     DataManager *m_datamanager;
     ContextIndex m_current_page;
     ItemEditorDialog *m_editor;
+    TemplateEditorWindow *m_editor_window;
 
     QIcon m_pin;
     QIcon m_unpin;

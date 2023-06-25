@@ -15,9 +15,13 @@ CoreTag::~CoreTag()
     m_nextTag = nullptr;
 }
 
-QList<QString> CoreTag::tags() const
+QMap<QString, QString> CoreTag::tags() const
 {
-    return m_tags;
+    return {
+        {"data", "represent the item you are currently about to paste"},
+        {"br", "represent `\n` line break character or <br> in html"},
+        {"tab", "represent `\t` tab character"},
+    };
 }
 
 ISegment *CoreTag::handle(QStringView tagName, const QXmlStreamAttributes &attrs)

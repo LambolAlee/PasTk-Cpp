@@ -16,17 +16,21 @@ public:
 
 public:
 // Template edit area --------------------->
-    const QStringList getTemplatesNames() const;
-    const TemplateContent getTemplate(const QString &name) const;
-    void setTemplate(const QString &name, const QString &templateString, const QString &description);
+    const QStringList getTemplateNameList() const;
+    const QString getTemplateStringByName(const QString &name) const;
+    const TemplatePair getTemplate(const QString &name) const;
+    void setTemplate(const QString &name, const QString &templateString);
+    void setTemplate(const TemplatePair &pair);
 
     void loadTemplates();
     void saveTemplates();
 
     void setDefaultTemplate(const QString &name);
-    QPair<QString, TemplateContent> getDefaultTemplate();
+    void setDefaultTemplate();
+    TemplatePair getDefaultTemplate();
+    int templateCount();
     bool contains(const QString &name);
-    void remove(const QString &name);
+    bool remove(const QString &name);
     void rename(const QString &oldName, const QString &newName);
 
 // General settings --------------------->
@@ -68,6 +72,7 @@ private:
 // helper function --------------------->
     template<typename T> void setKey(const QString &group, const QString &key, T value);
     template<typename T> T getValue(const QString &group, const QString &key, T default_);
+    bool repairEmptyTemplate();
 };
 
 #endif // CONFIG_H

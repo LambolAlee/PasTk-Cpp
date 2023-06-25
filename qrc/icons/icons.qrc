@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>about.svg</file>
-        <file>ashbin.svg</file>
         <file>box.svg</file>
         <file>clear.svg</file>
         <file>clipboard.svg</file>
@@ -22,5 +21,8 @@
         <file>window-maximize.svg</file>
         <file>window-minimize.svg</file>
         <file>window-restore.svg</file>
+        <file>star_blank.svg</file>
+        <file>add_template.svg</file>
+        <file>remove_template.svg</file>
     </qresource>
 </RCC>

@@ -5,18 +5,19 @@
 #include "src/utils/Singleton.h"
 
 
-using TemplateContent = QPair<QString, QString>;
-using Templates = QMap<QString, TemplateContent>;
+using Templates = QMap<QString, QString>;   // {template_name, template_string}
+using TemplatePair = QPair<QString, QString>;    // {template_name, template_string}
 
 class TemplateHelper : private Templates
 {
     SINGLETON(TemplateHelper)
 public:
-    const QStringList getTemplatesNames() const;
-    const TemplateContent getTemplate(const QString &name) const;
-    void setTemplate(const QString &name, const QString &templateString, const QString &description);
-    void setTemplate(const QString &name, TemplateContent content);
-    const QPair<QString, TemplateContent> firstTemplate();
+    const QStringList getTemplateNameList() const;
+    const QString getTemplateStringByName(const QString &name) const;
+    const TemplatePair getTemplate(const QString &name) const;
+    void setTemplate(const QString &name, const QString &templateString);
+    void setTemplate(const TemplatePair &pair);
+    const TemplatePair firstTemplate();
     void removeTemplate(const QString &name);
     void renameTemplate(const QString &oldName, const QString &newName);
 
@@ -25,6 +26,7 @@ public:
     using Templates::constKeyValueBegin;
     using Templates::constKeyValueEnd;
     using Templates::contains;
+    using Templates::count;
 
     bool isModified() { return _modified; }
     void setModified(bool state) { _modified = state; }

@@ -3,13 +3,13 @@
 #include <QMessageBox>
 #include <QActionGroup>
 
-#include "src/paste/pasteutil.h"
 #include "src/utils/windowhelper.h"
 #include "bottombar.h"
 #include "aboutpastkcpp.h"
 #include "src/settings/config.h"
 #include "src/data/datamanager.h"
 #include "itemeditordialog.h"
+#include "templateeditorwindow.h"
 
 
 PasTkWindow::PasTkWindow(QWidget *parent)
@@ -26,6 +26,7 @@ PasTkWindow::PasTkWindow(QWidget *parent)
 //    PasteUtil::instance().test();
 
     m_editor = new ItemEditorDialog(this);
+    m_editor_window = new TemplateEditorWindow(this);
 
     initModeActions();
     buildBottomBar();
@@ -186,6 +187,7 @@ void PasTkWindow::connectSignalsWithSlots()
             qDebug() << "out";
         }
     });
+    connect(ui->actionTemplate_Editor, &QAction::triggered, m_editor_window, &TemplateEditorWindow::show);
 }
 
 void PasTkWindow::initModeActions()

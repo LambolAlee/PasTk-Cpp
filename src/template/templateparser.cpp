@@ -6,7 +6,7 @@
 
 TemplateParser::TemplateParser()
 {
-    m_chain = TagLoader::load();
+    m_chain = TagLoader::instance().chain();
 }
 
 TemplateParser::~TemplateParser()

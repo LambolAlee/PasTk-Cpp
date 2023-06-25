@@ -49,8 +49,10 @@ SOURCES += \
     src/ui/preferences.cpp \
     src/ui/suspendscrollbar.cpp \
     src/ui/systray.cpp \
-    src/ui/templateeditor.cpp \
+    src/ui/tagsdrawercontent.cpp \
+    src/ui/templateeditorpanel.cpp \
     src/ui/templateeditorwindow.cpp \
+    src/ui/templatelistdelegate.cpp \
     src/utils/util.cpp \
     src/utils/windowhelper.cpp
 
@@ -78,8 +80,10 @@ HEADERS += \
     src/ui/preferences.h \
     src/ui/suspendscrollbar.h \
     src/ui/systray.h \
-    src/ui/templateeditor.h \
+    src/ui/tagsdrawercontent.h \
+    src/ui/templateeditorpanel.h \
     src/ui/templateeditorwindow.h \
+    src/ui/templatelistdelegate.h \
     src/utils/Singleton.h \
     src/paste/pasteutil.h \
     src/utils/consts.h \
@@ -94,7 +98,8 @@ FORMS += \
     src/ui/pastepanel.ui \
     src/ui/pastkwindow.ui \
     src/ui/preferences.ui \
-    src/ui/templateeditor.ui \
+    src/ui/tagsdrawercontent.ui \
+    src/ui/templateeditorpanel.ui \
     src/ui/templateeditorwindow.ui
 
 # Default rules for deployment.
