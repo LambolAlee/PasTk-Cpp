@@ -12,13 +12,12 @@ class BottomBar;
 class DataManager;
 class ItemEditorDialog;
 class TemplateEditorWindow;
+class ContinuousPasteWidget;
 
 enum ContextIndex {
     Start,
     Detail,
     Paste,
-    InListen,
-    EndListen,
 };
 
 class PasTkWindow : public QMainWindow
@@ -53,11 +52,18 @@ private slots:
     void clearSelectedItems();
     void addNewItem(const QString &text, bool before);
     void editSelectedItem();
+    void backToHome();
 
 private:
     void connectSignalsWithSlots();
     void initModeActions();
     void buildBottomBar();
+    void resetWindowState();
+    void startPaste();
+    void switchToPage(ContextIndex index, int mode=0);
+
+protected:
+    void showEvent(QShowEvent *event) override;
 
 private:
     Ui::PasTkWindow *ui;
@@ -67,6 +73,7 @@ private:
     ContextIndex m_current_page;
     ItemEditorDialog *m_editor;
     TemplateEditorWindow *m_editor_window;
+    ContinuousPasteWidget *m_continuous;
 
     QIcon m_pin;
     QIcon m_unpin;

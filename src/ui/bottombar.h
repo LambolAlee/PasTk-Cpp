@@ -27,6 +27,7 @@ signals:
     void switchActionToggled(bool state);
     void clearSelectedItems();
     void clearAllTriggered();
+    void startPaste();
 
 public slots:
     void updateCount(int count);

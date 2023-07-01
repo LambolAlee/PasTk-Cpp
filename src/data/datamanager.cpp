@@ -5,8 +5,6 @@ DataManager::DataManager()
 {
     m_state = ModelState::Normal;
     connect(&m_listener, &ClipboardListener::newDataOccurred, this, &DataManager::push);
-    for (int i=0; i< 10; i++)
-        appendRow(new QStandardItem(QString::number(i)));
 }
 
 DataManager::~DataManager() {}

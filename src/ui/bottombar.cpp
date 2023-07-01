@@ -17,10 +17,10 @@ BottomBar::BottomBar(QWidget *parent) :
     ui->clearBtn->setDefaultAction(ui->actionClear);
     ui->clearBtn->installEventFilter(this);
     ui->clearBtn->setDisabled(true);
-    ui->pasteBtn->setDefaultAction(ui->actionPaste);
 
     connect(ui->actionSwitch, &QAction::toggled, this, &BottomBar::switchActionToggled);
     connect(this, &BottomBar::switchActionToggled, this, &BottomBar::switchCopy);
+    connect(ui->pasteBtn, &QToolButton::clicked, this, &BottomBar::startPaste);
 }
 
 BottomBar::~BottomBar()
@@ -33,6 +33,8 @@ void BottomBar::setModeActions(QActionGroup *group)
     QMenu *menu = new QMenu(this);
     menu->addActions(group->actions());
     ui->actionPaste->setMenu(menu);
+    ui->pasteBtn->setDefaultAction(ui->actionPaste);
+    ui->pasteBtn->setDisabled(true);
 }
 
 const QList<QAction *> BottomBar::actions()
@@ -74,10 +76,13 @@ void BottomBar::updateCount(int count)
     ui->countLabel->setText(QString::number(count));
 
     if (count == 0) {
-        if (ui->clearBtn->isEnabled())
+        if (ui->clearBtn->isEnabled()) {
             ui->clearBtn->setDisabled(true);
+            ui->pasteBtn->setDisabled(true);
+        }
     } else if (!ui->clearBtn->isEnabled()) {
         ui->clearBtn->setDisabled(false);
+        ui->pasteBtn->setDisabled(false);
     }
 }
 

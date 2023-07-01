@@ -15,7 +15,7 @@ DetailView::DetailView(QWidget *parent)
     setAlternatingRowColors(true);
     setEditTriggers(QListView::NoEditTriggers);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setSelectionMode(QAbstractItemView::ExtendedSelection);
+    setSelectionMode(QAbstractItemView::ExtendedSelection);     // TODO: can be extended but not multiselected
 
     initContextMenu();
     connectSignalsWithSlots();

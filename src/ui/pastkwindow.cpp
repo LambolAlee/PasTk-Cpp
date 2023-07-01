@@ -10,6 +10,7 @@
 #include "src/data/datamanager.h"
 #include "itemeditordialog.h"
 #include "templateeditorwindow.h"
+#include "continuouspastewidget.h"
 
 
 PasTkWindow::PasTkWindow(QWidget *parent)
@@ -23,10 +24,11 @@ PasTkWindow::PasTkWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-//    PasteUtil::instance().test();
-
     m_editor = new ItemEditorDialog(this);
     m_editor_window = new TemplateEditorWindow(this);
+    m_continuous = new ContinuousPasteWidget(this);
+    delete ui->continuousLayout->replaceWidget(ui->continuousPasteWidget, m_continuous);
+
 
     initModeActions();
     buildBottomBar();
@@ -94,12 +96,13 @@ void PasTkWindow::showAboutMe()
 void PasTkWindow::switchCopy(bool on)
 {
     if (on) {
-        ui->stackedWidget->setCurrentIndex(ContextIndex::Detail);
+        switchToPage(ContextIndex::Detail);
+
         m_datamanager->startCopy();
         m_datamanager->listen();
     } else {
         if (m_datamanager->rowCount() == 0)
-            ui->stackedWidget->setCurrentIndex(ContextIndex::Start);
+            switchToPage(ContextIndex::Start);
         m_datamanager->stop();
         m_datamanager->endCopy();
     }
@@ -107,14 +110,16 @@ void PasTkWindow::switchCopy(bool on)
 
 void PasTkWindow::clearSelectedItems()
 {
-    auto indexs = ui->listView->selectedIndexes();
-    auto last = indexs.constLast().row();
-    if (indexs.length() > 0)
+    QModelIndexList indexs;
+    int last;
+    if (indexs = ui->listView->selectedIndexes(); indexs.length() > 0)
         m_datamanager->remove(indexs);
+    else
+        return;
 
     if (m_datamanager->rowCount() == 0)
         return;
-    else if (last == m_datamanager->rowCount())
+    else if (last = indexs.constLast().row(); last == m_datamanager->rowCount())
         ui->listView->setCurrentIndex(m_datamanager->index(m_datamanager->rowCount() -1, 0));
     else
         ui->listView->setCurrentIndex(m_datamanager->index(last, 0));
@@ -147,6 +152,11 @@ void PasTkWindow::editSelectedItem()
     m_editor->edit(idx);
 }
 
+void PasTkWindow::backToHome()
+{
+    switchToPage(ContextIndex::Detail);
+}
+
 void PasTkWindow::connectSignalsWithSlots()
 {
     connect(ui->startButton, &QPushButton::clicked, this, [this]{
@@ -165,6 +175,7 @@ void PasTkWindow::connectSignalsWithSlots()
     connect(m_datamanager, &DataManager::itemCountChange, m_bottombar, &BottomBar::updateCount);
     connect(m_bottombar, &BottomBar::switchActionToggled, this, &PasTkWindow::switchCopy);
     connect(m_bottombar, &BottomBar::clearSelectedItems, this, &PasTkWindow::clearSelectedItems);
+    connect(m_bottombar, &BottomBar::startPaste, this, &PasTkWindow::startPaste);
     connect(ui->listView, &DetailView::deleteItem, this, &PasTkWindow::clearSelectedItems);
     connect(ui->listView, &DetailView::editItem, this, &PasTkWindow::editSelectedItem);
     connect(ui->listView, &DetailView::newItemAddManuallyBefore, this, [this]{
@@ -188,6 +199,7 @@ void PasTkWindow::connectSignalsWithSlots()
         }
     });
     connect(ui->actionTemplate_Editor, &QAction::triggered, m_editor_window, &TemplateEditorWindow::show);
+    connect(m_continuous, &ContinuousPasteWidget::backToHome, this, &PasTkWindow::backToHome);
 }
 
 void PasTkWindow::initModeActions()
@@ -209,4 +221,41 @@ void PasTkWindow::buildBottomBar()
     m_bottombar = new BottomBar(this);
     ui->centralwidget->layout()->addWidget(m_bottombar);
     m_bottombar->setModeActions(m_mode_actions);
+    // TODO: when switch to paste we should toggle the two bars to invisible
+
+}
+
+void PasTkWindow::resetWindowState()
+{
+    emit ui->actionTopmost->toggled(m_topmost);
+}
+
+void PasTkWindow::startPaste()
+{
+    int mode = m_mode_actions->checkedAction()->data().toInt();
+    switchToPage(ContextIndex::Paste, mode);
+
+    switch (mode) {
+    case 0:     // ContinousMode
+        break;
+    case 1:     // SelectionMode
+        break;
+    }
+}
+
+void PasTkWindow::switchToPage(ContextIndex index, int mode)
+{
+    bool in_paste_page = (index != ContextIndex::Paste);
+    ui->stackedWidget->setCurrentIndex(index + mode);
+    m_bottombar->setEnabled(in_paste_page);
+    ui->menubar->setVisible(in_paste_page);
+#ifdef Q_OS_WIN
+    WindowHelper::setWindowUnfocusable(this, !in_paste_page);
+#endif
+}
+
+void PasTkWindow::showEvent(QShowEvent *event)
+{
+    resetWindowState();
+    return QMainWindow::showEvent(event);
 }

@@ -24,5 +24,6 @@
         <file>star_blank.svg</file>
         <file>add_template.svg</file>
         <file>remove_template.svg</file>
+        <file>back.svg</file>
     </qresource>
 </RCC>

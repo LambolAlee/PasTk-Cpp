@@ -32,5 +32,5 @@ void WindowHelper::setTopmost(QWidget *widget, bool need_topmost)
 {
     QWindow *window = widget->windowHandle();
     window->setFlag(Qt::WindowStaysOnTopHint, need_topmost);
-    window->setProperty("topmost", need_topmost);
+    widget->setProperty("topmost", need_topmost);
 }

@@ -29,6 +29,7 @@ win32 {
 }
 
 SOURCES += \
+    src/ui/continuouspastewidget.cpp \
     src/ui/detailview.cpp \
     src/data/datamanager.cpp \
     src/main.cpp \
@@ -57,6 +58,7 @@ SOURCES += \
     src/utils/windowhelper.cpp
 
 HEADERS += \
+    src/ui/continuouspastewidget.h \
     src/ui/detailview.h \
     src/data/clipboardlistener.h \
     src/data/datacaster.h \
@@ -94,6 +96,7 @@ HEADERS += \
 FORMS += \
     src/ui/aboutpastkcpp.ui \
     src/ui/bottombar.ui \
+    src/ui/continuouspastewidget.ui \
     src/ui/itemeditordialog.ui \
     src/ui/pastepanel.ui \
     src/ui/pastkwindow.ui \
