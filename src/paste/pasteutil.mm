@@ -13,11 +13,13 @@ PasteUtil::PasteUtil()
 }
 PasteUtil::~PasteUtil() {}
 
-void PasteUtil::paste([[maybe_unused]] QWidget *window)
+void PasteUtil::paste()
 {
     [NSApp hide: NSApp];
     QTimer::singleShot(200, this, &PasteUtil::execute_paste);
 }
+
+void PasteUtil::paste([[mabe_unused]]QWidget *window) {}
 
 void PasteUtil::execute_paste()
 {

@@ -29,6 +29,7 @@ win32 {
 }
 
 SOURCES += \
+    src/template/templatemanager.cpp \
     src/ui/continuouspastewidget.cpp \
     src/ui/detailview.cpp \
     src/data/datamanager.cpp \
@@ -58,6 +59,7 @@ SOURCES += \
     src/utils/windowhelper.cpp
 
 HEADERS += \
+    src/template/templatemanager.h \
     src/ui/continuouspastewidget.h \
     src/ui/detailview.h \
     src/data/clipboardlistener.h \

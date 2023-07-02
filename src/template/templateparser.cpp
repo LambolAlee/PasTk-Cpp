@@ -41,4 +41,3 @@ Segments *TemplateParser::parse(const QString &templateStr)
 
     return segments;
 }
-

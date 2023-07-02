@@ -30,8 +30,9 @@ public:
     bool isStopped() { return m_state == ModelState::Normal; };
     void endCopy() { m_state = ModelState::Normal; };
 
-    void castFrom(int index = 0);
+    void castFrom(int index);
     void next();
+    bool isEnd();
     QString castCurrent();
     QString castAt(int index);
 

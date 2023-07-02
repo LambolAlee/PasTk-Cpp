@@ -11,10 +11,11 @@ class PasteUtil : public QObject
     SINGLETON(PasteUtil)
 
 public:
-    void paste([[maybe_unused]] QWidget *window);
+    void paste(QWidget *window);
+    void paste();
     void test();
 
-private slots:
+private:
     void execute_paste();
 };
 

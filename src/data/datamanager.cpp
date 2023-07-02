@@ -62,6 +62,11 @@ void DataManager::next()
     m_caster.next();
 }
 
+bool DataManager::isEnd()
+{
+    return m_caster.current() >= rowCount();
+}
+
 QString DataManager::castCurrent()
 {
     return castAt(m_caster.current());

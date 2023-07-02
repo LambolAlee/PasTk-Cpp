@@ -13,6 +13,7 @@ class DataManager;
 class ItemEditorDialog;
 class TemplateEditorWindow;
 class ContinuousPasteWidget;
+class Preferences;
 
 enum ContextIndex {
     Start,
@@ -48,7 +49,7 @@ public:
 
 private slots:
     void showAboutMe();
-    void switchCopy(bool on);
+    void handleSwitchCopy(bool on);
     void clearSelectedItems();
     void addNewItem(const QString &text, bool before);
     void editSelectedItem();
@@ -74,6 +75,7 @@ private:
     ItemEditorDialog *m_editor;
     TemplateEditorWindow *m_editor_window;
     ContinuousPasteWidget *m_continuous;
+    Preferences *m_preferences;
 
     QIcon m_pin;
     QIcon m_unpin;

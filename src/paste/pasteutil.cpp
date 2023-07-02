@@ -11,12 +11,17 @@
 PasteUtil::PasteUtil() {}
 PasteUtil::~PasteUtil() {}
 
-void PasteUtil::paste([[maybe_unused]] QWidget *window)
+void PasteUtil::paste(QWidget *window)
 {
     window->hide();
     QThread::msleep(300);
     execute_paste();
     window->show();
+}
+
+void PasteUtil::paste()
+{
+    execute_paste();
 }
 
 void PasteUtil::execute_paste()

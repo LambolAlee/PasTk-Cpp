@@ -11,6 +11,7 @@
 #include "itemeditordialog.h"
 #include "templateeditorwindow.h"
 #include "continuouspastewidget.h"
+#include "preferences.h"
 
 
 PasTkWindow::PasTkWindow(QWidget *parent)
@@ -27,6 +28,7 @@ PasTkWindow::PasTkWindow(QWidget *parent)
     m_editor = new ItemEditorDialog(this);
     m_editor_window = new TemplateEditorWindow(this);
     m_continuous = new ContinuousPasteWidget(this);
+    m_preferences = new Preferences(this);
     delete ui->continuousLayout->replaceWidget(ui->continuousPasteWidget, m_continuous);
 
 
@@ -93,7 +95,7 @@ void PasTkWindow::showAboutMe()
     about->show();
 }
 
-void PasTkWindow::switchCopy(bool on)
+void PasTkWindow::handleSwitchCopy(bool on)
 {
     if (on) {
         switchToPage(ContextIndex::Detail);
@@ -173,7 +175,7 @@ void PasTkWindow::connectSignalsWithSlots()
         ui->stackedWidget->setCurrentIndex(ContextIndex::Start);
     });
     connect(m_datamanager, &DataManager::itemCountChange, m_bottombar, &BottomBar::updateCount);
-    connect(m_bottombar, &BottomBar::switchActionToggled, this, &PasTkWindow::switchCopy);
+    connect(m_bottombar, &BottomBar::switchActionToggled, this, &PasTkWindow::handleSwitchCopy);
     connect(m_bottombar, &BottomBar::clearSelectedItems, this, &PasTkWindow::clearSelectedItems);
     connect(m_bottombar, &BottomBar::startPaste, this, &PasTkWindow::startPaste);
     connect(ui->listView, &DetailView::deleteItem, this, &PasTkWindow::clearSelectedItems);
@@ -200,6 +202,7 @@ void PasTkWindow::connectSignalsWithSlots()
     });
     connect(ui->actionTemplate_Editor, &QAction::triggered, m_editor_window, &TemplateEditorWindow::show);
     connect(m_continuous, &ContinuousPasteWidget::backToHome, this, &PasTkWindow::backToHome);
+    connect(ui->actionSettings, &QAction::triggered, m_preferences, &Preferences::exec);
 }
 
 void PasTkWindow::initModeActions()
@@ -221,8 +224,6 @@ void PasTkWindow::buildBottomBar()
     m_bottombar = new BottomBar(this);
     ui->centralwidget->layout()->addWidget(m_bottombar);
     m_bottombar->setModeActions(m_mode_actions);
-    // TODO: when switch to paste we should toggle the two bars to invisible
-
 }
 
 void PasTkWindow::resetWindowState()
@@ -234,9 +235,11 @@ void PasTkWindow::startPaste()
 {
     int mode = m_mode_actions->checkedAction()->data().toInt();
     switchToPage(ContextIndex::Paste, mode);
+    m_bottombar->switchCopy(false);
 
     switch (mode) {
     case 0:     // ContinousMode
+        m_continuous->prepare();
         break;
     case 1:     // SelectionMode
         break;

@@ -6,8 +6,9 @@
 class DataCaster
 {
 public:
+    DataCaster() { m_index = 0; }
     void next() { m_index++; }
-    int current() const { return m_index; };
+    int current() const { return m_index; }
     void setCurrent(int index) { m_index = index; }
     void resetCaster() { m_index = 0; }
 
