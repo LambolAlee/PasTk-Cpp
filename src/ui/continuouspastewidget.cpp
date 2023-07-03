@@ -10,11 +10,11 @@ ContinuousPasteWidget::ContinuousPasteWidget(QWidget *parent) :
     ui(new Ui::ContinuousPasteWidget),
     m_datamanager(&DataManager::instance()),
     m_template_manager(&TemplateManager::instance()),
-    m_paste(&PasteUtil::instance())
+    m_seg(nullptr),
+    m_paste(&PasteUtil::instance()),
+    m_use_template(false)
 {
     ui->setupUi(this);
-    ui->backButton->setDefaultAction(ui->actionBack);
-    ui->selectionButton->setEnabled(ui->templateSwitch->isChecked());
 
     connectSignalsWithSlots();
 }
@@ -25,37 +25,46 @@ ContinuousPasteWidget::~ContinuousPasteWidget()
     m_seg = nullptr;
 }
 
-void ContinuousPasteWidget::prepare()
+void ContinuousPasteWidget::prepare(bool use_template)
 {
     m_datamanager->castFrom(0);
-    if (ui->templateSwitch->isChecked()) {
-        m_seg = m_template_manager->loadTemplateSegments("", "");
-        m_seg->build(m_datamanager);
-    }
+    renderText(use_template);
+}
+
+void ContinuousPasteWidget::selectTemplate(bool changed, const QString &templateName, const QString &templateStr)
+{
+    if (changed)
+        m_template_manager->removeCachedTemplateSegments(templateName);
+    m_seg = m_template_manager->loadTemplateSegments(templateName, templateStr);
+    m_seg->build(m_datamanager);
     renderText();
 }
 
 void ContinuousPasteWidget::connectSignalsWithSlots()
 {
-    connect(ui->templateSwitch, &QCheckBox::toggled, ui->selectionButton, &QPushButton::setEnabled);
-    connect(ui->templateSwitch, &QCheckBox::toggled, this, &ContinuousPasteWidget::renderText);
-    connect(ui->backButton, &QPushButton::clicked, this, &ContinuousPasteWidget::backToHome);
     connect(ui->pasteButton, &QPushButton::clicked, this, &ContinuousPasteWidget::paste);
     connect(ui->skipButton, &QPushButton::clicked, this, &ContinuousPasteWidget::skip);
 }
 
 void ContinuousPasteWidget::renderText()
 {
-    if (m_datamanager->isEnd()) {
-        emit pasteFinished();
-        return;
-    }
-
-    if (ui->templateSwitch->isChecked()) {
+    if (m_seg && m_use_template) {
         ui->previewText->setText(m_seg->data());
     } else {
         ui->previewText->setText(m_datamanager->castCurrent());
     }
+}
+
+void ContinuousPasteWidget::renderText(bool use_template)
+{
+    if (m_datamanager->isEnd()) {
+        emit pasteFinished();
+        qDebug() << "over";
+        return;
+    }
+
+    m_use_template = use_template;
+    renderText();
 }
 
 void ContinuousPasteWidget::paste()

@@ -2,7 +2,7 @@
 #define PASTKWINDOW_H
 
 #include <QMainWindow>
-
+#include "src/settings/config.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class PasTkWindow; }
@@ -25,9 +25,6 @@ class PasTkWindow : public QMainWindow
 {
     Q_OBJECT
 
-    Q_PROPERTY(bool topmost READ topmost WRITE setTopmost NOTIFY topmostChanged)
-    Q_PROPERTY(bool unfocus READ unfocus WRITE setUnfocus)
-
 public:
     PasTkWindow(QWidget *parent = nullptr);
     ~PasTkWindow();
@@ -39,13 +36,6 @@ public:
 
 signals:
     void topmostChanged(bool current);
-
-public:
-    bool topmost() const;
-    void setTopmost(bool value);
-
-    bool unfocus() const;
-    void setUnfocus(bool value);
 
 private slots:
     void showAboutMe();
@@ -62,6 +52,7 @@ private:
     void resetWindowState();
     void startPaste();
     void switchToPage(ContextIndex index, int mode=0);
+    void setWindowUnfocusable(bool unfocus);
 
 protected:
     void showEvent(QShowEvent *event) override;
@@ -76,6 +67,7 @@ private:
     TemplateEditorWindow *m_editor_window;
     ContinuousPasteWidget *m_continuous;
     Preferences *m_preferences;
+    Config m_config;
 
     QIcon m_pin;
     QIcon m_unpin;

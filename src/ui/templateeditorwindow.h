@@ -20,6 +20,11 @@ public:
     explicit TemplateEditorWindow(QWidget *parent = nullptr);
     ~TemplateEditorWindow();
 
+    void showWindow(bool with_apply);
+
+signals:
+    void templateSelected(bool changed, const QString &templateName);
+
 private:
     void initTemplateListContent();
     void connectSignalsWithSlots();
@@ -30,6 +35,7 @@ private slots:
     void selectItem(QListWidgetItem *current);
     void addNewTemplate(const TemplatePair &pair);
     void changeDefaultTemplate(const QString &current, const QString &previous);
+    void deliverTemplate(bool changed);
 
 private:
     Ui::TemplateEditorWindow *ui;

@@ -42,6 +42,15 @@ void TemplateEditorPanel::selectTemplate(const QString &templateName, bool favor
     fillWithTemplatePair(m_config.getTemplate(templateName), favor);
 }
 
+void TemplateEditorPanel::showApplyButton(bool with_apply)
+{
+    if (with_apply) {
+        ui->buttonBox->setStandardButtons(QDialogButtonBox::Reset | QDialogButtonBox::Apply);
+    } else {
+        ui->buttonBox->setStandardButtons(QDialogButtonBox::Reset | QDialogButtonBox::Save);
+    }
+}
+
 void TemplateEditorPanel::pasteSelectedTag(const QString &tag)
 {
     ui->templateEdit->insertPlainText(tag);
@@ -62,11 +71,11 @@ void TemplateEditorPanel::initPanelContent()
     ui->templateEdit->clear();
 }
 
-void TemplateEditorPanel::submit()
+bool TemplateEditorPanel::submit()
 {
     if (ui->nameEdit->text().isEmpty()) {
         QMessageBox::warning(this, QStringLiteral("Template Editor"), QStringLiteral("Template name cannot be left blank!"));
-        return;
+        return false;
     }
 
     TemplatePair pair = {ui->nameEdit->text(), ui->templateEdit->toPlainText()};
@@ -76,12 +85,13 @@ void TemplateEditorPanel::submit()
     if (m_addition) {
         if (m_config.contains(pair.first)) {
             QMessageBox::warning(this, QStringLiteral("Template Editor"), QStringLiteral("Template name is existed!"));
-            return;
+            return false;
         }
         m_config.setTemplate(pair);
         emit newTemplateCreated(pair);
     } else if (pair != m_current_template.first) {
         m_config.setTemplate(pair);
+        qDebug() << same_counter;
         emit templateModified(pair);
     } else {
         ++same_counter;
@@ -102,12 +112,16 @@ void TemplateEditorPanel::submit()
 
     if (same_counter == 2) {
         ui->statusBar->showMessage(QStringLiteral("No changes saved"), 5000/*ms*/);
+        return false;
     } else {
         ui->statusBar->showMessage(QStringLiteral("Saved Successfully!"), 5000/*ms*/);
+
+        m_config.sync();
+        m_current_template = {pair, favor};
         m_addition = false;
+        ui->actionAdd->setChecked(false);
+        return true;
     }
-    m_current_template = {pair, favor};
-    ui->actionAdd->setChecked(false);
 }
 
 void TemplateEditorPanel::restore()
@@ -136,12 +150,14 @@ void TemplateEditorPanel::connectSignalsWithSlots()
             emit deleteActionTriggered(refresh_default);
         }
     });
-    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &TemplateEditorPanel::submit);
     connect(ui->buttonBox, &QDialogButtonBox::clicked, this, [this](QAbstractButton *button){
-        if (ui->buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole)
+        if (ui->buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
             submit();
-        else    // ui->buttonBox->buttonRole(button) == QDialogButtonBox::ResetRole
+        } else if (ui->buttonBox->buttonRole(button) == QDialogButtonBox::ResetRole) {
             restore();
+        } else if (ui->buttonBox->buttonRole(button) == QDialogButtonBox::ApplyRole) {
+            emit templateSelected(submit());
+        }
     });
     connect(ui->actionFavor, &QAction::triggered, this, &TemplateEditorPanel::toggleFavoriteState);
 }

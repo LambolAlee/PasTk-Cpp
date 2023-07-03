@@ -6,7 +6,6 @@
 #include "src/utils/windowhelper.h"
 #include "bottombar.h"
 #include "aboutpastkcpp.h"
-#include "src/settings/config.h"
 #include "src/data/datamanager.h"
 #include "itemeditordialog.h"
 #include "templateeditorwindow.h"
@@ -29,8 +28,11 @@ PasTkWindow::PasTkWindow(QWidget *parent)
     m_editor_window = new TemplateEditorWindow(this);
     m_continuous = new ContinuousPasteWidget(this);
     m_preferences = new Preferences(this);
-    delete ui->continuousLayout->replaceWidget(ui->continuousPasteWidget, m_continuous);
 
+    ui->backButton->setDefaultAction(ui->actionBack);
+    ui->selectionButton->setEnabled(ui->templateSwitch->isChecked());
+
+    delete ui->continuousLayout->replaceWidget(ui->continuousPasteWidgetPlaceholder, m_continuous);
 
     initModeActions();
     buildBottomBar();
@@ -67,26 +69,6 @@ const QMenu *PasTkWindow::toolMenu()
 const QMenu *PasTkWindow::helpMenu()
 {
     return ui->menuHelp;
-}
-
-bool PasTkWindow::topmost() const
-{
-    return m_topmost;
-}
-
-void PasTkWindow::setTopmost(bool value)
-{
-    m_topmost = value;
-}
-
-bool PasTkWindow::unfocus() const
-{
-    return m_unfocus;
-}
-
-void PasTkWindow::setUnfocus(bool value)
-{
-    m_unfocus = value;
 }
 
 void PasTkWindow::showAboutMe()
@@ -157,6 +139,7 @@ void PasTkWindow::editSelectedItem()
 void PasTkWindow::backToHome()
 {
     switchToPage(ContextIndex::Detail);
+    resetWindowState();
 }
 
 void PasTkWindow::connectSignalsWithSlots()
@@ -165,6 +148,7 @@ void PasTkWindow::connectSignalsWithSlots()
         emit m_bottombar->switchActionToggled(true);
     });
     connect(ui->actionTopmost, &QAction::toggled, this, [this](bool checked){
+        m_topmost = checked;
         WindowHelper::setTopmost(this, checked);
         ui->actionTopmost->setIcon(checked ? m_pin : m_unpin);
     });
@@ -200,14 +184,23 @@ void PasTkWindow::connectSignalsWithSlots()
             qDebug() << "out";
         }
     });
-    connect(ui->actionTemplate_Editor, &QAction::triggered, m_editor_window, &TemplateEditorWindow::show);
-    connect(m_continuous, &ContinuousPasteWidget::backToHome, this, &PasTkWindow::backToHome);
+    connect(ui->actionTemplate_Editor, &QAction::triggered, this, [this]{ m_editor_window->showWindow(false); });
+    connect(ui->backButton, &QPushButton::clicked, this, &PasTkWindow::backToHome);
     connect(ui->actionSettings, &QAction::triggered, m_preferences, &Preferences::exec);
+    connect(m_editor_window, &TemplateEditorWindow::templateSelected, this, [this](bool changed, const QString &templateName){
+        QString templateStr = m_config.getTemplateStringByName(templateName);
+        ui->selectionButton->setText(templateName);
+        m_continuous->selectTemplate(changed, templateName, templateStr);
+    });
+
+    connect(ui->templateSwitch, &QCheckBox::toggled, ui->selectionButton, &QPushButton::setEnabled);
+    connect(ui->templateSwitch, &QCheckBox::toggled, m_continuous, qOverload<bool>(&ContinuousPasteWidget::renderText));
+    connect(ui->selectionButton, &QPushButton::clicked, this, [this]{ m_editor_window->showWindow(true); });
 }
 
 void PasTkWindow::initModeActions()
 {
-    int checkedMode = Config().getLastUsedMode();
+    int checkedMode = m_config.getLastUsedMode();
     int mode = 0;
     m_mode_actions = new QActionGroup(this);
     m_mode_actions->setExclusive(true);
@@ -228,7 +221,13 @@ void PasTkWindow::buildBottomBar()
 
 void PasTkWindow::resetWindowState()
 {
-    emit ui->actionTopmost->toggled(m_topmost);
+    if (ui->stackedWidget->currentIndex() == ContextIndex::Paste) {
+#ifdef Q_OS_WIN
+        WindowHelper::setWindowUnfocusable(this, true);
+#endif
+    } else {
+        emit ui->actionTopmost->toggled(m_topmost);
+    }
 }
 
 void PasTkWindow::startPaste()
@@ -239,7 +238,7 @@ void PasTkWindow::startPaste()
 
     switch (mode) {
     case 0:     // ContinousMode
-        m_continuous->prepare();
+        m_continuous->prepare(ui->templateSwitch->isChecked());
         break;
     case 1:     // SelectionMode
         break;
@@ -249,11 +248,19 @@ void PasTkWindow::startPaste()
 void PasTkWindow::switchToPage(ContextIndex index, int mode)
 {
     bool in_paste_page = (index != ContextIndex::Paste);
-    ui->stackedWidget->setCurrentIndex(index + mode);
+    ui->stackedWidget->setCurrentIndex(index);
+    if (index == ContextIndex::Paste)
+        ui->pasteModesStack->setCurrentIndex(mode);
     m_bottombar->setEnabled(in_paste_page);
     ui->menubar->setVisible(in_paste_page);
+    setWindowUnfocusable(!in_paste_page);
+}
+
+void PasTkWindow::setWindowUnfocusable(bool unfocus)
+{
+    m_unfocus = unfocus;
 #ifdef Q_OS_WIN
-    WindowHelper::setWindowUnfocusable(this, !in_paste_page);
+    WindowHelper::setWindowUnfocusable(this, unfocus);
 #endif
 }
 

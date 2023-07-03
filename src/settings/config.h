@@ -14,6 +14,8 @@ public:
     Config();
     ~Config();
 
+    using QSettings::sync;
+
 public:
 // Template edit area --------------------->
     const QStringList getTemplateNameList() const;

@@ -27,6 +27,7 @@ public:
     using Templates::constKeyValueEnd;
     using Templates::contains;
     using Templates::count;
+    using Templates::clear;
 
     bool isModified() { return _modified; }
     void setModified(bool state) { _modified = state; }

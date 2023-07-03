@@ -21,17 +21,18 @@ public:
     ~ContinuousPasteWidget();
 
 public:
-    void prepare();
+    void prepare(bool use_template);
+    void selectTemplate(bool changed, const QString &templateName, const QString &templateStr);
+    void renderText(bool use_template);
 
 signals:
-    void backToHome();
     void pasteFinished();
 
 private:
+    void renderText();
     void connectSignalsWithSlots();
 
 private slots:
-    void renderText();
     void paste();
     void skip();
 
@@ -41,7 +42,7 @@ private:
     TemplateManager *m_template_manager;
     Segments *m_seg;
     PasteUtil *m_paste;
-    QString m_current_template;
+    bool m_use_template;
 };
 
 #endif // CONTINUOUSPASTEWIDGET_H

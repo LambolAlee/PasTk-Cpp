@@ -42,6 +42,7 @@ void Config::setTemplate(const TemplatePair &pair)
 void Config::loadTemplates()
 {
     int size = beginReadArray("Templates");
+    m_template_helper.clear();
     for (int i = 0; i < size; ++i) {
         setArrayIndex(i);
         m_template_helper.setTemplate(

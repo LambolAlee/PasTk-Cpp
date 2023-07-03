@@ -18,13 +18,14 @@ public:
 
     void selectTemplate(const TemplatePair &templatePair, bool favor);
     void selectTemplate(const QString &templateName, bool favor);
+    void showApplyButton(bool with_apply);
 
 public slots:
     void pasteSelectedTag(const QString &tag);
 
 private:
     void initPanelContent();
-    void submit();
+    bool submit();
     void restore();
     void connectSignalsWithSlots();
     void setFavorState(bool favor);
@@ -40,6 +41,7 @@ signals:
     void defaultTemplateChanged(const QString &current, const QString &previous);
     void removeActionTriggered(const QString &);
     void deleteActionTriggered(bool refresh_default);
+    void templateSelected(bool changed);
 
 private:
     Ui::TemplateEditorPanel *ui;

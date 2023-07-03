@@ -1,6 +1,7 @@
 
 #include "templatemanager.h"
 #include "templateparser.h"
+#include "segments.h"
 #include <QMap>
 
 TemplateManager::TemplateManager()
@@ -36,4 +37,10 @@ Segments *TemplateManager::getTemplateSegments(const QString &templateName)
         return m_cache->value(templateName);
     else
         return nullptr;
+}
+
+void TemplateManager::removeCachedTemplateSegments([[maybe_unused]]const QString &templateName)
+{
+    if (m_cache->contains(templateName))
+        delete m_cache->take(templateName);
 }

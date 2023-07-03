@@ -29,6 +29,12 @@ TemplateEditorWindow::~TemplateEditorWindow()
     delete ui;
 }
 
+void TemplateEditorWindow::showWindow(bool with_apply)
+{
+    m_panel->showApplyButton(with_apply);
+    show();
+}
+
 void TemplateEditorWindow::initTemplateListContent()
 {
     m_config.loadTemplates();
@@ -55,6 +61,7 @@ void TemplateEditorWindow::connectSignalsWithSlots()
     connect(m_panel, &TemplateEditorPanel::templateModified, this, &TemplateEditorWindow::modifyTemplate);
     connect(m_panel, &TemplateEditorPanel::defaultTemplateChanged, this, &TemplateEditorWindow::changeDefaultTemplate);
     connect(m_content, &TagsDrawerContent::tagToBePasted, m_panel, &TemplateEditorPanel::pasteSelectedTag);
+    connect(m_panel, &TemplateEditorPanel::templateSelected, this, &TemplateEditorWindow::deliverTemplate);
 }
 
 void TemplateEditorWindow::deleteTemplate(bool refresh_default)
@@ -104,4 +111,11 @@ void TemplateEditorWindow::changeDefaultTemplate(const QString &current, const Q
     auto current_list = ui->templateList->findItems(current, Qt::MatchFixedString);
     previous_list.first()->setData(Qt::UserRole, false);
     current_list.first()->setData(Qt::UserRole, true);
+}
+
+void TemplateEditorWindow::deliverTemplate(bool changed)
+{
+    QListWidgetItem *templateItem = ui->templateList->currentItem();
+    emit templateSelected(changed, templateItem->text());
+    close();
 }

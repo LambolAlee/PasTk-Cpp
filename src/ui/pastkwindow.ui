@@ -94,7 +94,7 @@
        </layout>
       </widget>
       <widget class="QWidget" name="page_3">
-       <layout class="QVBoxLayout" name="continuousLayout">
+       <layout class="QVBoxLayout" name="_2">
         <property name="spacing">
          <number>0</number>
         </property>
@@ -111,7 +111,109 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QWidget" name="continuousPasteWidget" native="true"/>
+         <widget class="QWidget" name="widget" native="true">
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QToolButton" name="backButton">
+               <property name="text">
+                <string>Back</string>
+               </property>
+               <property name="toolButtonStyle">
+                <enum>Qt::ToolButtonTextBesideIcon</enum>
+               </property>
+               <property name="autoRaise">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_2">
+               <item>
+                <widget class="QCheckBox" name="templateSwitch">
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="selectionButton">
+                 <property name="text">
+                  <string>Select Template...</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QStackedWidget" name="pasteModesStack">
+             <property name="currentIndex">
+              <number>0</number>
+             </property>
+             <widget class="QWidget" name="page_4">
+              <layout class="QVBoxLayout" name="continuousLayout">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QWidget" name="continuousPasteWidgetPlaceholder" native="true"/>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="page_5">
+              <layout class="QVBoxLayout" name="selectionLayout">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QWidget" name="selectionPasteWidgetPlaceholder" native="true"/>
+               </item>
+              </layout>
+             </widget>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -227,6 +329,18 @@
     <string>Edit the item</string>
    </property>
   </action>
+  <action name="actionBack">
+   <property name="icon">
+    <iconset resource="../../qrc/icons/icons.qrc">
+     <normaloff>:/back.svg</normaloff>:/back.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Back</string>
+   </property>
+   <property name="toolTip">
+    <string>Back to main page</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -236,8 +350,8 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../qrc/icons/icons.qrc"/>
   <include location="../../qrc/logo/logo.qrc"/>
+  <include location="../../qrc/icons/icons.qrc"/>
  </resources>
  <connections/>
 </ui>

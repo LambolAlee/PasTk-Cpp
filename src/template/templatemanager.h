@@ -14,6 +14,7 @@ class TemplateManager
 public:
     Segments *loadTemplateSegments(const QString &templateName, const QString &templateStr);
     Segments *getTemplateSegments(const QString &templateName);
+    void removeCachedTemplateSegments(const QString &templateName);
 
 private:
     QMap<QString, Segments *> *m_cache;
