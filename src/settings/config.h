@@ -6,6 +6,7 @@
 #include "defaultsettings.h"
 #include "src/template/templatehelper.h"
 
+
 class Config : private QSettings
 {
     Q_OBJECT

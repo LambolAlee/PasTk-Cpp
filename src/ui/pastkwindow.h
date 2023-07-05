@@ -14,6 +14,8 @@ class ItemEditorDialog;
 class TemplateEditorWindow;
 class ContinuousPasteWidget;
 class Preferences;
+class SelectionPasteWidget;
+class TemplateManager;
 
 enum ContextIndex {
     Start,
@@ -66,8 +68,10 @@ private:
     ItemEditorDialog *m_editor;
     TemplateEditorWindow *m_editor_window;
     ContinuousPasteWidget *m_continuous;
+    SelectionPasteWidget *m_selection;
     Preferences *m_preferences;
     Config m_config;
+    TemplateManager *m_template_manager;
 
     QIcon m_pin;
     QIcon m_unpin;

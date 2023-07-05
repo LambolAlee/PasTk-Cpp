@@ -22,7 +22,8 @@ public:
 
 public:
     void prepare(bool use_template);
-    void selectTemplate(bool changed, const QString &templateName, const QString &templateStr);
+    void finish() { m_activated = false; }
+    void selectTemplate(Segments *seg);
     void renderText(bool use_template);
 
 signals:
@@ -39,10 +40,10 @@ private slots:
 private:
     Ui::ContinuousPasteWidget *ui;
     DataManager *m_datamanager;
-    TemplateManager *m_template_manager;
     Segments *m_seg;
     PasteUtil *m_paste;
     bool m_use_template;
+    bool m_activated;
 };
 
 #endif // CONTINUOUSPASTEWIDGET_H

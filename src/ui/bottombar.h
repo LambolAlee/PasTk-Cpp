@@ -20,6 +20,7 @@ public:
 
     void switchCopy(bool on);
     void setClearActionDisabled(bool disabled);
+    void setBottomBarEnabled(bool enabled);
 
     bool eventFilter(QObject *watched, QEvent *event) override;
 

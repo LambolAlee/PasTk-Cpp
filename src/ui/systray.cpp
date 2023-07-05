@@ -47,18 +47,8 @@ void SysTray::initUI()
     m_menu = new QMenu;
     auto actions = m_window->bottomBarActions();
     m_menu->addAction(actions.at(0));    // switch action
-    m_menu->addAction(actions.at(1));        // clear action
-
-    // runPaste action, but it's treated as a menu in systray menu
-    // so I new a new runPaste action to stand for the old runPaste action
-    QAction *runPasteOld = actions.at(2);
-    QAction *modes = m_menu->addAction("Select Modes");
-    modes->setMenu(runPasteOld->menu());
-
-    QAction *runPaste = m_menu->addAction("Paste");
-    runPaste->setIcon(runPasteOld->icon());
-    runPaste->setShortcut(runPasteOld->shortcut());
-    connect(runPaste, &QAction::triggered, runPasteOld, &QAction::trigger);
+    m_menu->addAction(actions.at(1));    // clear action
+    m_menu->addAction(actions.at(2));    // paste action
 
     m_menu->addSeparator();
     m_menu->addAction("Show Home Window", this, &SysTray::showWindow);

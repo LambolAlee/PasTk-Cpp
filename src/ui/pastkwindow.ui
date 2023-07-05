@@ -164,7 +164,7 @@
            <item>
             <widget class="QStackedWidget" name="pasteModesStack">
              <property name="currentIndex">
-              <number>0</number>
+              <number>1</number>
              </property>
              <widget class="QWidget" name="page_4">
               <layout class="QVBoxLayout" name="continuousLayout">
@@ -350,8 +350,8 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../qrc/logo/logo.qrc"/>
   <include location="../../qrc/icons/icons.qrc"/>
+  <include location="../../qrc/logo/logo.qrc"/>
  </resources>
  <connections/>
 </ui>

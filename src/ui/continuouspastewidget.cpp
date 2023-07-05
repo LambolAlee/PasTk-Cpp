@@ -1,7 +1,6 @@
 #include "continuouspastewidget.h"
 #include "src/data/datamanager.h"
 #include "src/template/segments.h"
-#include "src/template/templatemanager.h"
 #include "ui_continuouspastewidget.h"
 #include "src/paste/pasteutil.h"
 
@@ -9,10 +8,10 @@ ContinuousPasteWidget::ContinuousPasteWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ContinuousPasteWidget),
     m_datamanager(&DataManager::instance()),
-    m_template_manager(&TemplateManager::instance()),
     m_seg(nullptr),
     m_paste(&PasteUtil::instance()),
-    m_use_template(false)
+    m_use_template(false),
+    m_activated(false)
 {
     ui->setupUi(this);
 
@@ -27,17 +26,16 @@ ContinuousPasteWidget::~ContinuousPasteWidget()
 
 void ContinuousPasteWidget::prepare(bool use_template)
 {
+    m_activated = true;
     m_datamanager->castFrom(0);
     renderText(use_template);
 }
 
-void ContinuousPasteWidget::selectTemplate(bool changed, const QString &templateName, const QString &templateStr)
+void ContinuousPasteWidget::selectTemplate(Segments *seg)
 {
-    if (changed)
-        m_template_manager->removeCachedTemplateSegments(templateName);
-    m_seg = m_template_manager->loadTemplateSegments(templateName, templateStr);
-    m_seg->build(m_datamanager);
-    renderText();
+    m_seg = seg;
+    if (m_activated)
+        renderText();
 }
 
 void ContinuousPasteWidget::connectSignalsWithSlots()
@@ -48,6 +46,11 @@ void ContinuousPasteWidget::connectSignalsWithSlots()
 
 void ContinuousPasteWidget::renderText()
 {
+    if (m_datamanager->isEnd()) {
+        emit pasteFinished();
+        return;
+    }
+
     if (m_seg && m_use_template) {
         ui->previewText->setText(m_seg->data());
     } else {
@@ -57,14 +60,9 @@ void ContinuousPasteWidget::renderText()
 
 void ContinuousPasteWidget::renderText(bool use_template)
 {
-    if (m_datamanager->isEnd()) {
-        emit pasteFinished();
-        qDebug() << "over";
-        return;
-    }
-
     m_use_template = use_template;
-    renderText();
+    if (m_activated)
+        renderText();
 }
 
 void ContinuousPasteWidget::paste()

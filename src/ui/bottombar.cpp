@@ -53,6 +53,13 @@ void BottomBar::setClearActionDisabled(bool disabled)
     ui->actionClear->setDisabled(disabled);
 }
 
+void BottomBar::setBottomBarEnabled(bool enabled)
+{
+    setEnabled(enabled);
+    for (auto &&action: {ui->actionClear, ui->actionPaste, ui->actionSwitch})
+        action->setEnabled(enabled);
+}
+
 bool BottomBar::eventFilter(QObject *watched, QEvent *event)
 {
     QToolButton *btn = static_cast<QToolButton *>(watched);

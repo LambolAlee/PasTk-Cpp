@@ -33,6 +33,7 @@ public:
     void castFrom(int index);
     void next();
     bool isEnd();
+    int currentIndex() { return m_caster.current(); };
     QString castCurrent();
     QString castAt(int index);
 

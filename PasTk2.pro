@@ -49,6 +49,7 @@ SOURCES += \
     src/ui/pastepanel.cpp \
     src/ui/pastkwindow.cpp \
     src/ui/preferences.cpp \
+    src/ui/selectionpastewidget.cpp \
     src/ui/suspendscrollbar.cpp \
     src/ui/systray.cpp \
     src/ui/tagsdrawercontent.cpp \
@@ -82,6 +83,7 @@ HEADERS += \
     src/ui/pastepanel.h \
     src/ui/pastkwindow.h \
     src/ui/preferences.h \
+    src/ui/selectionpastewidget.h \
     src/ui/suspendscrollbar.h \
     src/ui/systray.h \
     src/ui/tagsdrawercontent.h \
@@ -103,6 +105,7 @@ FORMS += \
     src/ui/pastepanel.ui \
     src/ui/pastkwindow.ui \
     src/ui/preferences.ui \
+    src/ui/selectionpastewidget.ui \
     src/ui/tagsdrawercontent.ui \
     src/ui/templateeditorpanel.ui \
     src/ui/templateeditorwindow.ui
