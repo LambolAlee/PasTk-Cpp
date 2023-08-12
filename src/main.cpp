@@ -5,7 +5,6 @@
 #include "src/ui/systray.h"
 #include "src/utils/util.h"
 
-
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);

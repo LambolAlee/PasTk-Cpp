@@ -11,7 +11,7 @@ TemplateParser::TemplateParser()
 
 TemplateParser::~TemplateParser()
 {
-    delete m_chain;
+    m_chain = nullptr;
 }
 
 Segments *TemplateParser::parse(const QString &templateStr)

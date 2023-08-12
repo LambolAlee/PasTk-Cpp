@@ -1,6 +1,9 @@
 #include "pasteutil.h"
 #include <QWidget>
 #include <QTimer>
+#include <QDesktopServices>
+#include <QDir>
+#include <QUrl>
 
 #include <AppKit/AppKit.h>
 #include <Carbon/Carbon.h>
@@ -10,6 +13,7 @@ PasteUtil::PasteUtil()
     // info.plist: set the LSUIElement to YES
     // and then open the sentence below to prevent the app to occupy other apps' focus
 //    [NSApp setActivationPolicy: NSApplicationActivationPolicyAccessory];
+    check_accessibility_trusted();
 }
 PasteUtil::~PasteUtil() {}
 
@@ -19,7 +23,7 @@ void PasteUtil::paste()
     QTimer::singleShot(200, this, &PasteUtil::execute_paste);
 }
 
-void PasteUtil::paste([[mabe_unused]]QWidget *window) {}
+void PasteUtil::paste([[maybe_unused]]QWidget *window) {}
 
 void PasteUtil::execute_paste()
 {
@@ -39,6 +43,16 @@ void PasteUtil::execute_paste()
     CFRelease(source);
 
     [NSApp activateIgnoringOtherApps:YES];
+}
+
+bool PasteUtil::check_accessibility_trusted()
+{
+    NSDictionary *options = @{(id)kAXTrustedCheckOptionPrompt : @YES};
+    BOOL accessibilityEnabled = AXIsProcessTrustedWithOptions((CFDictionaryRef)options);
+    if (!accessibilityEnabled) {
+        QDesktopServices::openUrl(QUrl(QDir::currentPath()));
+    }
+    return accessibilityEnabled;
 }
 
 void PasteUtil::test()

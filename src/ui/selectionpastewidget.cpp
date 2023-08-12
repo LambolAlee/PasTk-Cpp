@@ -3,7 +3,6 @@
 #include "ui_selectionpastewidget.h"
 #include "src/paste/pasteutil.h"
 #include "src/data/datamanager.h"
-#include <QTimer>
 
 SelectionPasteWidget::SelectionPasteWidget(QWidget *parent) :
     QWidget(parent),
@@ -14,8 +13,6 @@ SelectionPasteWidget::SelectionPasteWidget(QWidget *parent) :
     m_activated(false)
 {
     ui->setupUi(this);
-    m_timer = new QTimer(this);
-    m_timer->setInterval(200);
     ui->selectionPasteList->setEditTriggers(QListView::NoEditTriggers);
     ui->selectionPasteList->setModel(m_datamanager);
 
@@ -79,7 +76,6 @@ void SelectionPasteWidget::preview(const QModelIndex &index)
 
 void SelectionPasteWidget::connectSignalsWithSlots()
 {
-    connect(m_timer, &QTimer::timeout, m_timer, &QTimer::stop);
     connect(ui->selectionPasteList, &QListView::clicked, this, &SelectionPasteWidget::preview);
     connect(ui->selectionPasteList, &QListView::doubleClicked, this, &SelectionPasteWidget::paste);
 }

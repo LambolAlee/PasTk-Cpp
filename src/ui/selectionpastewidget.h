@@ -11,7 +11,6 @@ class QAbstractItemModel;
 class PasteUtil;
 class DataManager;
 class Segments;
-class QTimer;
 
 class SelectionPasteWidget : public QWidget
 {
@@ -39,7 +38,6 @@ private:
     PasteUtil *m_paste;
     DataManager *m_datamanager;
     Segments *m_seg;
-    QTimer *m_timer;
 
     bool m_use_template;
     bool m_activated;

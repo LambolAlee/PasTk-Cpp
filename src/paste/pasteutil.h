@@ -17,6 +17,10 @@ public:
 
 private:
     void execute_paste();
+
+#ifdef Q_OS_MAC
+    bool check_accessibility_trusted();
+#endif
 };
 
 #endif // PASTEUTIL_H
