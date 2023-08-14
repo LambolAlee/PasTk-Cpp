@@ -1,65 +1,62 @@
 #include "systray.h"
-
+#include "src/ui/pastkwindow.h"
 #include <QMenu>
 #include <QApplication>
-#include <QKeySequence>
-
-//#include "util/postoffice.h"
-//#include "util/ghotkeytrigger.h"
-#include "src/ui/pastkwindow.h"
 
 
 SysTray::SysTray(PasTkWindow *window, QObject */*parent*/)
 {
-    m_window = window;
-    initUI();
+    initUI(window);
 
-    connectSignalsWithSlots();
+    connect(this, &SysTray::activated, this, [window](ActivationReason reason){
+        switch (reason) {
+        case QSystemTrayIcon::DoubleClick: {
+            window->linkTrayShowAction();
+            break;
+        }
+        default:
+            break;
+        }
+    });
 }
 
 SysTray::~SysTray()
 {
     delete m_menu;
-    m_window = nullptr;
 }
 
-void SysTray::showWindow()
-{
-    m_window->show();
-    m_window->activateWindow();
-    m_window->raise();
-}
-
-void SysTray::activateHandler(ActivationReason reason)
-{
-    switch (reason) {
-    case QSystemTrayIcon::DoubleClick: {
-        showWindow();
-        break;
-    }
-    default:
-        break;
-    }
-}
-
-void SysTray::initUI()
+void SysTray::initUI(PasTkWindow *window)
 {
     m_menu = new QMenu;
-    auto actions = m_window->bottomBarActions();
-    m_menu->addAction(actions.at(0));    // switch action
-    m_menu->addAction(actions.at(1));    // clear action
-    m_menu->addAction(actions.at(2));    // paste action
+    auto actions = window->bottomBarActions();
+    // switch action
+    m_menu->addAction(actions.at(0));
+    // clear action
+    auto raw_clear_action = actions.at(1);
+    auto clear_action = new QAction(raw_clear_action->icon(), "Clear All Items");
+    connect(clear_action, &QAction::triggered, window, &PasTkWindow::linkTrayClearAllAction);
+    connect(raw_clear_action, &QAction::enabledChanged, clear_action, &QAction::setEnabled);
+    m_menu->addAction(clear_action);
+
+    // paste action
+    auto raw_paste_action = actions.at(2);
+    auto paste_selector = new QAction("Select Paste Mode");
+    paste_selector->setMenu(raw_paste_action->menu());
+    auto paste_operator = new QAction(raw_paste_action->icon(), raw_paste_action->text());
+    connect(paste_operator, &QAction::triggered, window, &PasTkWindow::linkTrayPasteAction);
+    connect(raw_paste_action, &QAction::enabledChanged, paste_operator, &QAction::setEnabled);
+    m_menu->addActions({paste_selector, paste_operator});
 
     m_menu->addSeparator();
-    m_menu->addAction("Show Home Window", this, &SysTray::showWindow);
+    m_menu->addAction("Show Home Window", window, &PasTkWindow::linkTrayShowAction);
     m_menu->addSeparator();
-    m_menu->addAction(m_window->preferencesAction());
+    m_menu->addAction(window->preferencesAction());
     m_menu->addSeparator();
-    auto *tools = m_window->toolMenu();
+    auto *tools = window->toolMenu();
     for (auto *action: tools->actions())
         m_menu->addAction(action);
     m_menu->addSeparator();
-    auto *help = m_window->helpMenu();
+    auto *help = window->helpMenu();
     for (auto *action: help->actions())
         m_menu->addAction(action);
     m_menu->addSeparator();
@@ -67,10 +64,4 @@ void SysTray::initUI()
 
     setContextMenu(m_menu);
     setIcon(QIcon(":/PasTk_logo_128.png"));
-}
-
-void SysTray::connectSignalsWithSlots()
-{
-    connect(this, &SysTray::activated, this, &SysTray::activateHandler);
-//    connect(GHotkeyTrigger::instance().value("show_home_window"), &QHotkey::activated, this, &SysTray::showHome);
 }

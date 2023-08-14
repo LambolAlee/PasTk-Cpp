@@ -14,6 +14,7 @@ SelectionPasteWidget::SelectionPasteWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->selectionPasteList->setEditTriggers(QListView::NoEditTriggers);
+    ui->selectionPasteList->setAlternatingRowColors(true);
     ui->selectionPasteList->setModel(m_datamanager);
 
     connectSignalsWithSlots();

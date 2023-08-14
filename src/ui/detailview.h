@@ -19,6 +19,7 @@ signals:
     void newItemAddManuallyAfter();
     void deleteItem();
     void editItem();
+    void quickPaste();
 
 protected:
     void enterEvent(QEnterEvent *event) override;
@@ -39,6 +40,7 @@ private:
     QAction *m_add;
     QAction *m_edit;
     QAction *m_add_last;
+    QAction *m_quick_paste;
 
     void connectSignalsWithSlots();
 };

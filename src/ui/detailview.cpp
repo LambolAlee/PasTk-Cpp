@@ -15,7 +15,7 @@ DetailView::DetailView(QWidget *parent)
     setAlternatingRowColors(true);
     setEditTriggers(QListView::NoEditTriggers);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setSelectionMode(QAbstractItemView::ExtendedSelection);     // TODO: can be extended but not multiselected
+    setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     initContextMenu();
     connectSignalsWithSlots();
@@ -43,19 +43,14 @@ void DetailView::resizeEvent(QResizeEvent *event)
 
 void DetailView::contextMenuEvent(QContextMenuEvent *event)
 {
-    if (indexAt(event->pos()).isValid()) {
-        m_delete->setVisible(true);
-        m_edit->setVisible(true);
-        m_add->setVisible(true);
-        m_add_last->setVisible(false);
-    } else {
-        m_delete->setVisible(false);
-        m_edit->setVisible(false);
-        m_add->setVisible(false);
-        m_add_last->setVisible(true);
-    }
-    m_menu->exec(event->globalPos());
+    bool pos_on_item = indexAt(event->pos()).isValid();
+    m_delete->setVisible(pos_on_item);
+    m_edit->setVisible(pos_on_item);
+    m_add->setVisible(pos_on_item);
+    m_add_last->setVisible(!pos_on_item);
+    m_quick_paste->setVisible(pos_on_item);
 
+    m_menu->exec(event->globalPos());
     event->accept();
 }
 
@@ -71,19 +66,13 @@ void DetailView::syncWithSuspendScroll(int value)
 
 void DetailView::initContextMenu()
 {
-    m_delete = new QAction(m_menu);
-    m_delete->setText("Delete");
+    m_delete = new QAction("Delete", m_menu);
+    m_add = new QAction("Add", m_menu);
+    m_edit = new QAction("Edit", m_menu);
+    m_add_last = new QAction("Add", m_menu);
+    m_quick_paste = new QAction("Quick Paste", m_menu);
 
-    m_add = new QAction(m_menu);
-    m_add->setText("Add");
-
-    m_edit = new QAction(m_menu);
-    m_edit->setText("Edit");
-
-    m_add_last = new QAction(m_menu);
-    m_add_last->setText("Add");
-
-    m_menu->addActions({m_edit, m_add, m_delete, m_add_last});
+    m_menu->addActions({m_edit, m_add, m_delete, m_add_last, m_quick_paste});
 }
 
 void DetailView::connectSignalsWithSlots()
@@ -95,4 +84,6 @@ void DetailView::connectSignalsWithSlots()
     connect(m_add, &QAction::triggered, this, &DetailView::newItemAddManuallyBefore);
     connect(m_add_last, &QAction::triggered, this, &DetailView::newItemAddManuallyAfter);
     connect(m_edit, &QAction::triggered, this, &DetailView::editItem);
+    connect(m_quick_paste, &QAction::triggered, this, &DetailView::quickPaste);
+    connect(this, &DetailView::doubleClicked, this, &DetailView::quickPaste);
 }

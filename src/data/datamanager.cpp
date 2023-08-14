@@ -1,5 +1,6 @@
 
 #include "datamanager.h"
+#include <algorithm>
 
 DataManager::DataManager()
 {
@@ -11,10 +12,8 @@ DataManager::~DataManager() {}
 
 void DataManager::push(const QString &text)
 {
-    if (!text.isEmpty()) {
-        appendRow(new QStandardItem(text));
-        emit itemCountChange(rowCount());
-    }
+    appendRow(new QStandardItem(text));
+    emit itemCountChange(rowCount());
 }
 
 void DataManager::insert(int row, const QString &text)
@@ -25,8 +24,11 @@ void DataManager::insert(int row, const QString &text)
 
 void DataManager::remove(const QModelIndexList &indexs)
 {
-    for (auto &&index = indexs.crbegin(); index != indexs.crend(); index++)
+    auto tmp = indexs.toList();
+    std::sort(tmp.begin(), tmp.end(), [](const QModelIndex &i1, const QModelIndex &i2){ return i1.row() > i2.row(); });
+    for (auto &&index = tmp.cbegin(); index != tmp.cend(); index++)
         removeRow(index->row());
+
     emit itemCountChange(rowCount());
 }
 

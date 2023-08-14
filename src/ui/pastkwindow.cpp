@@ -1,4 +1,5 @@
 #include "pastkwindow.h"
+#include "qclipboard.h"
 #include "src/template/segments.h"
 #include "src/template/templatemanager.h"
 #include "ui_pastkwindow.h"
@@ -14,6 +15,7 @@
 #include "continuouspastewidget.h"
 #include "preferences.h"
 #include "selectionpastewidget.h"
+#include "src/paste/pasteutil.h"
 
 
 PasTkWindow::PasTkWindow(QWidget *parent)
@@ -75,6 +77,25 @@ const QMenu *PasTkWindow::toolMenu()
 const QMenu *PasTkWindow::helpMenu()
 {
     return ui->menuHelp;
+}
+
+void PasTkWindow::linkTrayPasteAction()
+{
+    if (m_datamanager->rowCount() == 0) return;
+    emit m_bottombar->startPaste();
+    linkTrayShowAction();
+}
+
+void PasTkWindow::linkTrayClearAllAction()
+{
+    emit m_bottombar->clearAllTriggered();
+}
+
+void PasTkWindow::linkTrayShowAction()
+{
+    show();
+    activateWindow();
+    raise();
 }
 
 void PasTkWindow::showAboutMe()
@@ -151,6 +172,20 @@ void PasTkWindow::backToHome()
     resetWindowState();
 }
 
+void PasTkWindow::quickPaste()
+{
+    QModelIndex idx;
+    auto index = ui->listView->selectedIndexes();
+    idx = index.constLast();
+    if (idx.isValid()) {
+        bool not_in_listening = m_datamanager->isStopped();
+        if (!not_in_listening) m_datamanager->stop();
+        //qApp->clipboard()->setText(idx.data().toString());
+        PasteUtil::instance().paste(this);
+        if (!not_in_listening) m_datamanager->listen();
+    }
+}
+
 void PasTkWindow::connectSignalsWithSlots()
 {
     connect(ui->startButton, &QPushButton::clicked, this, [this]{
@@ -165,7 +200,7 @@ void PasTkWindow::connectSignalsWithSlots()
     connect(ui->actionAbout_PasTk2, &QAction::triggered, this, &PasTkWindow::showAboutMe);
     connect(m_bottombar, &BottomBar::clearAllTriggered, this, [this]{
         m_datamanager->clearAll();
-        ui->stackedWidget->setCurrentIndex(ContextIndex::Start);
+        switchToPage(ContextIndex::Start);
     });
     connect(m_datamanager, &DataManager::itemCountChange, m_bottombar, &BottomBar::updateCount);
     connect(m_bottombar, &BottomBar::switchActionToggled, this, &PasTkWindow::handleSwitchCopy);
@@ -181,6 +216,7 @@ void PasTkWindow::connectSignalsWithSlots()
         m_datamanager->stop();
         m_editor->add(false);
     });
+    connect(ui->listView, &DetailView::quickPaste, this, &PasTkWindow::quickPaste);
     connect(m_editor, &ItemEditorDialog::updateIndex, this, [this](const QModelIndex &index, const QString &data){
         m_datamanager->setData(index, data);
     });

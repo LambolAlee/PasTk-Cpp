@@ -39,6 +39,11 @@ public:
 signals:
     void topmostChanged(bool current);
 
+public slots:
+    void linkTrayPasteAction();
+    void linkTrayClearAllAction();
+    void linkTrayShowAction();
+
 private slots:
     void showAboutMe();
     void handleSwitchCopy(bool on);
@@ -46,6 +51,7 @@ private slots:
     void addNewItem(const QString &text, bool before);
     void editSelectedItem();
     void backToHome();
+    void quickPaste();
 
 private:
     void connectSignalsWithSlots();

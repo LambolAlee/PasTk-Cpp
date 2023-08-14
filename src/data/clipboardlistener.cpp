@@ -11,6 +11,7 @@ ClipboardListener::ClipboardListener(QObject *parent)
         if (!m_clip->text().isEmpty())
             emit newDataOccurred(m_clip->text());
     });
+    stop();
 }
 
 ClipboardListener::~ClipboardListener()
