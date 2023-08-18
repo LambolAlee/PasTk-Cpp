@@ -6,13 +6,12 @@
 
 namespace defaults
 {
-    enum NewCopyOperation { ClearHistory, NoClearOperation };
+    enum NewCopyOperation { ClearHistory, ReserveHistory };
     // General settings
     const std::string_view language = "en_US";
-    [[deprecated]]constexpr bool menuBarShow = false;
     constexpr bool topmost = false;
     constexpr bool windowVisibility = false;
-    constexpr int clearAfterNewCopy = NoClearOperation;
+    constexpr int clearAfterNewCopy = ReserveHistory;
 
     // Hotkey settings
     constexpr std::string_view copy = "Ctrl+Alt+C";

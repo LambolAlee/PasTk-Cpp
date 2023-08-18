@@ -32,7 +32,6 @@ Preferences::Preferences(QWidget *parent) :
             break;
         }
     }
-    ui->menubarShowOpt->setChecked(config.getMenuBarShow());
     ui->topmostOpt->setChecked(config.getTopmost());
     ui->windowVisibility->setCurrentIndex(config.getWindowVisible());
     ui->clearHistoryOpt->setCurrentIndex(config.getClearAfterNewCopy());
@@ -63,7 +62,6 @@ void Preferences::save()
     Config config;
     // General settings
     config.setLanguage(ui->languageCB->currentData().toString());
-    config.setMenuBarShow(ui->menubarShowOpt->isChecked());
     config.setTopmost(ui->topmostOpt->isChecked());
     config.setWindowVisible(ui->windowVisibility->currentData().toBool());
     config.setClearAfterNewCopy((defaults::NewCopyOperation)ui->clearHistoryOpt->currentIndex());
@@ -85,7 +83,7 @@ void Preferences::resetGeneralSettings()
             break;
         }
     }
-    ui->menubarShowOpt->setChecked(defaults::menuBarShow);
+//    ui->menubarShowOpt->setChecked(defaults::menuBarShow);
     ui->topmostOpt->setChecked(defaults::topmost);
     ui->windowVisibility->setCurrentIndex(defaults::windowVisibility);
     ui->clearHistoryOpt->setCurrentIndex(defaults::clearAfterNewCopy);

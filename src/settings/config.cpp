@@ -130,16 +130,6 @@ QString Config::getLanguage()
     return getValue(QStringLiteral("General"), QStringLiteral("language"), defaults::getQString(defaults::language));
 }
 
-void Config::setMenuBarShow(bool show)
-{
-    setKey(QStringLiteral("General"), QStringLiteral("menubar_show"), show);
-}
-
-bool Config::getMenuBarShow()
-{
-    return getValue(QStringLiteral("General"), QStringLiteral("menubar_show"), defaults::menuBarShow);
-}
-
 void Config::setTopmost(bool onTop)
 {
     setKey(QStringLiteral("General"), QStringLiteral("topmost"), onTop);
@@ -167,7 +157,7 @@ void Config::setClearAfterNewCopy(defaults::NewCopyOperation option)
 
 defaults::NewCopyOperation Config::getClearAfterNewCopy()
 {
-    return getValue(QStringLiteral("General"), QStringLiteral("new_copy_operation"), defaults::NoClearOperation);
+    return getValue(QStringLiteral("General"), QStringLiteral("new_copy_operation"), defaults::ReserveHistory);
 }
 
 

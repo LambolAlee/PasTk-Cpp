@@ -14,13 +14,14 @@ public:
     void paste(QWidget *window);
     void paste();
     void test();
-
-private:
-    void execute_paste();
+    bool copy(const QString &text);
 
 #ifdef Q_OS_MAC
     bool check_accessibility_trusted();
 #endif
+
+private:
+    void execute_paste();
 };
 
 #endif // PASTEUTIL_H

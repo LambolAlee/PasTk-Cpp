@@ -40,9 +40,6 @@ public:
     void setLanguage(const QString &language);
     QString getLanguage();
 
-    void setMenuBarShow(bool show);
-    bool getMenuBarShow();
-
     void setTopmost(bool onTop);
     bool getTopmost();
 

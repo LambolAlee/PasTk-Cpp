@@ -1,5 +1,4 @@
 #include "pastkwindow.h"
-#include "qclipboard.h"
 #include "src/template/segments.h"
 #include "src/template/templatemanager.h"
 #include "ui_pastkwindow.h"
@@ -45,8 +44,8 @@ PasTkWindow::PasTkWindow(QWidget *parent)
     initModeActions();
     buildBottomBar();
 
+    m_topmost = m_config.getTopmost();
     ui->listView->setModel(m_datamanager);
-    m_topmost = false;
     ui->actionAbout_Qt->setIcon(qApp->style()->standardIcon(QStyle::SP_TitleBarMenuButton)); // qtlogo
     connectSignalsWithSlots();
 }
@@ -109,6 +108,8 @@ void PasTkWindow::handleSwitchCopy(bool on)
     if (on) {
         switchToPage(ContextIndex::Detail);
 
+        if (m_config.getClearAfterNewCopy() == defaults::NewCopyOperation::ClearHistory)
+            m_datamanager->clearAll();
         m_datamanager->startCopy();
         m_datamanager->listen();
     } else {
@@ -180,8 +181,10 @@ void PasTkWindow::quickPaste()
     if (idx.isValid()) {
         bool not_in_listening = m_datamanager->isStopped();
         if (!not_in_listening) m_datamanager->stop();
-        //qApp->clipboard()->setText(idx.data().toString());
-        PasteUtil::instance().paste(this);
+        if (!PasteUtil::instance().copy(idx.data().toString()))
+            QMessageBox::warning(this, "PasTk", "copy text to clipboard failed!");
+        else
+            PasteUtil::instance().paste(this);
         if (!not_in_listening) m_datamanager->listen();
     }
 }
@@ -224,15 +227,17 @@ void PasTkWindow::connectSignalsWithSlots()
     connect(m_editor, &ItemEditorDialog::editFinished, this, [this]{
         if (!m_datamanager->isStopped()) {
             m_datamanager->listen();
-            qDebug() << "here";
-        } else {
-            qDebug() << "out";
         }
     });
     connect(ui->actionTemplate_Editor, &QAction::triggered, this, [this]{ m_editor_window->showWindow(false); });
     connect(ui->backButton, &QPushButton::clicked, this, &PasTkWindow::backToHome);
     connect(m_continuous, &ContinuousPasteWidget::pasteFinished, this, &PasTkWindow::backToHome);
     connect(ui->actionSettings, &QAction::triggered, m_preferences, &Preferences::exec);
+    connect(m_preferences, &Preferences::accepted, this, [this]{
+        m_config.sync();
+        m_topmost = m_config.getTopmost();
+        resetWindowState();
+    });
     connect(m_editor_window, &TemplateEditorWindow::templateSelected, this, [this](bool changed, const QString &templateName){
         QString templateStr = m_config.getTemplateStringByName(templateName);
         ui->selectionButton->setText(templateName);
@@ -279,7 +284,7 @@ void PasTkWindow::resetWindowState()
         WindowHelper::setWindowUnfocusable(this, true);
 #endif
     } else {
-        emit ui->actionTopmost->toggled(m_topmost);
+        ui->actionTopmost->setChecked(m_topmost);
     }
 }
 
@@ -316,6 +321,9 @@ void PasTkWindow::setWindowUnfocusable(bool unfocus)
     m_unfocus = unfocus;
 #ifdef Q_OS_WIN
     WindowHelper::setWindowUnfocusable(this, unfocus);
+#elif defined Q_OS_MAC
+    if (unfocus)
+        WindowHelper::setTopmost(this, true);
 #endif
 }
 

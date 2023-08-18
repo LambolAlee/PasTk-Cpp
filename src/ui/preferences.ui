@@ -14,6 +14,16 @@
    <string>PasTk - Preferences</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="1">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
+     </property>
+    </widget>
+   </item>
    <item row="0" column="0" colspan="2">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
@@ -57,27 +67,20 @@
           <string>Home Window</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_4">
-          <item row="0" column="2">
-           <widget class="QCheckBox" name="topmostOpt">
-            <property name="text">
-             <string>Show on top</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
+          <item row="2" column="0">
            <widget class="QComboBox" name="windowVisibility"/>
           </item>
-          <item row="1" column="1" colspan="2">
+          <item row="2" column="1" colspan="2">
            <widget class="QLabel" name="label_7">
             <property name="text">
              <string>home window when launching</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="0" colspan="2">
-           <widget class="QCheckBox" name="menubarShowOpt">
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="topmostOpt">
             <property name="text">
-             <string>Show menubar at boot time</string>
+             <string>Show on top</string>
             </property>
            </widget>
           </item>
@@ -145,7 +148,7 @@
        <item>
         <widget class="QGroupBox" name="groupBox">
          <property name="title">
-          <string>Home Window</string>
+          <string>Home Window Hotkeys</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_2">
           <item row="0" column="2">
@@ -201,7 +204,7 @@
        <item>
         <widget class="QGroupBox" name="groupBox_2">
          <property name="title">
-          <string>Paste Window</string>
+          <string>Paste Hotkeys</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
           <property name="horizontalSpacing">
@@ -302,16 +305,6 @@
     <widget class="QLabel" name="label">
      <property name="text">
       <string>Some changes apply after restarting</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
      </property>
     </widget>
    </item>

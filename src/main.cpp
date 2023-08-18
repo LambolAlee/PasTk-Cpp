@@ -4,6 +4,7 @@
 #include <QStyleFactory>
 #include "src/ui/systray.h"
 #include "src/utils/util.h"
+#include "src/settings/config.h"
 
 int main(int argc, char *argv[])
 {
@@ -26,6 +27,7 @@ int main(int argc, char *argv[])
     PasTkWindow w;
     SysTray tray(&w);
     tray.show();
-    w.show();
+    if (Config().getWindowVisible())
+        w.show();
     return a.exec();
 }

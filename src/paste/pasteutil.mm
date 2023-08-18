@@ -23,7 +23,10 @@ void PasteUtil::paste()
     QTimer::singleShot(200, this, &PasteUtil::execute_paste);
 }
 
-void PasteUtil::paste([[maybe_unused]]QWidget *window) {}
+void PasteUtil::paste(QWidget */*window*/)
+{
+    paste();
+}
 
 void PasteUtil::execute_paste()
 {
@@ -55,7 +58,17 @@ bool PasteUtil::check_accessibility_trusted()
     return accessibilityEnabled;
 }
 
+bool PasteUtil::copy(const QString &text)
+{
+    // TODO: maybe catch some error
+    NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+    [pasteboard clearContents];
+    [pasteboard writeObjects:@[text.toNSString()]];
+    return true;
+}
+
 void PasteUtil::test()
 {
+    // switch the system theme to light
     NSApp.appearance = [NSAppearance appearanceNamed:NSAppearanceNameAqua];
 }
