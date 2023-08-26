@@ -19,6 +19,7 @@ public:
     void selectTemplate(const TemplatePair &templatePair, bool favor);
     void selectTemplate(const QString &templateName, bool favor);
     void showApplyButton(bool with_apply);
+    QMenu *panelMenu() const { return m_menu; };
 
 public slots:
     void pasteSelectedTag(const QString &tag);
@@ -50,6 +51,7 @@ private:
     bool m_addition;
     QIcon m_star_blank;
     QIcon m_star;
+    QMenu *m_menu;
 };
 
 #endif // TEMPLATEEDITORPANEL_H

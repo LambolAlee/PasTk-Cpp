@@ -1,4 +1,5 @@
 #include "templateeditorwindow.h"
+#include "QtWidgets/qmenu.h"
 #include "ui_templateeditorwindow.h"
 #include "templateeditorpanel.h"
 #include "tagsdrawercontent.h"
@@ -19,6 +20,7 @@ TemplateEditorWindow::TemplateEditorWindow(QWidget *parent) :
     ui->tagDrawer->setFeatures(QDockWidget::NoDockWidgetFeatures);
     ui->templateDrawer->setFeatures(QDockWidget::NoDockWidgetFeatures);
     ui->templateList->setItemDelegate(new TemplateListDelegate);
+    ui->templateList->setContextMenuPolicy(Qt::CustomContextMenu);
 
     initTemplateListContent();
     connectSignalsWithSlots();
@@ -57,11 +59,12 @@ void TemplateEditorWindow::connectSignalsWithSlots()
     connect(m_panel, &TemplateEditorPanel::toggleTagDrawer, ui->tagDrawer, &QDockWidget::setVisible);
     connect(m_panel, &TemplateEditorPanel::deleteActionTriggered, this, &TemplateEditorWindow::deleteTemplate);
     connect(ui->templateList, &QListWidget::itemClicked, this, &TemplateEditorWindow::selectItem);
+    connect(ui->templateList, &QListView::customContextMenuRequested, this, &TemplateEditorWindow::customedListContextMenu);
     connect(m_panel, &TemplateEditorPanel::newTemplateCreated, this, &TemplateEditorWindow::addNewTemplate);
     connect(m_panel, &TemplateEditorPanel::templateModified, this, &TemplateEditorWindow::modifyTemplate);
     connect(m_panel, &TemplateEditorPanel::defaultTemplateChanged, this, &TemplateEditorWindow::changeDefaultTemplate);
     connect(m_content, &TagsDrawerContent::tagToBePasted, m_panel, &TemplateEditorPanel::pasteSelectedTag);
-    connect(m_panel, &TemplateEditorPanel::templateSelected, this, &TemplateEditorWindow::deliverTemplate);
+    connect(m_panel, &TemplateEditorPanel::templateSelected, this, &TemplateEditorWindow::deliverTemplate);    
 }
 
 void TemplateEditorWindow::deleteTemplate(bool refresh_default)
@@ -118,4 +121,10 @@ void TemplateEditorWindow::deliverTemplate(bool changed)
     QListWidgetItem *templateItem = ui->templateList->currentItem();
     emit templateSelected(changed, templateItem->text());
     close();
+}
+
+void TemplateEditorWindow::customedListContextMenu(const QPoint &pos)
+{
+    if (ui->templateList->indexAt(pos).isValid())
+        m_panel->panelMenu()->exec(ui->templateList->mapToGlobal(pos));
 }

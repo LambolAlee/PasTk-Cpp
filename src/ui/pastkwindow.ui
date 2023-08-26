@@ -356,8 +356,8 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../qrc/icons/icons.qrc"/>
   <include location="../../qrc/logo/logo.qrc"/>
+  <include location="../../qrc/icons/icons.qrc"/>
  </resources>
  <connections/>
 </ui>

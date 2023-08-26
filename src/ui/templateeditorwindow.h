@@ -36,6 +36,7 @@ private slots:
     void addNewTemplate(const TemplatePair &pair);
     void changeDefaultTemplate(const QString &current, const QString &previous);
     void deliverTemplate(bool changed);
+    void customedListContextMenu(const QPoint &pos);
 
 private:
     Ui::TemplateEditorWindow *ui;

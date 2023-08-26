@@ -2,6 +2,7 @@
 #include "ui_templateeditorpanel.h"
 #include <QDialogButtonBox>
 #include <QMessageBox>
+#include <QMenu>
 
 
 TemplateEditorPanel::TemplateEditorPanel(QWidget *parent) :
@@ -19,6 +20,8 @@ TemplateEditorPanel::TemplateEditorPanel(QWidget *parent) :
     setFavorState(false);
 
     m_current_template = {{QStringLiteral(""), QStringLiteral("")}, false};
+    m_menu = new QMenu(this);
+    m_menu->addActions({ui->actionAdd, ui->actionDelete, ui->actionFavor});
 
     connectSignalsWithSlots();
 }
@@ -26,6 +29,7 @@ TemplateEditorPanel::TemplateEditorPanel(QWidget *parent) :
 TemplateEditorPanel::~TemplateEditorPanel()
 {
     delete ui;
+    delete m_menu;
 }
 
 void TemplateEditorPanel::selectTemplate(const TemplatePair &templatePair, bool favor)

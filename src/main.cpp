@@ -5,6 +5,7 @@
 #include "src/ui/systray.h"
 #include "src/utils/util.h"
 #include "src/settings/config.h"
+#include <QHotkey>
 
 int main(int argc, char *argv[])
 {
