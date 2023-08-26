@@ -1,9 +1,9 @@
 #include "pasteutil.h"
 
-#include <windows.h>
 #include <QWidget>
 #include <QTimer>
 #include <QThread>
+#include <windows.h>
 
 #define VK_V 0x56
 
@@ -46,10 +46,8 @@ bool PasteUtil::copy(const QString &text)
         return false;
     }
 
-    // TODO: convert the QString to const char*
-    // QString.constData, QString.size() can get the correct length of a QString, not attempt to get the length using len(const QChar*)
-    const char* text = "Hello, clipboard!";
-    int textLength = strlen(text) + 1;
+    // Calculate the size needed for the string, including null-terminator
+    int textLength = text.size() +1;
 
     HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, textLength);
     if (!hMem) {
@@ -65,8 +63,7 @@ bool PasteUtil::copy(const QString &text)
         CloseClipboard();
         return false;
     }
-
-    strcpy_s(pMem, textLength, text);
+    strcpy_s(pMem, textLength, text.toUtf8().constData());
     GlobalUnlock(hMem);
 
     if (!SetClipboardData(CF_TEXT, hMem)) {
